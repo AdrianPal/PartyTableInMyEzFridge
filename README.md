@@ -12,3 +12,6 @@ Rémy Kaloustian
 
 AtelierIHM:
 https://github.com/AtelierIHMTable
+
+## NB : 
+Pour le InkCanvas, il faudra rajouter un lien symbolique (au pire on redemande à Mister C.Brel)
