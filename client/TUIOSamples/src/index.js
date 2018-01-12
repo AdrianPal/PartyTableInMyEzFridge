@@ -10,7 +10,7 @@ import $ from 'jquery/dist/jquery.min';
 // Import TUIOManager
 import TUIOManager from 'tuiomanager/core/TUIOManager';
 
-import { buildMenu } from './menu';
+import buildMenu from './menu';
 
 /** TUIOManager starter **/
 const tuioManager = new TUIOManager();
