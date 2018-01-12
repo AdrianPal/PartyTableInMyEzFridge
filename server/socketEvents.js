@@ -10,7 +10,7 @@ exports = module.exports = function (io) {
     });
     
     socket.on('hello::all', (m) => {
-      io.sockets.emit('helloall', 'hello to all! <3 <3 Message: '+ m);
+      io.sockets.emit('helloall', '[all] '+ m);
       console.log('joined ' + '');
     });
 
