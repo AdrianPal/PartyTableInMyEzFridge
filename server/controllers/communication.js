@@ -1,15 +1,16 @@
-const mailgun = require('../config/mailgun');
+/**
+ * Communication Controller.
+ */
 
 exports.sendContactForm = function (req, res, next) {
-  const fromText = `${req.body.firstName} ${req.body.lastName} ` +
-                  `<${req.body.email}>`;
+  // const fromText = `${req.body.firstName} ${req.body.lastName} ` +
+  //                 `<${req.body.email}>`;
 
-  const message = {
-    subject: req.body.subject,
-    text: req.body.message
-  };
+  return res.status(200).json({ message: 'Message received.' });
+};
 
-  mailgun.contactForm(fromText, message);
+exports.getInfoFromServer = function (req, res, next) {
+  let msg = "Your param is: "+req.query.id;
 
-  return res.status(200).json({ message: 'Your email has been sent. We will be in touch with you soon.' });
+  return res.status(200).json({ message: msg });
 };
