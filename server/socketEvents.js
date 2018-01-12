@@ -1,25 +1,21 @@
 exports = module.exports = function (io) {
   // Set socket.io listeners.
   io.on('connection', (socket) => {
-    // console.log('a user connected');
+    console.log('a user connected');
 
     // On conversation entry, join broadcast channel
-    socket.on('enter conversation', (conversation) => {
-      socket.join(conversation);
-      // console.log('joined ' + conversation);
+    socket.on('hello', () => {
+      socket.emit('hello', 'hello to u! <3');
+      console.log('joined ' + '');
     });
-
-    socket.on('leave conversation', (conversation) => {
-      socket.leave(conversation);
-      // console.log('left ' + conversation);
-    });
-
-    socket.on('new message', (conversation) => {
-      io.sockets.in(conversation).emit('refresh messages', conversation);
+    
+    socket.on('hello::all', () => {
+      io.sockets.emit('helloall', 'hello to all! <3 <3');
+      console.log('joined ' + '');
     });
 
     socket.on('disconnect', () => {
-      // console.log('user disconnected');
+      console.log('user disconnected');
     });
   });
 };
