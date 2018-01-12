@@ -4,12 +4,12 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   logger = require('morgan'),
   router = require('./router'),
-  mongoose = require('mongoose'),
+  //mongoose = require('mongoose'),
   socketEvents = require('./socketEvents'),
   config = require('./config/main');
 
 // Database Setup
-mongoose.connect(config.database);
+//ongoose.connect(config.database);
 
 // Start the server
 let server;
@@ -33,14 +33,14 @@ app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 
-// Enable CORS from client-side
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+// // Enable CORS from client-side
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials');
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   next();
+// });
 
 // Import routes to be served
 router(app);
