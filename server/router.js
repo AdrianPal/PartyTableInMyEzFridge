@@ -1,26 +1,16 @@
-const CommunicationController = require('./controllers/communication');
-
 const express = require('express');
+const passport = require('passport');
+const TestServerController = require('./controllers/test-server');
 
 module.exports = function (app) {
   // Initializing route groups
   const apiRoutes = express.Router(),
-    communicationRoutes = express.Router();
+    testServerRoutes = express.Router()
 
-  //= ========================
-  // User Routes
-  //= ========================
 
-  //= ========================
-  // Communication Routes
-  //= ========================
-  apiRoutes.use('/communication', communicationRoutes);
+  apiRoutes.use('/test', testServerRoutes);
 
-  // Send email from contact form
-  communicationRoutes.post('/contact', CommunicationController.sendContactForm);
-
-  // Get Serveri infos
-  communicationRoutes.get('/contact', CommunicationController.getInfoFromServer);
+  testServerRoutes.get('/:name', TestServerController.verifParam, TestServerController.displayMessage);
 
   // Set url for API group routes
   app.use('/api', apiRoutes);
