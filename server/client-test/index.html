@@ -8,7 +8,7 @@
     <body>
         <h1>Communication with socket.io!</h1>
 
-        <input id="method" placeholder="Name" />
+        <input id="method" placeholder="Name" value="hello::all" />
         <input id="params" placeholder="Params" />
 
         <button id="send" onclick="send()">Send</button>
@@ -19,7 +19,13 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <script>
+            var person = prompt("Please enter your name", "");
+            
             var socket = io.connect('http://172.20.10.3:3000');
+
+            if (person != null) {
+                socket.emit('itsme', person);
+            }
 
             function send() {
                 var name = document.getElementById('method').value;

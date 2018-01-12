@@ -1,7 +1,13 @@
 exports = module.exports = function (io) {
   // Set socket.io listeners.
   io.on('connection', (socket) => {
+    let username;
     console.log('a user connected');
+
+    // On conversation entry, join broadcast channel
+    socket.on('itsme', (p) => {
+      username = p;
+    });
 
     // On conversation entry, join broadcast channel
     socket.on('hello', () => {
@@ -10,7 +16,7 @@ exports = module.exports = function (io) {
     });
     
     socket.on('hello::all', (m) => {
-      io.sockets.emit('helloall', '[all] '+ m);
+      io.sockets.emit('helloall', '[all] ' + username + ': '+ m);
       console.log('joined ' + '');
     });
 
