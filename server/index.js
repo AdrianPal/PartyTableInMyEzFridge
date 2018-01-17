@@ -4,8 +4,13 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   logger = require('morgan'),
   router = require('./router'),
+  mongoose = require('mongoose'),
   socketEvents = require('./socketEvents'),
-  config = require('./config/main');
+  config = require('./config/main'),
+  SOCKET_SAVE = require('./utils/constants').SOCKET_SAVE; 
+
+// Database Setup
+mongoose.connect(config.database);
 
 // Start the server
 let server;
@@ -16,8 +21,8 @@ if (process.env.NODE_ENV != config.test_env) {
   server = app.listen(config.test_port);
 }
 
-
 const io = require('socket.io').listen(server);
+app.set(SOCKET_SAVE, io);
 
 socketEvents(io);
 

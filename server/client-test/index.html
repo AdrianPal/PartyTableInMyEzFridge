@@ -1,48 +1,103 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Socket.io</title>
-    </head>
- 
-    <body>
-        <h1>Communication with socket.io!</h1>
 
-        <input id="method" placeholder="Name" value="hello::all" />
-        <input id="params" placeholder="Params" />
+<head>
+    <meta charset="utf-8" />
+    <title>PartyTableInMyEZFridge</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
 
-        <button id="send" onclick="send()">Send</button>
+    <style>
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
 
-        <hr>
+<body>
+    <h1>PartyTableInMyFuckingEZFridge</h1>
 
-        <div id="test"></div>
+    <div id="main">
+        <button class="btn btn-primary" id="newGame">New game</button>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-        <script>
-            var person = prompt("Please enter your name", "");
-            
-            var socket = io.connect('http://172.20.10.3:3000');
+        <button class="btn btn-success d-none" id="addUser">Add participant</button>
 
-            if (person != null) {
-                socket.emit('itsme', person);
-            }
+        <div id="users"></div>
+    </div>
 
-            function send() {
-                var name = document.getElementById('method').value;
-                var params = document.getElementById('params').value;
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
 
-                socket.emit(name, params);
-            }
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script> -->
 
-            socket.emit('hello', null);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-            socket.on('hello', function(msg){
-                document.getElementById('test').innerHTML += '<br>'+msg;
+    <script>
+        const apiUrl = "http://localhost:3000";
+
+        let usersCount = 0,
+            gameId = null;
+
+        var socket = io.connect('http://localhost:3000');
+
+        socket.on('refresh game', function (d) {
+            d.game.forEach(function(e) {
+                $('#users_'+e.pos+' .name').html('<b>'+e.name+'</b>');
             });
-            
-            socket.on('helloall', function(msg){
-                document.getElementById('test').innerHTML += '<br>'+msg;
+        });
+
+        function connectSocketForCurrentGame() {
+            socket.emit('enter game', gameId);
+        }
+
+        $(function () {
+            $('#newGame').on('click', function (e) {
+                e.preventDefault();
+
+                let $that = $(this);
+
+                $.post(apiUrl + '/api/game')
+                    .done(function (d) {
+                        $('#addUser').removeClass('d-none');
+                        gameId = d.gameId;
+                        $that.hide();
+
+                        connectSocketForCurrentGame();
+                    })
+                    .fail(function (e) {
+                        alert('Error');
+                        console.log(e);
+                    });
             });
-        </script>
-    </body>
+
+            $('#addUser').on('click', function (e) {
+                e.preventDefault();
+
+                ++usersCount;
+
+                $('#users').append('<p id="users_' + usersCount + '">'+ usersCount +': <span class="name"><a href="./user.html?id=' +
+                    usersCount + '&gameId=' + gameId + '">new user</a></span></p>');
+            });
+        });
+
+        // function send() {
+        //     var name = document.getElementById('method').value;
+        //     var params = document.getElementById('params').value;
+
+        //     socket.emit(name, params);
+        // }
+
+        // socket.emit('hello', null);
+
+        // socket.on('hello', function(msg){
+        //     document.getElementById('test').innerHTML += '<br>'+msg;
+        // });
+
+        // socket.on('helloall', function(msg){
+        //     document.getElementById('test').innerHTML += '<br>'+msg;
+        // });
+    </script>
+</body>
+
 </html>
