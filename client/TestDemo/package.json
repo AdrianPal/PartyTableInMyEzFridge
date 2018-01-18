@@ -1,0 +1,14 @@
+{
+  "name": "testdemo",
+  "version": "1.0.0",
+  "description": "package for the first demonstration of our \"Interfaces réparties/tactiles\" project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PartyTableOfMyEasyFridge",
+  "license": "ISC",
+  "dependencies": {
+    "paper": "^0.11.5"
+  }
+}

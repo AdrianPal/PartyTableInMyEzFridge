@@ -23,5 +23,21 @@ exports = module.exports = function (io) {
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
+    
+    socket.on('startPath', (p, sessionId) => {
+      if(p.point.length = 3) {
+        socket.broadcast.emit('startPath', p , sessionId);
+      }
+    })
+    socket.on('continuePath', (p, sessionId) => {
+      socket.broadcast.emit('continuePath', p, sessionId);
+    })
+    socket.on('endPath', (p, sessionId) => {
+      socket.broadcast.emit('endPath', p, sessionId);
+    })
+
+    socket.on('connectionDraw', () => {
+      socket.emit('connectedDraw', socket.id);
+    })
   });
 };
