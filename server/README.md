@@ -6,16 +6,17 @@ You must have **Mongo** and **npm** installed on your computer.
 
 ## Start the server
 
-First, you need to start the database:
+The first thing you need to do is an **`npm install`** inside this folder.
+Then, start the database thanks to the script:
 
 ```
-$ > mkdir ./data/db && mongod --dbpath ./data/db
+$ > ./scripts/start_db.sh
 ```
 
-Then, just start the API with:
+And finally, launch the API with:
 
 ```
-$ > npm run dev
+$ > ./scripts/start_server.sh
 ```
 
 ## About
