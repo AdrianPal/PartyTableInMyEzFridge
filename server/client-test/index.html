@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PartyTableInMyEZFridge</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
@@ -33,22 +34,29 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
+    <script src="qrcode.js"></script>
+
     <script>
         const apiUrl = "http://localhost:3000";
 
         let usersCount = 0,
             gameId = null;
 
-        var socket = io.connect('http://localhost:3000');
+        var socket = io.connect('http://172.20.10.3:3000');
 
         socket.on('refresh game', function (d) {
             d.game.forEach(function(e) {
-                $('#users_'+e.pos+' .name').html('<b>'+e.name+'</b>');
+                $('#username_'+e.pos).html('<b>'+e.name+'</b>');
+                $('#qrcode_'+e.pos).hide();
             });
         });
 
         function connectSocketForCurrentGame() {
             socket.emit('enter game', gameId);
+        }
+
+        function getLink() {
+            return location.href.replace(/index\.html/i, "");
         }
 
         $(function () {
@@ -76,8 +84,11 @@
 
                 ++usersCount;
 
-                $('#users').append('<p id="users_' + usersCount + '">'+ usersCount +': <span class="name"><a href="./user.html?id=' +
-                    usersCount + '&gameId=' + gameId + '">new user</a></span></p>');
+                let link = getLink() + './user.html?id=' +usersCount + '&gameId=' + gameId;
+                
+                $('#users').append('<h3>'+ usersCount +':</h3> <a href="'+ link +'"><div id="qrcode_'+ usersCount +'"></div></a><span id="username_'+ usersCount +'"></span><hr>');
+
+                new QRCode('qrcode_' + usersCount, link);
             });
         });
 

@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>PartyTableInMyEZFridge</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 
@@ -23,7 +24,7 @@
             <button class="btn btn-success" id="newUser">It's me!</button>
         </div>
 
-        <div id="success" style="display: none;">
+        <div id="success" style="display: none">
             <h1>Amazing! :-)</h1>
         </div>
 
@@ -50,7 +51,7 @@
                 }
             };
 
-            const apiUrl = "http://localhost:3000";
+            const apiUrl = "http://172.20.10.3:3000";
 
             let userId = getUrlParameter('id'),
                 gameId = getUrlParameter('gameId');
@@ -71,7 +72,7 @@
                             $('#success').show();
                         })
                         .fail(function(e) {
-                            alert('Error');
+                            alert('Error.');
                             console.log(e);
                         });
                 });
