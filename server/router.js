@@ -1,16 +1,33 @@
-const express = require('express');
-const passport = require('passport');
-const TestServerController = require('./controllers/test-server');
+const express = require('express'),
+  passport = require('passport'),
+  GameController = require('./controllers/game'),
+  UserController = require('./controllers/user');
 
 module.exports = function (app) {
   // Initializing route groups
   const apiRoutes = express.Router(),
-    testServerRoutes = express.Router()
+    gameRoutes = express.Router(),
+    gameUserRoutes = express.Router(),
+    testServerRoutes = express.Router();
 
 
-  apiRoutes.use('/test', testServerRoutes);
+  //= ========================
+  // Game Routes
+  //= ========================
+  apiRoutes.use('/game', gameRoutes);
 
-  testServerRoutes.get('/:name', TestServerController.verifParam, TestServerController.displayMessage);
+  // Create a new game
+  gameRoutes.post('/', GameController.newGame);
+  //= ========================
+
+  //= ========================
+  // Game Users Routes
+  //= ========================
+  gameRoutes.use('/user', gameUserRoutes);
+
+  // Add user to a game
+  gameUserRoutes.post('/', UserController.newUserForGame);
+  //= ========================
 
   // Set url for API group routes
   app.use('/api', apiRoutes);
