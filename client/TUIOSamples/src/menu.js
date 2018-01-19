@@ -17,11 +17,19 @@ import MenuItem from 'tuiomanager/widgets/CircularMenu/MenuItem';
 
 export default function buildMenu() {
   $('#app').append('<div id="startView"></div>');
+  
   $('#startView').append('<h1 id="title"> Party Table In my EZ Fridge </h1>');
 
+  //THIS IS A TEST BUTTON, just used to test animations and functions
+  $('#startView').append('<button id="trigger">Trigger me</button>');  
+  $('#trigger').click(function(){
+    hideQRCode($('#qrcodeR'));
+  });
   buildQRCodes();
  
 }// buildMenu()
+
+
 
 function buildQRCodes()
 {
@@ -37,11 +45,16 @@ function buildQRCodes()
   $('#qrcodeL').css('top', ($(window).height() - $('#qrcodeL').height())/2 );
   $('#qrcodeT').css('left', ($(window).width() - $('#qrcodeT').width())/2 );
   $('#qrcodeB').css('left', ($(window).width() - $('#qrcodeB').width())/2 );
-
-
- 
   
 }
+
+function hideQRCode(qrcode)
+{
+  qrcode.transition({ scale: 0, duration:'600' });
+}
+
+
+///Have to replace this shyte
 var rot = 360;
 
 setInterval(function(){ 

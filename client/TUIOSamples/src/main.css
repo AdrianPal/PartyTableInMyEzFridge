@@ -15,10 +15,17 @@ h1
 
 .qrcode
 {
-  width:20%;
+  width:20%;  
   position: absolute;
+  
 }
 
+#trigger
+{
+  position: absolute;
+  top:0px;
+  left:0px;
+}
 
 #qrcodeL
 {
