@@ -17,5 +17,11 @@ import { buildNoobWork } from './dev-test';
 export default function buildMenu() {
   $('#app').append('<div id="startView"></div>');
   $('#startView').append('<h1> Party Table In my EZ Fridge </h1>');
+
+  $('#startView').append('<img src="../assets/qr.jpg" class="qrcode"/>');
+  $('#startView').append('<img src="../assets/qr.jpg"class="qrcode"/>');
+  $('#startView').append('<img src="../assets/qr.jpg" class="qrcode"/>');
+  $('#startView').append('<img src="../assets/qr.jpg" class="qrcode"/>');
+  
  
 }// buildMenu()
