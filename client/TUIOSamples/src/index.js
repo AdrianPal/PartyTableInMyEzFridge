@@ -19,7 +19,6 @@ tuioManager.start();
 /** App Code **/
 
 const buildApp = () => {
-  $('#app').append('<div id="example-container"> </div>');
   buildMenu();
 };
 

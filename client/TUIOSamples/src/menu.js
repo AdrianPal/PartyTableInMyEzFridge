@@ -15,6 +15,7 @@ import MenuItem from 'tuiomanager/widgets/CircularMenu/MenuItem';
 import { buildNoobWork } from './dev-test';
 
 export default function buildMenu() {
-  //$('#example-container').append('<h1> Party Table In my EZ Fridge </h1>');
+  $('#app').append('<div id="startView"></div>');
+  $('#startView').append('<h1> Party Table In my EZ Fridge </h1>');
  
 }// buildMenu()
