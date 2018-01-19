@@ -4,7 +4,9 @@
  */
 
 // Import JQuery
-import $ from 'jquery/dist/jquery.min';
+//import $ from 'jquery/dist/jquery.min';
+//import transition from 'jquery.transit';
+
 // Import ImageWidget
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
 import VideoElementWidget from 'tuiomanager/widgets/ElementWidget/VideoElementWidget/VideoElementWidget';
@@ -12,11 +14,10 @@ import VideoElementWidget from 'tuiomanager/widgets/ElementWidget/VideoElementWi
 import CircularMenu from 'tuiomanager/widgets/CircularMenu/CircularMenu';
 import LibraryStack from 'tuiomanager/widgets/Library/LibraryStack/LibraryStack';
 import MenuItem from 'tuiomanager/widgets/CircularMenu/MenuItem';
-import { buildNoobWork } from './dev-test';
 
 export default function buildMenu() {
   $('#app').append('<div id="startView"></div>');
-  $('#startView').append('<h1> Party Table In my EZ Fridge </h1>');
+  $('#startView').append('<h1 id="title"> Party Table In my EZ Fridge </h1>');
 
   buildQRCodes();
  
@@ -24,6 +25,9 @@ export default function buildMenu() {
 
 function buildQRCodes()
 {
+
+  $('#title').css('marginTop', ($(window).height() - $('#title').height())/2);
+
   $('#startView').append('<img src="../assets/qr.jpg" class="qrcode" id="qrcodeL"/>');
   $('#startView').append('<img src="../assets/qr.jpg" class="qrcode" id="qrcodeR"/>');
   $('#startView').append('<img src="../assets/qr.jpg" class="qrcode" id="qrcodeT"/>');
@@ -33,4 +37,15 @@ function buildQRCodes()
   $('#qrcodeL').css('top', ($(window).height() - $('#qrcodeL').height())/2 );
   $('#qrcodeT').css('left', ($(window).width() - $('#qrcodeT').width())/2 );
   $('#qrcodeB').css('left', ($(window).width() - $('#qrcodeB').width())/2 );
+
+
+ 
+  
 }
+var rot = 360;
+
+setInterval(function(){ 
+  $('#title').transition({ rotate: rot+'deg', duration:'10000' }, 'snap'); 
+  rot +=360;  
+  console.log("rotated"); 
+}, 10000);
