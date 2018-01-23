@@ -84,6 +84,10 @@ h1
 {
   bottom:0px;
 }
+
+#boardView{
+width: 100%;
+}
 #board
 {
   display: inline-block;

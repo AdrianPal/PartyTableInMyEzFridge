@@ -14,6 +14,8 @@ export default function showBoardView(players)
     '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
 
     '</div>');
+    $('#boardView').css('margin-left', $(window).width());
+    $('#boardView').transition({x:-$(window).width()});
 
     positionDice();
     $('#dice button').on('click', rollDice);
