@@ -22,18 +22,20 @@ export default function showBoardView(players)
 
     for (let index = 0; index < 10; index++) {
 
-    $('#board').append('<div class="boardTile"></div>');
-    if(index%2 != 0)
-    {
-        $('.boardTile').last().css('background-color', '#F44336');
+        $('#board').append('<div class="boardTile"></div>');
+        if(index % 2 != 0)
+        {
+            $('.boardTile').last().css('background-color', '#F44336');
 
+        }
+        else 
+        {
+            $('.boardTile').last().css('background-color', '#F48FB1');
+        }   
     }
-    else 
-    {
-        $('.boardTile').last().css('background-color', '#F48FB1');
-    }   
+    $('#board').append('<div class="boardTile" id="lastTile"></div>')
 
-    }
+
 
     $('#boardView').append('<div id="players"></div>');
 

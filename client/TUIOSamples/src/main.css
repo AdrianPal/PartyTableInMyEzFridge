@@ -99,6 +99,12 @@ width: 100%;
   display: inline-block;
 }
 
+#lastTile
+{
+  background-color: #00C853;
+
+}
+
 #dice
 {
   position: absolute;
