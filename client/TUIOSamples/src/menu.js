@@ -1,15 +1,10 @@
 /**
- * @author Kevin Duglué
  * @author Rémy Kaloustian
  */
 
  /*eslint-disable */
 
-// Import JQuery
-//import $ from 'jquery/dist/jquery.min';
-//import transition from 'jquery.transit';
-
-// Import ImageWidget
+ // Import ImageWidget
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
 import VideoElementWidget from 'tuiomanager/widgets/ElementWidget/VideoElementWidget/VideoElementWidget';
 // import LibraryBar from 'tuiomanager/widgets/Library/LibraryBar/LibraryBar';
@@ -46,6 +41,7 @@ export default function buildMenu()
       {name:'Zagogogadget', avatar:'3', score:0, x:0, y:0, played:false},
       {name:'Kastoulian', avatar:'4', score:0, x:0, y:0, played:false}
     ]
+    //Switching to the board view
     showBoardView(players);
   });
  
