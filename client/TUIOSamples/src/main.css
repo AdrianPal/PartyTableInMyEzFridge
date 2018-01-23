@@ -8,6 +8,10 @@ body
   font-family: Proxima;
 }
 
+p
+{
+  display: inline-block;
+}
 h1
 {
   text-align: center;
@@ -15,7 +19,10 @@ h1
 
 .qrcode
 {
+  /*Normal value*/
   width:20%;  
+
+  /*width:30px;*/
   position: absolute;
   
 }
@@ -41,6 +48,7 @@ h1
 {
   top:10px;
 }
+
 #qrcodeB
 {
   
@@ -48,3 +56,42 @@ h1
   
 }
 
+
+.player-name
+{
+  position: absolute;
+  display: inline-block;
+
+}
+
+
+#nameL
+{
+  
+}
+
+#nameR
+{
+  right:0px;
+}
+
+#nameT
+{
+  top:0px;
+}
+
+#nameB
+{
+  bottom:0px;
+}
+#board
+{
+  display: inline-block;
+}
+.boardTile
+{
+  width:100px;
+  height: 200px;
+  background-color: aqua;
+  display: inline-block;
+}

@@ -43,6 +43,14 @@ export default function buildMenu()
 function showBoardView(players)
 {
   $('#startView').remove();
-  $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1></div>');
+  $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
+    '<div id="board"></div>'+
+  
+  '</div>');
+  
+  for (let index = 0; index < 10; index++) {
+   $('#board').append('<div class="boardTile"></div>');
+    
+  }
 }
 
