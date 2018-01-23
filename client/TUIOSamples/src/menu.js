@@ -43,6 +43,7 @@ export default function buildMenu()
     ]
     //Switching to the board view
     showBoardView(players);
+    $('#trigger').remove();
   });
  
 }// buildMenu()

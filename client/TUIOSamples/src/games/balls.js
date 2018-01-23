@@ -4,6 +4,6 @@
 
  export default function launchBalls(players)
  {
-     console.log('Launching balls');
-    console.log(players);
+    $('#boardView').remove();
+    $('#app').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
  }
