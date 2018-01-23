@@ -5,7 +5,7 @@
 
  /*eslint-disable */
 
-let _players = []; //needed ? I dunno, maybe
+let _players = []; 
 let _currentPlayer;
 
 let _games = [
@@ -136,7 +136,7 @@ function turnPlayer()
 
 function rollDice()
 {
-    let result = Math.floor(Math.random() * (7 - 1) + 1)
+    let result = Math.floor(Math.random() * (7 - 1) + 1);
     $('#diceResult').text(result);
     $('#dice button').prop('disabled', true);
     movePlayer(result);
@@ -149,4 +149,11 @@ function movePlayer(diceResult)
     let movement = $('.boardTile:first').width() * diceResult;
     $('#player' + _currentPlayer).transition({x:movement, delay:700}, 1000);
 }
+
+function launchGame()
+{
+    const pickedGame =  Math.floor(Math.random() * (_games.length) + 0);
+    _games[pickedGame].launch();
+}
+
     /*eslint-enable */
