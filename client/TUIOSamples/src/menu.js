@@ -39,7 +39,14 @@ export default function buildMenu()
   $('#app').append('<button id="trigger">Trigger me</button>');  
   $('#trigger').click(function()
   {
-    showBoardView();
+    //Testing players addition
+    const players = [
+      {name:'Papalumbo', avatar:'1', score:0},
+      {name:'RHRHRRH', avatar:'2', score:0},
+      {name:'Zagogogadget', avatar:'3', score:0},
+      {name:'Kastoulian', avatar:'4', score:0}
+    ]
+    showBoardView(players);
   });
  
 }// buildMenu()
@@ -63,10 +70,17 @@ function showBoardView(players)
    else 
    {
     $('.boardTile').last().css('background-color', '#F48FB1');
+   }    
+   $('#boardView').append('<div id="players"></div>');
 
-   }
-    
+   
+
   }
-}
+  for (let index = 0; index < players.length; index++) {
+    $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
+  }
+
+}//showBoardView()
+
 
  /*eslint-enable */
