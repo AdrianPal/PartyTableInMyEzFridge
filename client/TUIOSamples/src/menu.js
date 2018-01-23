@@ -16,7 +16,8 @@ import LibraryStack from 'tuiomanager/widgets/Library/LibraryStack/LibraryStack'
 import MenuItem from 'tuiomanager/widgets/CircularMenu/MenuItem';
 
 //fonction appelée dans index.js, le script de base de la page
-export default function buildMenu() {
+export default function buildMenu() 
+{
   $('#app').append('<div id="startView"></div>'); //On ajoute la vue de départ
   
   //Ajout du html qui était précédemment dans index.html
@@ -31,10 +32,17 @@ export default function buildMenu() {
 );
 
   //THIS IS A TEST BUTTON, just used to test animations and functions
-  $('#startView').append('<button id="trigger">Trigger me</button>');  
-  $('#trigger').click(function(){
-    
+  $('#app').append('<button id="trigger">Trigger me</button>');  
+  $('#trigger').click(function()
+  {
+    showBoardView();
   });
  
 }// buildMenu()
+
+function showBoardView(players)
+{
+  $('#startView').remove();
+  $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1></div>');
+}
 
