@@ -1,12 +1,17 @@
 
  /*eslint-disable */
 
+let _players = [];
+let _currentPlayer;
+
 export default function showBoardView(players)
 {
+    _players = players;
+    _currentPlayer = 0;
     $('#startView').remove();
     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
     '<div id="board"></div>'+
-    '<div id="dice"><button>Roll the dice</button></div>'+
+    '<div id="dice"><p></p><br><p id="diceResult"></p><button>Roll the dice</button></div>'+
 
     '</div>');
 
@@ -33,11 +38,18 @@ export default function showBoardView(players)
     $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
     }
 
+    turnPlayer();
+
 }
 
 function positionDice()
 {
     $('#dice').css('margin-left', ($(window).width() - $('#dice').width())/2);
+}
+
+function turnPlayer()
+{
+    $('#dice p').text('It\'s '+_players[_currentPlayer].name +'\'s turn !' );
 }
 
     /*eslint-enable */
