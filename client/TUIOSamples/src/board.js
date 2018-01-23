@@ -11,11 +11,12 @@ export default function showBoardView(players)
     $('#startView').remove();
     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
     '<div id="board"></div>'+
-    '<div id="dice"><p></p><br><p id="diceResult"></p><button>Roll the dice</button></div>'+
+    '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
 
     '</div>');
 
     positionDice();
+    $('#dice button').on('click', rollDice);
 
     for (let index = 0; index < 10; index++) {
 
@@ -49,7 +50,12 @@ function positionDice()
 
 function turnPlayer()
 {
-    $('#dice p').text('It\'s '+_players[_currentPlayer].name +'\'s turn !' );
+    $('#dice p:first').text('It\'s '+_players[_currentPlayer].name +'\'s turn !' );
 }
 
+
+function rollDice()
+{
+    $('#diceResult').text(Math.floor(Math.random() * (7 - 1) + 1));
+}
     /*eslint-enable */
