@@ -33,8 +33,12 @@ function addPlayers(players)
 
     //Adding the players to the board
     for (let index = 0; index < players.length; index++) {
-        //$('#viewBoard').append('<img id="player-"'+index +' src="../assets/avatars/>')     
+        $('#boardView').append('<img width="50" class="playerAvatar" id="player-"'+index +'" src="../assets/avatars/'+ index +'.jpg">')     
     }
+
+    $('.playerAvatar').height($('#board div').height()/5);
+    $('.playerAvatar').width($('#board div').height()/5);
+
 }
 
 function addTiles(numberOfTiles)
