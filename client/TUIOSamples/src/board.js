@@ -12,17 +12,34 @@ export default function showBoardView(players)
     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
     '<div id="board"></div>'+
     '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
-
     '</div>');
+
     $('#boardView').css('margin-left', $(window).width());
     $('#boardView').transition({x:-$(window).width()});
 
-    positionDice();
-    $('#dice button').prop('disable', false);
-    $('#dice button').on('click', rollDice);
+    initializeDice();
+    addTiles(10);
+    addPlayers(players);
+    turnPlayer();
+}
 
+function addPlayers(players)
+{
+    $('#boardView').append('<div id="players"></div>');
+    //Showing the players' score
+    for (let index = 0; index < players.length; index++) {
+        $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
+    }
 
-    for (let index = 0; index < 10; index++) {
+    //Adding the players to the board
+    for (let index = 0; index < players.length; index++) {
+        //$('#viewBoard').append('<img id="player-"'+index +' src="../assets/avatars/>')     
+    }
+}
+
+function addTiles(numberOfTiles)
+{
+    for (let index = 0; index < numberOfTiles; index++) {
 
         $('#board').append('<div class="boardTile"></div>');
         if(index % 2 != 0)
@@ -37,21 +54,13 @@ export default function showBoardView(players)
     }
     $('#board').append('<div class="boardTile" id="lastTile"></div>')
 
-
-
-    $('#boardView').append('<div id="players"></div>');
-
-    for (let index = 0; index < players.length; index++) {
-    $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
-    }
-
-    turnPlayer();
-
 }
 
-function positionDice()
+function initializeDice()
 {
     $('#dice').css('margin-left', ($(window).width() - $('#dice').width())/2);
+    $('#dice button').prop('disable', false);
+    $('#dice button').on('click', rollDice);
 }
 
 function turnPlayer()
