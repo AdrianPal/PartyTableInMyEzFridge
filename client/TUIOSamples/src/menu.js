@@ -15,6 +15,8 @@ import CircularMenu from 'tuiomanager/widgets/CircularMenu/CircularMenu';
 import LibraryStack from 'tuiomanager/widgets/Library/LibraryStack/LibraryStack';
 import MenuItem from 'tuiomanager/widgets/CircularMenu/MenuItem';
 
+
+
 //fonction appelée dans index.js, le script de base de la page
 export default function buildMenu() 
 {
@@ -49,7 +51,18 @@ function showBoardView(players)
   '</div>');
   
   for (let index = 0; index < 10; index++) {
+  
    $('#board').append('<div class="boardTile"></div>');
+   if(index%2 != 0)
+   {
+    $('.boardTile').last().css('background-color', '#F44336');
+
+   }
+   else 
+   {
+    $('.boardTile').last().css('background-color', '#F48FB1');
+
+   }
     
   }
 }
