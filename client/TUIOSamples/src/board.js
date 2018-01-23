@@ -62,12 +62,22 @@ function addPlayers(players)
     //Adding the players to the board
     for (let index = 0; index < players.length; index++) 
     {
-        $('#boardView').append('<img width="50" class="playerAvatar" id="player-"'+index +'" src="../assets/avatars/'+ index +'.jpg">')     
+        $('#boardView').append('<img width="50" class="playerAvatar" id="player'+index +'" src="../assets/avatars/'+ index +'.jpg">')     
     }
 
     $('.playerAvatar').height($('#board div').height()/5);
     $('.playerAvatar').width($('#board div').height()/5);
+    $('.playerAvatar').css('margin-left', '1%');
 
+    let startX = $('#board').css('margin-left');
+    let startY = $('#board').offset().top;
+    
+    for (let index = 0; index < players.length; index++) 
+    {
+        $('#player'+index).css('left',startX );
+        $('#player'+index).css('top', startY);
+        startY += ($('#player'+index).height() + 10);        
+    }
 }
 
 function determineCurrentPlayer(players)
