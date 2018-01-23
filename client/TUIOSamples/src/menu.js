@@ -41,10 +41,10 @@ export default function buildMenu()
   {
     //Testing players addition
     const players = [
-      {name:'Papalumbo', avatar:'1', score:0},
-      {name:'RHRHRRH', avatar:'2', score:0},
-      {name:'Zagogogadget', avatar:'3', score:0},
-      {name:'Kastoulian', avatar:'4', score:0}
+      {name:'Papalumbo', avatar:'1', score:0, x:0, y:0, played:false},
+      {name:'RHRHRRH', avatar:'2', score:0, x:0, y:0, played:false},
+      {name:'Zagogogadget', avatar:'3', score:0, x:0, y:0, played:false},
+      {name:'Kastoulian', avatar:'4', score:0, x:0, y:0, played:false}
     ]
     showBoardView(players);
   });
