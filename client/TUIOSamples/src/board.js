@@ -8,6 +8,21 @@
 let _players = []; //needed ? I dunno, maybe
 let _currentPlayer;
 
+let _games = [
+    {launch:function(){
+        console.log('Launching game 0');
+    }},
+    {launch:function(){
+        console.log('Launching game 1');
+    }},
+    {launch:function(){
+        console.log('Launching game 2');
+    }},
+    {launch:function(){
+        console.log('Launching game 3');
+    }},
+];
+
 //Called when switching from home to board OOOOR when finishing a game and going back to board view
 export default function showBoardView(players)
 {
@@ -26,8 +41,8 @@ export default function showBoardView(players)
 
     initializeDice();
     addTiles(10);
-    addPlayers(players);
-    determineCurrentPlayer(players);
+    addPlayers();
+    determineCurrentPlayer();
     turnPlayer();
 }
 
@@ -59,17 +74,17 @@ function addTiles(numberOfTiles)
     $('#board').append('<div class="boardTile" id="lastTile"></div>');
 }//addTiles()
 
-function addPlayers(players)
+function addPlayers()
 {
     $('#boardView').append('<div id="players"></div>');
     //Showing the players' score
-    for (let index = 0; index < players.length; index++) 
+    for (let index = 0; index < _players.length; index++) 
     {
-        $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
+        $('#players').append('<p>'+_players[index].name +' - '+_players[index].score +'</p><br>');     
     }
 
     //Adding the players to the board
-    for (let index = 0; index < players.length; index++) 
+    for (let index = 0; index < _players.length; index++) 
     {
         $('#boardView').append('<img width="50" class="playerAvatar" id="player'+index +'" src="../assets/avatars/'+ index +'.jpg">')     
     }
@@ -83,7 +98,7 @@ function addPlayers(players)
     let startY = $('#board').offset().top;
     
     //Positioning the players 
-    for (let index = 0; index < players.length; index++) 
+    for (let index = 0; index < _players.length; index++) 
     {
         $('#player'+index).css('left',startX );
         $('#player'+index).css('top', startY);
@@ -91,13 +106,13 @@ function addPlayers(players)
     }
 }//addPlayers()
 
-function determineCurrentPlayer(players)
+function determineCurrentPlayer()
 {
     _currentPlayer = null;
-    for (let index = 0; index < players.length; index++) 
+    for (let index = 0; index < _players.length; index++) 
     {
         //The first player that has not played is the current player
-        if(players[index].played == false)
+        if(_players[index].played == false)
         {
             _currentPlayer = index;
             break;
@@ -107,8 +122,8 @@ function determineCurrentPlayer(players)
     if(_currentPlayer == null)
     {
         _currentPlayer = 0; //the first player plays again
-        for (let index = 1; index < players.length; index++) {
-            players[index].played = false;            
+        for (let index = 1; index < _players.length; index++) {
+            _players[index].played = false;            
         }
     }
 }//determineCurrentPlayer
@@ -125,6 +140,7 @@ function rollDice()
     $('#diceResult').text(result);
     $('#dice button').prop('disabled', true);
     movePlayer(result);
+    launchGame();
 }
 
 
