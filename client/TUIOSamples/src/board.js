@@ -1,6 +1,5 @@
 /**
- * @author Rémy KALOUSTIAN
- * 
+ * @author Rémy KALOUSTIAN * 
  * Contains the actions related to the board view
  */
 
@@ -122,7 +121,16 @@ function turnPlayer()
 
 function rollDice()
 {
-    $('#diceResult').text(Math.floor(Math.random() * (7 - 1) + 1));
+    let result = Math.floor(Math.random() * (7 - 1) + 1)
+    $('#diceResult').text(result);
     $('#dice button').prop('disabled', true);
+    movePlayer(result);
+}
+
+
+function movePlayer(diceResult)
+{
+    let movement = $('.boardTile:first').width() * diceResult;
+    $('#player' + _currentPlayer).transition({x:movement, delay:700}, 1000);
 }
     /*eslint-enable */
