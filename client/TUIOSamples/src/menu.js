@@ -3,6 +3,8 @@
  * @author Rémy Kaloustian
  */
 
+ /*eslint-disable */
+
 // Import JQuery
 //import $ from 'jquery/dist/jquery.min';
 //import transition from 'jquery.transit';
@@ -67,3 +69,4 @@ function showBoardView(players)
   }
 }
 
+ /*eslint-enable */
