@@ -4,6 +4,9 @@
  */
 
 import launchBalls from './games/balls';
+import launchPictionary from './games/pictionary';
+import launchTwister from './games/twister';
+import launchLabyrinth from './games/labyrinth';
 
 
  /*eslint-disable */
@@ -13,13 +16,13 @@ let _currentPlayer;
 
 let _games = [
     {launch:function(){
-        console.log('Launching game 0');
+        launchPictionary(_players);
     }},
     {launch:function(){
-        console.log('Launching game 1');
+        launchTwister(_players);
     }},
     {launch:function(){
-        console.log('Launching game 2');
+        launchLabyrinth(_players);
     }},
     {launch:function(){
         launchBalls(_players);
@@ -31,7 +34,7 @@ export default function showBoardView(players)
 {
     _players = players;
     _currentPlayer = null;
-    $('#startView').remove();//Cleaning the screen
+    $('#app').empty();//Cleaning the screen
     //Displaying the basic html for the board view
     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
     '<div id="board"></div>'+
@@ -161,7 +164,7 @@ function launchGame()
 {
     const pickedGame =  Math.floor(Math.random() * (_games.length) + 0);
 
-    _games[3].launch();
+    _games[pickedGame].launch();
 }
 
     /*eslint-enable */
