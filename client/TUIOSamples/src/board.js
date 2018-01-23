@@ -18,7 +18,9 @@ export default function showBoardView(players)
     $('#boardView').transition({x:-$(window).width()});
 
     positionDice();
+    $('#dice button').prop('disable', false);
     $('#dice button').on('click', rollDice);
+
 
     for (let index = 0; index < 10; index++) {
 
@@ -61,5 +63,6 @@ function turnPlayer()
 function rollDice()
 {
     $('#diceResult').text(Math.floor(Math.random() * (7 - 1) + 1));
+    $('#dice button').prop('disabled', true);
 }
     /*eslint-enable */
