@@ -4,9 +4,9 @@
  */
 
 import launchBalls from './games/balls';
-import launchPictionary from './games/pictionary';
 import launchTwister from './games/twister';
 import launchLabyrinth from './games/labyrinth';
+import launchPictionary from './games/pictionary';
 
 
  /*eslint-disable */
