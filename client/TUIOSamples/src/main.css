@@ -94,3 +94,8 @@ h1
   height: 200px;  
   display: inline-block;
 }
+
+#dice
+{
+  position: absolute;
+}

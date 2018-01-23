@@ -10,6 +10,8 @@ export default function showBoardView(players)
 
     '</div>');
 
+    positionDice();
+
     for (let index = 0; index < 10; index++) {
 
     $('#board').append('<div class="boardTile"></div>');
@@ -31,6 +33,11 @@ export default function showBoardView(players)
     $('#players').append('<p>'+players[index].name +' - '+players[index].score +'</p><br>');     
     }
 
+}
+
+function positionDice()
+{
+    $('#dice').css('margin-left', ($(window).width() - $('#dice').width())/2);
 }
 
     /*eslint-enable */
