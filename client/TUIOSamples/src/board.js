@@ -3,6 +3,9 @@
  * Contains the actions related to the board view
  */
 
+import launchBalls from './games/balls';
+
+
  /*eslint-disable */
 
 let _players = []; 
@@ -19,7 +22,7 @@ let _games = [
         console.log('Launching game 2');
     }},
     {launch:function(){
-        console.log('Launching game 3');
+        launchBalls(_players);
     }},
 ];
 
@@ -139,21 +142,26 @@ function rollDice()
     let result = Math.floor(Math.random() * (7 - 1) + 1);
     $('#diceResult').text(result);
     $('#dice button').prop('disabled', true);
-    movePlayer(result);
-    launchGame();
+    let moveDuration = 1000;
+    movePlayer(result, moveDuration);
+    setTimeout(function()
+    {
+        launchGame();
+    }, moveDuration*2);
 }
 
 
-function movePlayer(diceResult)
+function movePlayer(diceResult, moveDuration)
 {
     let movement = $('.boardTile:first').width() * diceResult;
-    $('#player' + _currentPlayer).transition({x:movement, delay:700}, 1000);
+    $('#player' + _currentPlayer).transition({x:movement, delay:500}, moveDuration);
 }
 
 function launchGame()
 {
     const pickedGame =  Math.floor(Math.random() * (_games.length) + 0);
-    _games[pickedGame].launch();
+
+    _games[3].launch();
 }
 
     /*eslint-enable */
