@@ -161,7 +161,7 @@ function movePlayer(diceResult, moveDuration)
 {
     let movement = $('.boardTile:first').width() * diceResult;
     $('#player' + _currentPlayer).transition({x:movement, delay:500}, moveDuration);
-    _players[_currentPlayer].x = movement;
+    _players[_currentPlayer].x += movement;
 }
 
 function launchGame()
