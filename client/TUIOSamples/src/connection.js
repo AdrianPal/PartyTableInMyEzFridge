@@ -1,5 +1,4 @@
 //contient le code js qu'il y avait dans index.html
-
 const apiUrl = "http://localhost:4000";
 
 let usersCount = 0,
@@ -22,10 +21,15 @@ function getLink() {
     return location.href.replace(/index\.html/i, "");
 }
 
+$('#newGame').on('click', function(){
+    console.log("HAYAY");
+});
+
 $(function () {
     $('#newGame').on('click', function (e) {
         e.preventDefault();
-
+        console.log("BEFORE POST");
+        
         let $that = $(this);
 
         $.post(apiUrl + '/api/game')//problem here ?🤔🤔🤔🤔🤔🤔
@@ -50,7 +54,6 @@ $(function () {
         let link = getLink() + './user.html?id=' +usersCount + '&gameId=' + gameId;
         
         $('#users').append('<h3>'+ usersCount +':</h3> <a href="'+ link +'"><div id="qrcode_'+ usersCount +'"></div></a><span id="username_'+ usersCount +'"></span><hr>');
-
         new QRCode('qrcode_' + usersCount, link);
     });
 });
