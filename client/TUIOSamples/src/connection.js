@@ -9,7 +9,7 @@ $( document ).ready(function()
     {
         e.preventDefault();        
         let $that = $(this);
-        console.log("before post");
+        console.log('before post, url = ' + apiUrl + '/api/game');
         $.post(apiUrl + '/api/game')//problem here ?🤔🤔🤔🤔🤔🤔
             .done(function (d) 
             {
