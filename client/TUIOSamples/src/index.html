@@ -7,6 +7,8 @@
     <title>PartyTableInMyEZFridge</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../assets/css/pictionary.css">
+
 
     <style>
         body {
@@ -37,12 +39,12 @@
     <script src="qrcode.js"></script>
 
     <script>
-        const apiUrl = "http://localhost:3000";
+        const apiUrl = "http://10.212.97.185:4000";
 
         let usersCount = 0,
             gameId = null;
 
-        var socket = io.connect('http://172.20.10.3:3000');
+        var socket = io.connect('http://10.212.97.185:4000');
 
         socket.on('refresh game', function (d) {
             d.game.forEach(function(e) {

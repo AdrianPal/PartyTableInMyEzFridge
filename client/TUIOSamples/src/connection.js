@@ -1,11 +1,11 @@
 //contient le code js qu'il y avait dans index.html
 
-const apiUrl = "http://localhost:4000";
+const apiUrl = "http://10.212.97.185:4000";
 
 let usersCount = 0,
     gameId = null;
 
-var socket = io.connect('http://172.20.10.3:4000');
+var socket = io.connect('http://10.212.97.185:4000');
 
 socket.on('refresh game', function (d) {
     d.game.forEach(function(e) {
