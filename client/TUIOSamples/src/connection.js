@@ -1,52 +1,59 @@
 //contient le code js qu'il y avait dans index.html
-const apiUrl = "http://localhost:4000";
 
-let usersCount = 0,
-    gameId = null;
+$( document ).ready(function() 
+{
 
-var socket = io.connect('http://172.20.10.3:4000');
-
-socket.on('refresh game', function (d) {
-    d.game.forEach(function(e) {
-        $('#username_'+e.pos).html('<b>'+e.name+'</b>');
-        $('#qrcode_'+e.pos).hide();
-    });
-});
-
-function connectSocketForCurrentGame() {
-    socket.emit('enter game', gameId);
-}
-
-function getLink() {
-    return location.href.replace(/index\.html/i, "");
-}
-
-$('#newGame').on('click', function(){
-    console.log("HAYAY");
-});
-
-$(function () {
-    $('#newGame').on('click', function (e) {
-        e.preventDefault();
-        console.log("BEFORE POST");
+    const apiUrl = "http://localhost:4000";    
         
+    $('body').on('click', '#newGame', function (e) 
+    {
+        e.preventDefault();        
         let $that = $(this);
-
+        console.log("before post");
         $.post(apiUrl + '/api/game')//problem here ?🤔🤔🤔🤔🤔🤔
-            .done(function (d) {
+            .done(function (d) 
+            {
+                console.log('In post.done(), '+ apiUrl + '/api/game');
                 $('#addUser').removeClass('d-none');
                 gameId = d.gameId;
                 $that.hide();
 
                 connectSocketForCurrentGame();
             })
-            .fail(function (e) {
+            .fail(function (e)
+            {
                 alert('Error');
                 console.log(e);
-            });
+            }); 
+        });
+
+
+    let usersCount = 0,
+        gameId = null;
+
+    var socket = io.connect('http://172.20.10.3:4000');
+
+    socket.on('refresh game', function (d) 
+    {
+        d.game.forEach(function(e) 
+        {
+            $('#username_'+e.pos).html('<b>'+e.name+'</b>');
+            $('#qrcode_'+e.pos).hide();
+        });
     });
 
-    $('#addUser').on('click', function (e) {
+    function connectSocketForCurrentGame() 
+    {
+        socket.emit('enter game', gameId);
+    }
+
+    function getLink() 
+    {
+        return location.href.replace(/index\.html/i, "");
+    }   
+
+    $('#addUser').on('click', function (e)
+    {
         e.preventDefault();
 
         ++usersCount;
@@ -55,7 +62,8 @@ $(function () {
         
         $('#users').append('<h3>'+ usersCount +':</h3> <a href="'+ link +'"><div id="qrcode_'+ usersCount +'"></div></a><span id="username_'+ usersCount +'"></span><hr>');
         new QRCode('qrcode_' + usersCount, link);
-    });
+    });  
+
 });
 
 // function send() {
