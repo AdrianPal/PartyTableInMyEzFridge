@@ -108,7 +108,10 @@ function addPlayers()
     //Positioning the players 
     for (let index = 0; index < _players.length; index++) 
     {
-        $('#player'+index).css('left',startX );
+        startX += _players[index].x;
+        console.log(_players[index].x) ;
+        
+        $('#player'+index).css('left',(_players[index].x));
         $('#player'+index).css('top', startY);
         startY += ($('#player'+index).height() + 10);        
     }
@@ -160,6 +163,7 @@ function movePlayer(diceResult, moveDuration)
 {
     let movement = $('.boardTile:first').width() * diceResult;
     $('#player' + _currentPlayer).transition({x:movement, delay:500}, moveDuration);
+    _players[_currentPlayer].x += movement;
 }
 
 function launchGame()
