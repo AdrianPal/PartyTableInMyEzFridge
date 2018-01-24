@@ -106,7 +106,10 @@ function addPlayers()
     //Positioning the players 
     for (let index = 0; index < _players.length; index++) 
     {
-        $('#player'+index).css('left',startX );
+        startX += _players[index].x;
+        console.log(_players[index].x) ;
+        
+        $('#player'+index).css('left',(_players[index].x));
         $('#player'+index).css('top', startY);
         startY += ($('#player'+index).height() + 10);        
     }
