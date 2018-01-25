@@ -5,7 +5,7 @@ import showBoardView from "../board";
 
 var context;
 
-var socket = io.connect('http://10.212.97.185:4000');
+var socket = io.connect('http://0.0.0.0:4000');
 socket.emit('connectionPic');
 
 
