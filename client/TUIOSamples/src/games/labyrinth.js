@@ -5,6 +5,8 @@
 import showBoardView from "../board";
 
 
+var socket = io.connect('http://192.168.43.180:4000');
+
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)
         this.appendChild(ce(tag, txt));
@@ -136,6 +138,8 @@ function solveInstructions(array) {
 }
 
 function initMobile() {
+    socket.emit('labyrinthConnection');
+
     $('#app').append('' +
         '<div id="maze">' +
             '<div id="contentErase">' +
@@ -150,9 +154,23 @@ function initMobile() {
                 '   <div id="right" class="btn btn-secondary"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>' +
             '</div>' +
             '<p id="array"></p>'+
+            '<div class="send-container">' +
+                '<div class="btn btn-secondary">'+
+        '           <i class="fa fa-paper-plane-o" id="send" aria-hidden="true"></i>' +
+                '</div>'+
+        '   </div>'+
         '</div>');
 
     let array = [];
+
+    $('#send').click(function () {
+        socket.emit('arrayToResolve', {array:array});
+        for(let i =0; i<array.length;i++){
+            $('#array i:last-child').remove();
+        }
+        array =[];
+
+    });
 
     $('#up').click(function () {
         array.push('n');
@@ -197,6 +215,14 @@ function initTable() {
     $('#solve').click(function () {
         solveInstructions(['s', 's', 's', 'e'])
     });
+
+    socket.on("arrayToResolve", (array) => {
+        solveInstructions(array.array);
+    });
+
+    socket.on("labyrinthConnection", () => {
+        console.log("newPlayer");
+    })
 }
 
 function initGame() {
@@ -210,6 +236,7 @@ function initGame() {
 
 export default function launchLabyrinth(players) {
     $('#boardView').remove();
+
 
 
     // setTimeout(function()
