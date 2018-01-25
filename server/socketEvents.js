@@ -34,13 +34,17 @@ exports = module.exports = function (io) {
         });
 
         /****************************************** MAZE **********************************************/
-        socket.on('labyrinthConnection', () => {
-            socket.emit('new player');
+        socket.on('mazeConnection', () => {
+            socket.emit('mazeConnection');
         });
 
         socket.on('arrayToResolve', (array) => {
             socket.broadcast.emit('arrayToResolve', array);
         });
+
+        socket.on('result',(result) => {
+            socket.broadcast.emit('result', result);
+        })
 
     });
 };

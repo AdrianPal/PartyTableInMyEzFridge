@@ -46,7 +46,7 @@
 
 
 /***** BUTTON *****/
-#maze .btn {
+#maze .btn-maze {
    border-radius: 2.5em;
     width: 6em;
     height: 3em;
@@ -72,6 +72,7 @@
 
 #maze #contentErase{
     align-self: flex-end;
+
 }
 
 #maze #contentErase .btn{

@@ -40,7 +40,7 @@ function irand(x) {
 }
 
 function make_maze() {
-    var w = parseInt(10);
+    var w = parseInt(5);
     var h = parseInt(5);
     var tbl = gid('generateMaze');
     tbl.innerHTML = '';
@@ -124,42 +124,77 @@ function solveInstructions(array) {
 
     let currentPos = start;
     currentPos.cls('v');
+    let res = '';
     for (let i = 0; i < array.length; i++) {
         let dir = array[i];
-        if (currentPos.className.match(dir)) {
+        console.log(currentPos);
+
+        if(currentPos.className.match('end')) {
+            socket.emit("result",'Victory');
+            res = 'victory';
+            break;
+        }
+        else if (currentPos.className.match(dir)) {
             currentPos = currentPos.neighbors[convertDir(dir)];
             currentPos.cls('v');
         }
         else {
+            socket.emit("result", "Defeat");
+            res = 'defeat';
             break;
         }
     }
+    if(res === ''){
+        socket.emit("result", "Defeat");
+    }
+
 
 }
 
 function initMobile() {
-    socket.emit('labyrinthConnection');
+    socket.emit('mazeConnection');
+    let res = '';
+    socket.on('result', (result) => {
+       $('#modal').modal();
+       $('#maze').append(
+           '<div class="modal fade" id="modal" role="dialog">'+
+           '<div class="modal-dialog">'+
+           '<div class="modal-content">' +
+           '        <div class="modal-header">' +
+           '          <button type="button" class="close" data-dismiss="modal">&times;</button>' +
+           '          <h4 class="modal-title">'+result+'</h4>' +
+           '        </div>' +
+           '        <div class="modal-body">' +
+           '          <p>Jouer à ce jeu rend chauve</p>' +
+           '        </div>' +
+           '        <div class="modal-footer">' +
+           '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+           '        </div>' +
+           '      </div>' +
+           '    </div>' +
+           '</div>')
+    });
 
     $('#app').append('' +
         '<div id="maze">' +
             '<div id="contentErase">' +
-                '<div id="erase" class="btn btn-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i>Suppr</div>'+
+                '<div id="erase" class="btn btn-secondary btn-maze"><i class="fa fa-arrow-left" aria-hidden="true"></i>Suppr</div>'+
             '</div>'+
             '<div id="row-up">' +
-            '   <div id="up" class="btn btn-secondary"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>' +
+            '   <div id="up" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>' +
             '</div>' +
             '<div class="row-bottom">' +
-                '   <div id="left" class="btn btn-secondary"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>' +
-                '   <div id="down" class="btn btn-secondary"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>' +
-                '   <div id="right" class="btn btn-secondary"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>' +
+                '   <div id="left" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>' +
+                '   <div id="down" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>' +
+                '   <div id="right" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>' +
             '</div>' +
             '<p id="array"></p>'+
             '<div class="send-container">' +
-                '<div class="btn btn-secondary">'+
+                '<div class="btn btn-danger btn-maze">'+
         '           <i class="fa fa-paper-plane-o" id="send" aria-hidden="true"></i>' +
                 '</div>'+
         '   </div>'+
-        '</div>');
+        '</>');
 
     let array = [];
 
@@ -205,22 +240,21 @@ function initMobile() {
 function initTable() {
     $('#app').append('' +
         '<div id="maze">' +
-        '   <div id="makeMaze" class="btn">Ready !</div>' +
+        '<div>' +
+        '   <p id="makeMaze" class="btn btn-maze">Ready !</p>' +
+        '</div> ' +
         '   <table id="generateMaze"/>' +
         '</div>');
 
     $('#makeMaze').click(function () {
         make_maze();
     });
-    $('#solve').click(function () {
-        solveInstructions(['s', 's', 's', 'e'])
-    });
 
     socket.on("arrayToResolve", (array) => {
         solveInstructions(array.array);
     });
 
-    socket.on("labyrinthConnection", () => {
+    socket.on("mazeConnection", () => {
         console.log("newPlayer");
     })
 }
@@ -236,8 +270,6 @@ function initGame() {
 
 export default function launchLabyrinth(players) {
     $('#boardView').remove();
-
-
 
     // setTimeout(function()
     // {
