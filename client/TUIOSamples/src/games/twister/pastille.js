@@ -1,5 +1,6 @@
 import ElementWidget from 'tuiomanager/widgets/ElementWidget/ElementWidget';
-import ImageElementWidget from '../../../../TUIOManager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
+import TUIOManager from 'tuiomanager/core/TUIOManager';
+
 
 export default class Pastille extends ElementWidget {
     constructor(x, y, color, parent) {
@@ -23,6 +24,8 @@ export default class Pastille extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
+        super(tuioTouch);
+
         if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
             this.parent.pastilleTouched(tuioTouch._id, this.color);
         }
@@ -39,6 +42,7 @@ export default class Pastille extends ElementWidget {
                         if (this.isInBounds(TUIOManager.getInstance()._widgets[widgetId], x, y) && !TUIOManager.getInstance()._widgets[widgetId].isDisabled && TUIOManager.getInstance()._widgets[widgetId].isAllowedElement(this)) {
                             this._isInStack = true;
                             TUIOManager.getInstance()._widgets[widgetId].addElementWidget(this);
+                            
                             return;
                         }
                     }
