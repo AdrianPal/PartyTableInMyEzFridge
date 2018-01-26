@@ -7,6 +7,8 @@ export default class Pastille extends ElementWidget {
         this.parent = parent;
         this.color = color;
 
+        console.log(color);
+
         this._domElem = $('<div>');
         this._domElem.attr('class', 'pastille ' + this.color);
         this._domElem.attr('data-color', this.color);
@@ -21,6 +23,6 @@ export default class Pastille extends ElementWidget {
     onTouchDeletion(tuioTouchId) {
         super.onTouchDeletion(tuioTouchId);
         
-        this.parent.pastilleTouched(tuioTouchId, this.color);
+        this.parent.pastilleUnTouched(tuioTouchId, this.color);
     }
 }

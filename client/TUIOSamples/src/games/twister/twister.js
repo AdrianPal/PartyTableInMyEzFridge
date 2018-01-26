@@ -128,6 +128,8 @@ export class Twister {
         if (index < 0) {
             this.pastillesTouched.push(tuioTouchId);
 
+            console.log('adding: '+ this.tuioTouchId);
+
             this.pastilles[color].done += 1;
 
             this.checkForTotal(color);
@@ -167,6 +169,9 @@ export class Twister {
     }
 
     checkForTotal(color) {
+        console.log(color);
+        console.log(this.pastilles[color]);
+
         if (this.pastilles[color].done >= this.pastilles[color].toDo) {
             $('#' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
             $('#' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');
