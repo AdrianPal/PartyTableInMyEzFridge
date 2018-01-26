@@ -9,8 +9,6 @@ export default class Pastille extends ElementWidget {
         this.parent = parent;
         this.color = color;
 
-        console.log(thicolor);
-
         this._domElem = $('<div>');
         this._domElem.attr('class', 'not-visible pastille ' + this.color);
         this._domElem.attr('data-color', this.color);
@@ -26,6 +24,8 @@ export default class Pastille extends ElementWidget {
     onTouchCreation(tuioTouch) {
         super.onTouchCreation(tuioTouch);
 
+        console.log(tuioTouch);
+
         if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
             this.parent.pastilleTouched(tuioTouch._id, this.color);
         }
@@ -33,6 +33,8 @@ export default class Pastille extends ElementWidget {
 
     onTouchDeletion(tuioTouchId) {
         if (typeof (this._lastTouchesValues[tuioTouchId]) !== 'undefined') {
+            this.parent.pastilleUnTouched(tuioTouchId, this.color);
+
             const lastTouchValue = this._lastTouchesValues[tuioTouchId];
             const x = lastTouchValue.x;
             const y = lastTouchValue.y;
@@ -42,7 +44,6 @@ export default class Pastille extends ElementWidget {
                         if (this.isInBounds(TUIOManager.getInstance()._widgets[widgetId], x, y) && !TUIOManager.getInstance()._widgets[widgetId].isDisabled && TUIOManager.getInstance()._widgets[widgetId].isAllowedElement(this)) {
                             this._isInStack = true;
                             TUIOManager.getInstance()._widgets[widgetId].addElementWidget(this);
-                            
                             return;
                         }
                     }
@@ -50,7 +51,7 @@ export default class Pastille extends ElementWidget {
             }
         }
         ElementWidget.isAlreadyTouched = false;
-        
-        this.parent.pastilleUnTouched(tuioTouchId, this.color);
+        this.lastAngle = null;
+
     }
 }
