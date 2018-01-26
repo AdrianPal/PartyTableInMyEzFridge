@@ -4,7 +4,7 @@
  */
 
 import launchBalls from './games/balls';
-import launchTwister from './games/twister';
+import launchTwister, { Twister } from './games/twister/twister';
 import launchLabyrinth from './games/labyrinth';
 import launchPictionary from './games/pictionary';
 
@@ -19,7 +19,7 @@ let _games = [
         launchPictionary(_players);
     }},
     {launch:function(){
-        launchTwister(_players);
+        new Twister();
     }},
     {launch:function(){
         launchLabyrinth(_players);
@@ -51,7 +51,7 @@ export default function showBoardView(players)
     determineCurrentPlayer();
     turnPlayer(); */
 
-    _games[0].launch();
+    _games[1].launch();
 }
 
 
