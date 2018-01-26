@@ -89,6 +89,7 @@ export class Twister {
             });
 
             $('.pastille.toRemove').hide();
+            $('#loading').hide();
         }, 750);
     }
 
