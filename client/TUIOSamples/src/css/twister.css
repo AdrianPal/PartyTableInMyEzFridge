@@ -34,6 +34,9 @@
 .rowOfPastilles {
     justify-content: center;
     align-items: center;
+
+    display: flex;
+    flex-direction: row;
 }
 
 .rowOfPastilles:first-child {

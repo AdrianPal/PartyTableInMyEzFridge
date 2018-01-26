@@ -54,21 +54,17 @@ export class Twister {
         let content = '';
 
         for (let i = 0; i < colors.length; i++) {
-            content += '<div class="row rowOfPastilles">';
-
-            for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                content += '<div data-color="'+ colors[i] +'" class="pastille '+ colors[i] +'"></div>';
-            }
-
-            // alert(content);
-
-            content += '</div>';
+            content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles"></div>';
         }
 
-        const l = new Pastille(100, 100, 100, 100, 0, 1, 'https://cdn.pixabay.com/photo/2013/04/06/11/50/image-editing-101040_1280.jpg');
-        l.addTo($('#pastilles').get(0));
+        $('#pastilles').html(content);
 
-        // $('#pastilles').html(content);
+        for (let i = 0; i < colors.length; i++) {
+            for (let j = 0; j < Twister.pastillesPerLines; j++) {
+                const l = new Pastille(colors[i]);
+                l.addTo($('#rowOf' + colors[i] + 'Color').get(0));
+            }
+        }
     }
     
 
