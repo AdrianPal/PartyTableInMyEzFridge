@@ -51,13 +51,13 @@ export default function showBoardView(players)
     // determineCurrentPlayer();
     // turnPlayer();
 
-    initializeDice();
-    addTiles(10);
-    addPlayers();
-    determineCurrentPlayer();
-    turnPlayer();
+    // initializeDice();
+    // addTiles(10);
+    // addPlayers();
+    // determineCurrentPlayer();
+    // turnPlayer();
 
-    _games[1].launch();
+    _games[2].launch();
 }
 
 
