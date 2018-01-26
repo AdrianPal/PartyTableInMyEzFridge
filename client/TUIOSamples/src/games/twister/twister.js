@@ -27,8 +27,6 @@ export class Twister {
         this.app = $('#app');
         this.totalWin = 0;
 
-        this.pastillesTouched = [];
-
         this.newGame();
 
         this.initGame();
@@ -53,6 +51,7 @@ export class Twister {
 
     newGame() {
         this.pastilles = [];
+        this.pastillesTouched = [];
         const colors = Twister.colors;
 
         for (let i = 0; i < colors.length; i++) {
