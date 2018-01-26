@@ -28,10 +28,16 @@ export default class Pastille extends ElementWidget {
     onTouchCreation(tuioTouch) {
         super.onTouchCreation(tuioTouch);
 
-        console.log(tuioTouch);
-
         if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
             this.parent.pastilleTouched(tuioTouch._id, this.color);
+        }
+    }
+
+    onTagUpdate(tuioTag) {
+        if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
+            if (tuioTag.id === this.idTagMove && this.canMoveTangible) {
+                this.parent.pastilleTouched(tuioTag.id, this.color);
+            }
         }
     }
 
