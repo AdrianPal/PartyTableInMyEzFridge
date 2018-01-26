@@ -2,12 +2,12 @@
  * @author: Thomas GILLOT
  */
 import showBoardView from "../board";
+import { fail } from "assert";
 
 
 var context;
 
 var socket = io.connect(URL_SERVER);
-socket.emit('connectionPic');
 
 
 const width = window.innerWidth;
@@ -34,15 +34,27 @@ if (Modernizr.touch === true) {
     endEventType   = 'touchend';
 }
 
+var isTable = false;
+var connected = false;
+
 
 
 export default function launchPictionary(players)
 {
+    socket.emit('connectionPic');
+
+    while(connected == false){
+        connected = isConnected();
+        console.log(connected);
+    }
 
     initView();
     initCanvasEvent();
     initBindingPalette();
-    initWord();
+
+    if(isTable){
+        initWord();
+    }
     
 
     
@@ -54,12 +66,24 @@ socket.on('isDrawing', (east, north, drag, distantColor, size) => {
     refreshCanvasOnSocket(east,north,drag, distantColor, size);
 });
 
+socket.on('connectedPic', (isTableResponse) => {
+    isTable = isTableResponse;
+    connected = true;
+    alert((isTable)? 'This screen is the table' : 'This screen is not the table');
+});
+
+socket.on('wordInitialized', (word) => {
+    initWord(word);
+})
+
 socket.on('clearCanvas', () => {
     clear();
 });
 
 
-
+function isConnected(){
+    return connected;
+}
 
 function initView() {
 
@@ -172,23 +196,29 @@ function initCanvasEvent() {
 }
 
 
-function initWord() {
-    const possibleWord = ['CAT', 'DOG', 'PLATE', 'SPOON', 'KNIFE', 'FORK', 'COW', 'CUCUMBER', 'STAIRS', 'PLANET', 'EMPIRE STATE BUILDING', 'BRIDGE', 'GREEN'];
-    const randomWord  = Math.floor(Math.random() * (possibleWord.length) + 0);
+function initWord(word) {
 
-    $('#game').html('<h3 id="wordToFind">' + possibleWord[randomWord] + '</h3> <h3 id="countdown"></h3>');
+    if(word){
+        const possibleWord = ['CAT', 'DOG', 'PLATE', 'SPOON', 'KNIFE', 'FORK', 'COW', 'CUCUMBER', 'STAIRS', 'PLANET', 'EMPIRE STATE BUILDING', 'BRIDGE', 'GREEN'];
+        const randomWord  = Math.floor(Math.random() * (possibleWord.length) + 0);
 
-    var oldDate = new Date();
-    var newDate = new Date(oldDate.getTime() + 60000);
+        $('#game').html('<h3 id="wordToFind">' + possibleWord[randomWord] + '</h3> <h3 id="countdown"></h3>');
 
-    $('#countdown').countdown(newDate, function(event) {
-        $(this).html(event.strftime('%M:%S'));
-    }).on('finish.countdown', function(event) {
-        $(this).html('Expired !');
-      
-      }); ;
+        var oldDate = new Date();
+        var newDate = new Date(oldDate.getTime() + 60000);
+
+        $('#countdown').countdown(newDate, function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        }).on('finish.countdown', function(event) {
+            $(this).html('Expired !');
+        }); ;
+
+        socket.emit('wordInitialized', possibleWord[randomWord]);
+    } else {
+        $('#game').html('<h3 id="wordToFind">' + word + '</h3> <h3 id="countdown"></h3>');
+    }
+
     
-
 }
 
 

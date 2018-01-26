@@ -5,7 +5,7 @@
 import showBoardView from "../board";
 
 
-var socket = io.connect('http://192.168.43.180:4000');
+var socket = io.connect(URL_SERVER);
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)

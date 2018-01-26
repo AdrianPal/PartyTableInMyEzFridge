@@ -1,5 +1,7 @@
 exports = module.exports = function (io) {
     // Set socket.io listeners.
+
+    let picGame = [] ;
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -18,9 +20,20 @@ exports = module.exports = function (io) {
         });
 
         socket.on('connectionPic', () => {
-            socket.emit('hello');
+            console.log(picGame);
+            let gameNumber = picGame.length == 0 ? 0 : picGame.length - 1;
+            if(picGame[gameNumber] == null) {
+                picGame[gameNumber] = socket.id;
+                socket.emit('connectedPic', true);
+            } else {
+                socket.emit('connectedPic', false);
+            }
+
         });
 
+        socket.on('wordInitialized', (word) => {
+            socket.broadcast.emit('wordInitialized', word);
+        })
         socket.on('beginDraw', (east, north, drag) => {
             socket.broadcast.emit('beginDraw', east, north, drag);
         });
