@@ -52,11 +52,6 @@ export default function showBoardView(players)
      determineCurrentPlayer();
      turnPlayer();
 
-     initializeDice();
-     addTiles(10);
-     addPlayers();
-     determineCurrentPlayer();
-     turnPlayer();
 
      //LE PREMIER QUI LANCE SON JEU A LA RAZBAIL COMME UN BATARD ICI JE LUI NIQUE SA RACE
 
