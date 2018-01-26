@@ -190,20 +190,20 @@ function initMobile() {
             '</div>' +
             '<p id="array"></p>'+
             '<div class="send-container">' +
-                '<div class="btn btn-danger btn-maze" >'+
-        '           <i class="fa fa-paper-plane-o" id="send" aria-hidden="true"></i>' +
+                '<div class="btn btn-danger btn-maze" id="send">'+
+        '           <i class="fa fa-paper-plane"  aria-hidden="true"></i>' +
                 '</div>'+
         '   </div>'+
         '</>');
 
     let array = [];
 
-    $('#send').click(function () {
+    $('#send').on('click',function () {
         socket.emit('arrayToResolve', {array:array});
         for(let i =0; i<array.length;i++){
-            $('#array i:last-child').remove();
+            $('#array svg').last().remove();
         }
-        array = [];
+        array = new Array();
     });
 
     $('#up').click(function () {
@@ -229,7 +229,7 @@ function initMobile() {
 
     $('#erase').click(function () {
        array.pop();
-       $('#array i:last-child').remove();
+       $('#array svg').last().remove();
     });
 
 }
