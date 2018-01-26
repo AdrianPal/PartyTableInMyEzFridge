@@ -19,6 +19,10 @@ export default class Pastille extends ElementWidget {
         this._domElem.css('z-index', `${this.zIndex}`);
         this._domElem.css('left', `${x}px`);
         this._domElem.css('top', `${y}px`);
+
+        this.canMove(false, false);
+        this.canRotate(false, false);
+        this.canZoom(false, false);
     }
 
     onTouchCreation(tuioTouch) {
