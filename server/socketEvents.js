@@ -1,7 +1,8 @@
 exports = module.exports = function (io) {
     // Set socket.io listeners.
 
-    let picGame = [] ;
+    let idTable;
+    let picPlayersId = [];
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -17,18 +18,6 @@ exports = module.exports = function (io) {
 
         socket.on('disconnect', () => {
             console.log('user disconnected');
-        });
-
-        socket.on('connectionPic', () => {
-            console.log(picGame);
-            let gameNumber = picGame.length == 0 ? 0 : picGame.length - 1;
-            if(picGame[gameNumber] == null) {
-                picGame[gameNumber] = socket.id;
-                socket.emit('connectedPic', true);
-            } else {
-                socket.emit('connectedPic', false);
-            }
-
         });
 
         socket.on('wordInitialized', (word) => {

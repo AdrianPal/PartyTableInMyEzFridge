@@ -274,6 +274,8 @@ function initTable() {
 
     socket.on("mazeConnection", () => {
         console.log("newPlayer");
+        socket.emit("result",'');
+
     })
 }
 

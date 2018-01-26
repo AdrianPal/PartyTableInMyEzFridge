@@ -24,15 +24,15 @@ var isPainting = false;
 var isPaletteOpened = false;
 var drawSize = 5;
 var color = '#000000';
-var startEventType = 'mousedown',
+/* var startEventType = 'mousedown',
     moveEventType = 'mousemove',
     endEventType   = 'mouseup';
-
-if (Modernizr.touch === true) {
-    startEventType = 'touchstart';
-    moveEventType = 'touchmove';
+ */
+/* if (Modernizr.touch === true) {
+ */    var startEventType = 'touchstart',
+    moveEventType = 'touchmove',
     endEventType   = 'touchend';
-}
+/* } */
 
 var isTable = false;
 var connected = false;
@@ -43,18 +43,12 @@ export default function launchPictionary(players)
 {
     socket.emit('connectionPic');
 
-    while(connected == false){
-        connected = isConnected();
-        console.log(connected);
-    }
-
     initView();
     initCanvasEvent();
     initBindingPalette();
 
-    if(isTable){
-        initWord();
-    }
+    initWord();
+    
     
 
     
@@ -71,11 +65,6 @@ socket.on('connectedPic', (isTableResponse) => {
     connected = true;
     alert((isTable)? 'This screen is the table' : 'This screen is not the table');
 });
-
-socket.on('wordInitialized', (word) => {
-    initWord(word);
-})
-
 socket.on('clearCanvas', () => {
     clear();
 });
@@ -196,9 +185,8 @@ function initCanvasEvent() {
 }
 
 
-function initWord(word) {
+function initWord() {
 
-    if(word){
         const possibleWord = ['CAT', 'DOG', 'PLATE', 'SPOON', 'KNIFE', 'FORK', 'COW', 'CUCUMBER', 'STAIRS', 'PLANET', 'EMPIRE STATE BUILDING', 'BRIDGE', 'GREEN'];
         const randomWord  = Math.floor(Math.random() * (possibleWord.length) + 0);
 
@@ -213,13 +201,9 @@ function initWord(word) {
             $(this).html('Expired !');
         }); ;
 
-        socket.emit('wordInitialized', possibleWord[randomWord]);
-    } else {
-        $('#game').html('<h3 id="wordToFind">' + word + '</h3> <h3 id="countdown"></h3>');
     }
 
     
-}
 
 
 function addPoint(east, north, drag) {
