@@ -2,8 +2,11 @@
  * @author: Arnaud ZAGO
  *
  */
-import showBoardView from "../board";
+import SocketManager from "../../socket.manager";
 
+console.log('----');
+console.log(SocketManager.get());
+console.log('----');
 
 var socket = io.connect(URL_SERVER);
 
