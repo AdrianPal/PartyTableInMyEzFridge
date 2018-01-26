@@ -4,12 +4,11 @@
  */
 import SocketManager from "../../socket.manager";
 
-
 console.log('----');
 console.log(SocketManager.get());
 console.log('----');
 
-var socket = io.connect('http://192.168.43.180:4000');
+var socket = io.connect(URL_SERVER);
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)
@@ -194,21 +193,20 @@ function initMobile() {
             '</div>' +
             '<p id="array"></p>'+
             '<div class="send-container">' +
-                '<div class="btn btn-danger btn-maze">'+
-        '           <i class="fa fa-paper-plane-o" id="send" aria-hidden="true"></i>' +
+                '<div class="btn btn-danger btn-maze" id="send">'+
+        '           <i class="fa fa-paper-plane"  aria-hidden="true"></i>' +
                 '</div>'+
         '   </div>'+
         '</>');
 
     let array = [];
 
-    $('#send').click(function () {
+    $('#send').on('click',function () {
         socket.emit('arrayToResolve', {array:array});
         for(let i =0; i<array.length;i++){
-            $('#array i:last-child').remove();
+            $('#array svg').last().remove();
         }
-        array = [];
-
+        array = new Array();
     });
 
     $('#up').click(function () {
@@ -234,11 +232,9 @@ function initMobile() {
 
     $('#erase').click(function () {
        array.pop();
-       $('#array i:last-child').remove();
+       $('#array svg').last().remove();
     });
 
-    let height = $(window).width(); // New width
-    $('#maze').height(height);
 }
 
 function initTable() {
@@ -247,19 +243,42 @@ function initTable() {
         '<div>' +
         '   <p id="makeMaze" class="btn btn-maze">Ready !</p>' +
         '</div> ' +
-        '   <table id="generateMaze"/>' +
+        '   <table id="generateMaze" class="test"/>' +
         '</div>');
 
     $('#makeMaze').click(function () {
         make_maze();
+        var makeMaze = document.getElementById("makeMaze");
+        makeMaze.className += " hide";
+
+        $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
+
+        var oldDate = new Date();
+        var newDate = new Date(oldDate.getTime() + 10000);
+
+        $('#countdown').countdown(newDate, function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        }).on('finish.countdown', function(event) {
+            $('#titleDisappear').html('');
+            $('#countdown').html('');
+            var genMaze = document.getElementById("generateMaze");
+            genMaze.className += " blured";
+
+        });
     });
 
+
+
     socket.on("arrayToResolve", (array) => {
+        document.getElementById('generateMaze').classList.remove("blured");
         solveInstructions(array.array);
+
     });
 
     socket.on("mazeConnection", () => {
         console.log("newPlayer");
+        socket.emit("result",'');
+
     })
 }
 

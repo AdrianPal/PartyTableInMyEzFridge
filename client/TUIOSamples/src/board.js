@@ -15,7 +15,7 @@ let _players = [];
 let _currentPlayer;
 
 let _games = [
-    {launch:function(){
+    {launch:function(){        
         launchPictionary(_players);
     }},
     {launch:function(){
@@ -37,7 +37,7 @@ export default function showBoardView(players)
      $('#app').empty();//Cleaning the screen
       //Displaying the basic html for the board view
      $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
-     '<div><button id="bnpi">Pictionary</button> <button id="bnla">Labyrinth</button> <button id="bntw">Twister mé kouilles</button> <button id="bnba">Balls</button></div>'+
+     '<div><button id="bnpi">Pictionary</button> <button id="bnla">Labyrinth</button> <button id="bntw">Twister</button> <button id="bnba">Balls</button></div>'+
      '<div id="board"></div>'+
      '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
      '</div>');
@@ -132,7 +132,7 @@ function addPlayers()
         
         $('#player'+index).css('left',(_players[index].x));
         $('#player'+index).css('top', startY);
-        startY += ($('#player'+index).height() + 10);        
+        startY += ($('#player'+index).height() + 3);        
     }
 }//addPlayers()
 

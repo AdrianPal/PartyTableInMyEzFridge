@@ -1,5 +1,8 @@
 exports = module.exports = function (io) {
     // Set socket.io listeners.
+
+    let idTable;
+    let picPlayersId = [];
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -17,10 +20,9 @@ exports = module.exports = function (io) {
             console.log('user disconnected');
         });
 
-        socket.on('connectionPic', () => {
-            socket.emit('hello');
-        });
-
+        socket.on('wordInitialized', (word) => {
+            socket.broadcast.emit('wordInitialized', word);
+        })
         socket.on('beginDraw', (east, north, drag) => {
             socket.broadcast.emit('beginDraw', east, north, drag);
         });

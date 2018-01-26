@@ -48,7 +48,7 @@ module.exports = () => (
       filename: 'index.js',
     },
     resolve: {
-      extensions: ['', '.js'],
+      extensions: ['', '.js','.html'],
       root: resolvePaths,
       fallback: resolvePaths,
     },

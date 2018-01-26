@@ -4,15 +4,23 @@
     align-items: center;
     flex-direction: column;
     flex: 1 1 auto;
-    height: 400px;
+    height: 100%;
 }
 #maze table {
-    border-collapse: collapse
+    border-collapse: collapse;
+}
+
+#maze .blured {
+    filter: blur(20px) !important;
+}
+
+#maze .hide{
+visibility: hidden !important;
 }
 
 #maze td {
-    width: 5em;
-    height: 5em;
+    width: 10em;
+    height: 6em;
     border: 5px solid
 }
 
@@ -49,7 +57,6 @@
 #maze .btn-maze {
    border-radius: 2.5em;
     width: 6em;
-    height: 3em;
     background-color: darkgreen;
     color: white;
     justify-content: center;
@@ -68,6 +75,7 @@
 
 #maze #array i{
     font-size: 1.5em;
+
 }
 
 #maze #contentErase{
