@@ -41,6 +41,20 @@ export default class Pastille extends ElementWidget {
         }
     }
 
+    /**
+     * Call after a TUIOTag deletion.
+     *
+     * @method onTagDeletion
+     * @param {number/string} tuioTagId - TUIOTag's id to delete.
+     */
+    onTagDeletion(tuioTagId) {
+        if (typeof (this._tags[tuioTagId]) !== 'undefined') {
+            this.parent.pastilleUnTouched(tuioTagId, this.color);
+            
+            delete this._tags[tuioTagId];
+        }
+    }
+
     onTouchDeletion(tuioTouchId) {
         if (typeof (this._lastTouchesValues[tuioTouchId]) !== 'undefined') {
             this.parent.pastilleUnTouched(tuioTouchId, this.color);
