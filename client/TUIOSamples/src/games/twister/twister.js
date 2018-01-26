@@ -130,17 +130,19 @@ export class Twister {
 
             this.pastilles[color].done += 1;
 
-            this.checkForTotal();
+            this.checkForTotal(color);
         }
     }
 
-    pastilleUnTouched(tuioTouchId) {
+    pastilleUnTouched(tuioTouchId, color) {
         const index = this.pastillesTouched.indexOf(tuioTouchId);
         
         if (index >= 0) {
             this.pastillesTouched.splice(index, 1);
 
             this.pastilles[color].done -= 1;
+
+            this.checkForTotal(color);
         }
     }
 
