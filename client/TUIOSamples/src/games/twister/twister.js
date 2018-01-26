@@ -87,9 +87,9 @@ export class Twister {
                 const color = $(this).data('color');
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
-
-                // $(this).hide();
             });
+
+            $('.pastille.toRemove').hide();
         }, 750);
     }
 
@@ -138,8 +138,6 @@ export class Twister {
 
         if (index < 0) {
             this.pastillesTouched.push(tuioTouchId);
-
-            console.log('adding: ' + this.tuioTouchId);
 
             this.pastilles[color].done += 1;
 
