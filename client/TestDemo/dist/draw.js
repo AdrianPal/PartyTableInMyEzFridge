@@ -1,7 +1,7 @@
 view.viewSize.height = document.body.clientHeight;
 view.viewSize.width = document.body.clientWidth;
 
-var socket = io.connect('http://10.212.97.185:3000');
+var socket = io.connect('http://0.0.0.0:3000');
 
 var sessionId = socket.id;
 

@@ -2,18 +2,32 @@
  * @author: Adrian PALUMBO  
  */
 import showBoardView from '../../board';
-import { setTimeout } from 'timers';
+import {
+    setTimeout
+} from 'timers';
+import Pastille from './pastille';
+import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 
 export class Twister {
 
-    static get currentFolder() { return '/src/games/twister'; }
-    static get pastillesPerLines() { return 8; }
-    static get colors() { return ['red', 'blue', 'yellow', 'green']; }
-    static randBetween(min, max) { return Math.floor((Math.random() * max) + min); }
+    static get currentFolder() {
+        return '/src/games/twister';
+    }
+    static get pastillesPerLines() {
+        return 8;
+    }
+    static get colors() {
+        return ['red', 'blue', 'yellow', 'green'];
+    }
+    static randBetween(min, max) {
+        return Math.floor((Math.random() * max) + min);
+    }
 
     constructor() {
         this.app = $('#app');
         this.totalWin = 0;
+
+        this.pastillesTouched = [];
 
         this.newGame();
 
@@ -22,14 +36,14 @@ export class Twister {
 
     initGame() {
         const that = this;
-        this.app.load(Twister.currentFolder + '/main.view.html', function() {
+        this.app.load(Twister.currentFolder + '/main.view.html', function () {
             that.addGameElements();
         });
     }
 
     addGameElements() {
         this.getPastilles();
-        
+
         this.getInstructions();
 
         this.getTotal();
@@ -42,7 +56,10 @@ export class Twister {
         const colors = Twister.colors;
 
         for (let i = 0; i < colors.length; i++) {
-            this.pastilles[colors[i]] = { toDo: Twister.randBetween(0, colors.length + 1), done: 0 };
+            this.pastilles[colors[i]] = {
+                toDo: Twister.randBetween(0, colors.length + 1),
+                done: 0
+            };
         }
     }
 
@@ -52,20 +69,18 @@ export class Twister {
         let content = '';
 
         for (let i = 0; i < colors.length; i++) {
-            content += '<div class="row rowOfPastilles">';
-
-            for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                content += '<div data-color="'+ colors[i] +'" class="pastille '+ colors[i] +'"></div>';
-            }
-
-            // alert(content);
-
-            content += '</div>';
+            content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles"></div>';
         }
 
         $('#pastilles').html(content);
+
+        for (let i = 0; i < colors.length; i++) {
+            for (let j = 0; j < Twister.pastillesPerLines; j++) {
+                const l = new Pastille(colors[i], this);
+                l.addTo($('#rowOf' + colors[i] + 'Color').get(0));
+            }
+        }
     }
-    
 
     getInstructions() {
         const colors = Twister.colors;
@@ -76,8 +91,8 @@ export class Twister {
             const nbre = this.pastilles[colors[i]].toDo;
 
             content += `
-                <tr id="`+ colors[i] +`Instructions">
-                    <td><div class="pastille `+ colors[i] +`"></div></td>
+                <tr id="` + colors[i] + `Instructions">
+                    <td><div class="pastille ` + colors[i] + `"></div></td>
                     <td>&nbsp;<span class="nbreOfPastilleDone ` + ((nbre === 0) ? 'green' : '') + `">x <span class="nbre">` + nbre + `</span> <span class="check">` + ((nbre === 0) ? '<i class="fa fa-check"></i>' : '') + `</span></span></td>
                 </tr>`;
         }
@@ -98,7 +113,7 @@ export class Twister {
 
         let that = this;
 
-        setTimeout(function() {
+        setTimeout(function () {
             that.newGame();
 
             that.getInstructions();
@@ -107,20 +122,44 @@ export class Twister {
         }, 800);
     }
 
+    pastilleTouched(tuioTouchId, color) {
+        const index = this.pastillesTouched.indexOf(tuioTouchId);
+        
+        if (index < 0) {
+            this.pastillesTouched.push(tuioTouchId);
+
+            console.log('adding: '+ this.tuioTouchId);
+
+            this.pastilles[color].done += 1;
+
+            this.checkForTotal(color);
+        }
+    }
+
+    pastilleUnTouched(tuioTouchId, color) {
+        const index = this.pastillesTouched.indexOf(tuioTouchId);
+        
+        if (index >= 0) {
+            this.pastillesTouched.splice(index, 1);
+
+            this.pastilles[color].done -= 1;
+
+            this.checkForTotal(color);
+        }
+    }
+
     addListeners() {
         let that = this;
-        
+
         $('#pastilles .pastille')
-            .on('mousedown', function() {
+            .on('mousedown', function () {
                 const color = $(this).data('color');
 
                 that.pastilles[color].done += 1;
 
-                console.log(that.pastilles[color]);
-
                 that.checkForTotal(color);
             })
-            .on('mouseup', function() {
+            .on('mouseup', function () {
                 // const color = $(this).data('color');
 
                 // that.pastilles[color].done -= 1;
@@ -130,6 +169,9 @@ export class Twister {
     }
 
     checkForTotal(color) {
+        console.log(color);
+        console.log(this.pastilles[color]);
+
         if (this.pastilles[color].done >= this.pastilles[color].toDo) {
             $('#' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
             $('#' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');

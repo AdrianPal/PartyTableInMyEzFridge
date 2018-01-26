@@ -32,26 +32,45 @@ let _games = [
 //Called when switching from home to board OOOOR when finishing a game and going back to board view
 export default function showBoardView(players)
 {
-    _players = players;
-    _currentPlayer = null;
-    $('#app').empty();//Cleaning the screen
-    /* //Displaying the basic html for the board view
-    $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
-    '<div id="board"></div>'+
-    '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
-    '</div>');
+     _players = players;
+     _currentPlayer = null;
+     $('#app').empty();//Cleaning the screen
+      //Displaying the basic html for the board view
+     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
+     '<div><button id="bnpi">Pictionary</button> <button id="bnla">Labyrinth</button> <button id="bntw">Twister mé kouilles</button> <button id="bnba">Balls</button></div>'+
+     '<div id="board"></div>'+
+     '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
+     '</div>');
+    
+     //Stylish entry animation of the board
+     $('#boardView').css('margin-left', $(window).width());
+     $('#boardView').transition({x:-$(window).width()});
+    
+     initializeDice();
+     addTiles(10);
+     addPlayers();
+     determineCurrentPlayer();
+     turnPlayer();
 
-    //Stylish entry animation of the board
-    $('#boardView').css('margin-left', $(window).width());
-    $('#boardView').transition({x:-$(window).width()});
 
-    initializeDice();
-    addTiles(10);
-    addPlayers();
-    determineCurrentPlayer();
-    turnPlayer(); */
+     //LE PREMIER QUI LANCE SON JEU A LA RAZBAIL COMME UN BATARD ICI JE LUI NIQUE SA RACE
 
-    _games[0].launch();
+     //FAIT EXPRES POUR QUE LES CONNARDS QUI BOSSENT AVEC MOI ARRETE DE TOUT CASSER
+    $('#bnpi').on('click', function(){
+        _games[0].launch();
+    });
+
+    $('#bnla').on('click', function(){
+        _games[2].launch();
+    });
+
+    $('#bntw').on('click', function(){
+        _games[1].launch();
+    });
+
+    $('#bnba').on('click', function(){
+        _games[3].launch()
+    });
 }
 
 
@@ -170,6 +189,7 @@ function launchGame()
 {
     const pickedGame =  Math.floor(Math.random() * (_games.length) + 0);
 
+    //LE PREMIER QUI LANCE SON JEU ICI JE LUI DETRUIT SA MACHOIRE
     _games[pickedGame].launch();
 }
 

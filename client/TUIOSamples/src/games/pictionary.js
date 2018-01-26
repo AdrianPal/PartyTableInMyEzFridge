@@ -184,7 +184,7 @@ function initWord() {
     $('#countdown').countdown(newDate, function(event) {
         $(this).html(event.strftime('%M:%S'));
     }).on('finish.countdown', function(event) {
-        $(this).html('This offer has expired!');
+        $(this).html('Expired !');
       
       }); ;
     

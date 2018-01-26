@@ -1,0 +1,80 @@
+#maze{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 400px;
+}
+#maze table {
+    border-collapse: collapse
+}
+
+#maze td {
+    width: 5em;
+    height: 5em;
+    border: 5px solid
+}
+
+#maze td.s {
+    border-bottom: 2px dashed;
+}
+
+#maze td.n {
+    border-top: 2px dashed;
+}
+
+#maze td.w {
+    border-left: 2px dashed;
+}
+
+#maze td.e {
+    border-right: 2px dashed;
+}
+
+#maze td.v {
+    background: 2px skyblue;
+}
+
+#maze .start{
+    background-color: #00C853 !important;
+}
+
+#maze .end{
+    background-color: darkred;
+}
+
+
+/***** BUTTON *****/
+#maze .btn-maze {
+   border-radius: 2.5em;
+    width: 6em;
+    height: 3em;
+    background-color: darkgreen;
+    color: white;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 2px solid;
+}
+
+#maze .row-bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+#maze #array i{
+    font-size: 1.5em;
+}
+
+#maze #contentErase{
+    align-self: flex-end;
+
+}
+
+#maze #contentErase .btn{
+    background-color: darkgrey !important;
+}
