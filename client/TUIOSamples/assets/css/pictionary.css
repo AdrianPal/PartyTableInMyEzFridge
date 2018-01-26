@@ -1,0 +1,17 @@
+html, body {
+    overflow: hidden !important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.pictionaryTitle {
+    height: 5%;
+    padding: 0 !important;
+    margin: 0;
+}
+
+
+/* #pictionaryCanvas {
+    width: 100%;
+    height: 95%;
+} */
