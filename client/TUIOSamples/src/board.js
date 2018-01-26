@@ -51,7 +51,7 @@ export default function showBoardView(players)
     determineCurrentPlayer();
     turnPlayer(); */
 
-    _games[1].launch();
+    _games[0].launch();
 }
 
 

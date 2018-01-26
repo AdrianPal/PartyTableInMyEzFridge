@@ -1,9 +1,8 @@
 //contient le code js qu'il y avait dans index.html
-
 $( document ).ready(function() 
 {
 
-    const apiUrl = "http://localhost:4000";    
+    const apiUrl = URL_SERVER;    
         
     $('body').on('click', '#newGame', function (e) 
     {
@@ -31,7 +30,7 @@ $( document ).ready(function()
     let usersCount = 0,
         gameId = null;
 
-    var socket = io.connect('http://10.212.97.185:4000');
+    var socket = io.connect(URL_SERVER);
 
     socket.on('refresh game', function (d) 
     {
