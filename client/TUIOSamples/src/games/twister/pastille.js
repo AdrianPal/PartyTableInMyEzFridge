@@ -1,8 +1,10 @@
 import ElementWidget from 'tuiomanager/widgets/ElementWidget/ElementWidget';
 
 export default class Pastille extends ElementWidget {
-    constructor(color) {
+    constructor(color, parent) {
         super(0, 0, 100, 100, 0, 1);
+
+        this.parent = parent;
 
         this._domElem = $('<div>');
         this._domElem.attr('class', 'pastille ' + color);
@@ -11,7 +13,6 @@ export default class Pastille extends ElementWidget {
 
     onTouchCreation(tuioTouch) {
         super.onTouchCreation(tuioTouch);
-        alert('lol');
-
+        this.parent.pastilleTouched(tuioTouch);
     }
 }

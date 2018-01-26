@@ -61,12 +61,11 @@ export class Twister {
 
         for (let i = 0; i < colors.length; i++) {
             for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                const l = new Pastille(colors[i]);
+                const l = new Pastille(colors[i], this);
                 l.addTo($('#rowOf' + colors[i] + 'Color').get(0));
             }
         }
     }
-    
 
     getInstructions() {
         const colors = Twister.colors;
@@ -106,6 +105,10 @@ export class Twister {
 
             that.getTotal();
         }, 800);
+    }
+
+    pastilleTouched(tuioTouch) {
+        console.log(tuioTouch);
     }
 
     addListeners() {
