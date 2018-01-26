@@ -3,9 +3,13 @@
     font-family: Proxima;
     src: url(../assets/fonts/Proxima.otf);
 }
-body
+body, html, #app
 {
   font-family: Proxima;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 p
