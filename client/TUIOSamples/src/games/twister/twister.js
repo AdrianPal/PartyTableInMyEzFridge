@@ -65,10 +65,15 @@ export class Twister {
             content += '</div>';
         }
 
-        const l = new Pastille(100, 100, 100, 100, 0, 1, 'https://cdn.pixabay.com/photo/2013/04/06/11/50/image-editing-101040_1280.jpg');
-        l.addTo($('#pastilles').get(0));
+        // const l = new Pastille(100, 100, 100, 100, 0, 1, 'https://cdn.pixabay.com/photo/2013/04/06/11/50/image-editing-101040_1280.jpg');
+        // l.addTo($('#pastilles').get(0));
 
-        // $('#pastilles').html(content);
+        $('#pastilles').html(content);
+
+        $('.pastille').each(function() {
+            const l = new Pastille(100, 100, $(this).offset.top, $(this).offset.left, 0, 1, 'https://www.bonbonweb.com/10108/pastille-menthe-verte.jpg');
+            l.addTo($('#pastilles').get(0));
+        });
     }
     
 
