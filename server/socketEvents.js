@@ -25,13 +25,17 @@ exports = module.exports = function (io) {
             socket.broadcast.emit('beginDraw', east, north, drag);
         });
 
-        socket.on('isDrawing', (east, north, drag) => {
-            socket.broadcast.emit('isDrawing', east, north, drag);
+        socket.on('isDrawing', (east, north, drag, color, drawSize) => {
+            socket.broadcast.emit('isDrawing', east, north, drag, color, drawSize);
         });
 
         socket.on('finishedDraw', (east, north, drag) => {
             socket.broadcast.emit('finishedDraw', east, north, drag);
         });
+
+      socket.on('clearCanvas', () => {
+          socket.broadcast.emit('clearCanvas');
+      })
 
         /****************************************** MAZE **********************************************/
         socket.on('mazeConnection', () => {

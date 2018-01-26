@@ -4,14 +4,78 @@ html, body {
     margin: 0;
     padding: 0;
 }
-.pictionaryTitle {
+
+.header {
+    display: flex;
     height: 5%;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+}
+
+.dropdown {
+    display: inline-block;
+    margin: 0!important;
+    width: 20%;
+}
+
+.pictionaryTitle {
     padding: 0 !important;
     margin: 0;
 }
 
-
-/* #pictionaryCanvas {
+.palette {
+    display: inline-block;
+    height: 5%;
     width: 100%;
-    height: 95%;
-} */
+}
+
+#openPalette {
+    cursor: pointer;
+    margin-right: 1em;
+}
+
+#openPalette:hover {
+    text-decoration: underline;
+}
+
+#clear {
+    margin-left: 1em;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#palette-tool {
+    display: none;
+}
+
+.size {
+    margin-right: 1em;
+}
+
+input[type="radio"]{
+    display: none;
+
+}
+
+input[type="radio"]:checked + label {
+    background-color: black;
+    color: white;
+}
+input[type="radio"] + label {
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    padding: 0.1em;
+    border-radius: 50%; 
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+#game {
+    margin-top: 2em; 
+    text-align: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+}
