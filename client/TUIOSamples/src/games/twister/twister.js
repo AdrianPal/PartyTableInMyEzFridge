@@ -87,7 +87,7 @@ export class Twister {
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
-        }, 0750);
+        }, 750);
     }
 
     getInstructions() {
