@@ -72,17 +72,18 @@ export class Twister {
             content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles">';
 
             for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                content += '<div class="pastille '+ colors[i] +'"></div>';
+                content += '<div class="pastille ' + colors[i] + '"></div>';
             }
-            
+
             content += '</div>';
         }
 
         $('#pastilles').html(content);
 
-        setTimeout(function() {
-            const that = this;
-            $('.pastille').each(function() {
+        const that = this;
+
+        setTimeout(function () {
+            $('.pastille').each(function () {
                 const color = $(this).data('color');
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
@@ -132,11 +133,11 @@ export class Twister {
 
     pastilleTouched(tuioTouchId, color) {
         const index = this.pastillesTouched.indexOf(tuioTouchId);
-        
+
         if (index < 0) {
             this.pastillesTouched.push(tuioTouchId);
 
-            console.log('adding: '+ this.tuioTouchId);
+            console.log('adding: ' + this.tuioTouchId);
 
             this.pastilles[color].done += 1;
 
@@ -146,7 +147,7 @@ export class Twister {
 
     pastilleUnTouched(tuioTouchId, color) {
         const index = this.pastillesTouched.indexOf(tuioTouchId);
-        
+
         if (index >= 0) {
             this.pastillesTouched.splice(index, 1);
 
