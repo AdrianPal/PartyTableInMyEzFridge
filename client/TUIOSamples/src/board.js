@@ -32,24 +32,30 @@ let _games = [
 //Called when switching from home to board OOOOR when finishing a game and going back to board view
 export default function showBoardView(players)
 {
-    _players = players;
-    _currentPlayer = null;
-    $('#app').empty();//Cleaning the screen
-    /* //Displaying the basic html for the board view
-    $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
-    '<div id="board"></div>'+
-    '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
-    '</div>');
-
-    //Stylish entry animation of the board
-    $('#boardView').css('margin-left', $(window).width());
-    $('#boardView').transition({x:-$(window).width()});
+    // _players = players;
+    // _currentPlayer = null;
+    // $('#app').empty();//Cleaning the screen
+    //  //Displaying the basic html for the board view
+    // $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
+    // '<div id="board"></div>'+
+    // '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
+    // '</div>');
+    //
+    // //Stylish entry animation of the board
+    // $('#boardView').css('margin-left', $(window).width());
+    // $('#boardView').transition({x:-$(window).width()});
+    //
+    // initializeDice();
+    // addTiles(10);
+    // addPlayers();
+    // determineCurrentPlayer();
+    // turnPlayer();
 
     initializeDice();
     addTiles(10);
     addPlayers();
     determineCurrentPlayer();
-    turnPlayer(); */
+    turnPlayer();
 
     _games[1].launch();
 }
