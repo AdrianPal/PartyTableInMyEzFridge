@@ -71,7 +71,7 @@ export class Twister {
         $('#pastilles').html(content);
 
         $('.pastille').each(function() {
-            const l = new Pastille(100, 100, $(this).offset.top, $(this).offset.left, 0, 1, 'https://www.bonbonweb.com/10108/pastille-menthe-verte.jpg');
+            const l = new Pastille($(this).offset.top, $(this).offset.left, $(this).width(), $(this).height(), 0, 1, 'https://www.bonbonweb.com/10108/pastille-menthe-verte.jpg');
             l.addTo($('#pastilles').get(0));
         });
     }
