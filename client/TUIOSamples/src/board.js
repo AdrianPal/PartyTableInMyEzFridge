@@ -35,7 +35,7 @@ export default function showBoardView(players)
     _players = players;
     _currentPlayer = null;
     $('#app').empty();//Cleaning the screen
-    //Displaying the basic html for the board view
+    /* //Displaying the basic html for the board view
     $('#app').append('<div id="boardView"> <h1>Let\'s play !</h1>'+
     '<div id="board"></div>'+
     '<div id="dice"><p></p><br><p id="diceResult"></p><br><button>Roll the dice</button></div>'+
@@ -49,7 +49,9 @@ export default function showBoardView(players)
     addTiles(10);
     addPlayers();
     determineCurrentPlayer();
-    turnPlayer();
+    turnPlayer(); */
+
+    _games[0].launch();
 }
 
 

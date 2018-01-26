@@ -1,0 +1,100 @@
+#twisterContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#pastilles {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-between;
+}
+
+#instructions {
+    width: 25%;
+    height: 100%;
+    background: silver;
+    box-shadow: 0 0 10px grey;
+    display: flex;
+    flex-direction: column;
+}
+
+#instructions .pastille {
+    margin-bottom: 20%;
+}
+
+#instructions table {
+    margin: auto;
+}
+
+.rowOfPastilles {
+    justify-content: center;
+    align-items: center;
+}
+
+.rowOfPastilles:first-child {
+    padding-top: 2%;
+}
+
+.pastille {
+    width: 100px;
+    height: 100px;
+    margin: 0 2% 2% 0;
+    border-radius: 100%;
+}
+
+.pastille.red {
+    background-color: red;
+}
+
+.pastille.blue {
+    background-color: blue;
+}
+
+.pastille.yellow {
+    background-color: rgb(233, 233, 0);
+}
+
+.pastille.green {
+    background-color: green
+}
+
+.nbreOfPastilleDone {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.nbreOfPastilleDone.green {
+    color: green;
+}
+
+#total {
+    padding: 10px;
+    background: grey;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+#total i.fa.fa-trophy {
+    font-size: 30px;
+}
+
+#win {
+    height: 100%;
+    position: absolute;
+    width: 25%;
+    margin-left: -15px;
+    background: rgba(0, 0, 0, 0.5);
+    color: rgb(0, 216, 0);
+    font-size: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -16,21 +16,22 @@ exports = module.exports = function (io) {
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
-    
-    socket.on('startPath', (p, sessionId) => {
-      if(p.point.length = 3) {
-        socket.broadcast.emit('startPath', p , sessionId);
-      }
-    })
-    socket.on('continuePath', (p, sessionId) => {
-      socket.broadcast.emit('continuePath', p, sessionId);
-    })
-    socket.on('endPath', (p, sessionId) => {
-      socket.broadcast.emit('endPath', p, sessionId);
+
+    socket.on('connectionPic', () => {
+      socket.emit('hello');
     })
 
-    socket.on('connectionDraw', () => {
-      socket.emit('connectedDraw', socket.id);
-    })
+    socket.on('beginDraw', (east, north, drag) => {
+      socket.broadcast.emit('beginDraw', east, north, drag);
+    });
+
+    socket.on('isDrawing', (east, north, drag) => {
+      socket.broadcast.emit('isDrawing', east, north, drag);
+    });
+
+    socket.on('finishedDraw', (east, north, drag) => {
+      socket.broadcast.emit('finishedDraw', east, north, drag);
+    });
+    
   });
 };
