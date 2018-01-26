@@ -24,7 +24,7 @@ export default class Pastille extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
-        super(tuioTouch);
+        super.onTouchCreation(tuioTouch);
 
         if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
             this.parent.pastilleTouched(tuioTouch._id, this.color);
