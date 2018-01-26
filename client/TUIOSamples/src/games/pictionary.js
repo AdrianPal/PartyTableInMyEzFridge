@@ -3,9 +3,10 @@
  */
 import showBoardView from "../board";
 
+
 var context;
 
-var socket = io.connect('http://0.0.0.0:4000');
+var socket = io.connect(URL_SERVER);
 socket.emit('connectionPic');
 
 
@@ -37,7 +38,7 @@ if (Modernizr.touch === true) {
 
 export default function launchPictionary(players)
 {
-   
+
     initView();
     initCanvasEvent();
     initBindingPalette();
@@ -177,10 +178,15 @@ function initWord() {
 
     $('#game').html('<h3 id="wordToFind">' + possibleWord[randomWord] + '</h3> <h3 id="countdown"></h3>');
 
-    $('#countdown').countdown('01:00', function(event) {
+    var oldDate = new Date();
+    var newDate = new Date(oldDate.getTime() + 60000);
+
+    $('#countdown').countdown(newDate, function(event) {
         $(this).html(event.strftime('%M:%S'));
-        console.log(1);
-    });
+    }).on('finish.countdown', function(event) {
+        $(this).html('Expired !');
+      
+      }); ;
     
 
 }

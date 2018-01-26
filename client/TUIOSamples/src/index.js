@@ -6,6 +6,7 @@
 
 // Import JQuery
 import $ from 'jquery/dist/jquery.min';
+import URL_SERVER from '../config';
 
 // Import TUIOManager
 import TUIOManager from 'tuiomanager/core/TUIOManager';
