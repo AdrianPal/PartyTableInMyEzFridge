@@ -35,7 +35,7 @@ export default class Pastille extends ElementWidget {
 
     onTagUpdate(tuioTag) {
         if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
-            if (tuioTag.id === this.idTagMove && this.canMoveTangible) {
+            if (tuioTag.id === this.idTagMove) {
                 console.log('----');
                 console.log('tag');
                 console.log('----');
