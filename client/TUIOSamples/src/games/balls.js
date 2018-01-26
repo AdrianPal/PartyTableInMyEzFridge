@@ -2,6 +2,7 @@
  * @author: Rémy KALOUSTIAN
  */
 import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContainer';
+import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  import showBoardView from "../board";
 
@@ -13,6 +14,17 @@ import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContaine
     addBallContainers(players);
    
     players[1].score = 45;
+
+    window.setInterval(function()
+    {
+        const width = $(window).width();
+        const height = $(window).height();
+        const spawnX = Math.random() * (width - 0) + 0;
+        const spawnY = Math.random() * (height - 0) + 0;
+        const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/joy.png');
+        mahball.addTo($('#ballsView').get(0));
+    }, 1000);
+
     setTimeout(function()
     {
         showBoardView(players);
