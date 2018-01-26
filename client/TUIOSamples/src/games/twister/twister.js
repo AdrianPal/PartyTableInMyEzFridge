@@ -2,20 +2,32 @@
  * @author: Adrian PALUMBO  
  */
 import showBoardView from '../../board';
-import { setTimeout } from 'timers';
+import {
+    setTimeout
+} from 'timers';
 import Pastille from './pastille';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 
 export class Twister {
 
-    static get currentFolder() { return '/src/games/twister'; }
-    static get pastillesPerLines() { return 8; }
-    static get colors() { return ['red', 'blue', 'yellow', 'green']; }
-    static randBetween(min, max) { return Math.floor((Math.random() * max) + min); }
+    static get currentFolder() {
+        return '/src/games/twister';
+    }
+    static get pastillesPerLines() {
+        return 8;
+    }
+    static get colors() {
+        return ['red', 'blue', 'yellow', 'green'];
+    }
+    static randBetween(min, max) {
+        return Math.floor((Math.random() * max) + min);
+    }
 
     constructor() {
         this.app = $('#app');
         this.totalWin = 0;
+
+        this.pastillesTouched = [];
 
         this.newGame();
 
@@ -24,14 +36,14 @@ export class Twister {
 
     initGame() {
         const that = this;
-        this.app.load(Twister.currentFolder + '/main.view.html', function() {
+        this.app.load(Twister.currentFolder + '/main.view.html', function () {
             that.addGameElements();
         });
     }
 
     addGameElements() {
         this.getPastilles();
-        
+
         this.getInstructions();
 
         this.getTotal();
@@ -44,7 +56,10 @@ export class Twister {
         const colors = Twister.colors;
 
         for (let i = 0; i < colors.length; i++) {
-            this.pastilles[colors[i]] = { toDo: Twister.randBetween(0, colors.length + 1), done: 0 };
+            this.pastilles[colors[i]] = {
+                toDo: Twister.randBetween(0, colors.length + 1),
+                done: 0
+            };
         }
     }
 
@@ -76,8 +91,8 @@ export class Twister {
             const nbre = this.pastilles[colors[i]].toDo;
 
             content += `
-                <tr id="`+ colors[i] +`Instructions">
-                    <td><div class="pastille `+ colors[i] +`"></div></td>
+                <tr id="` + colors[i] + `Instructions">
+                    <td><div class="pastille ` + colors[i] + `"></div></td>
                     <td>&nbsp;<span class="nbreOfPastilleDone ` + ((nbre === 0) ? 'green' : '') + `">x <span class="nbre">` + nbre + `</span> <span class="check">` + ((nbre === 0) ? '<i class="fa fa-check"></i>' : '') + `</span></span></td>
                 </tr>`;
         }
@@ -98,7 +113,7 @@ export class Twister {
 
         let that = this;
 
-        setTimeout(function() {
+        setTimeout(function () {
             that.newGame();
 
             that.getInstructions();
@@ -108,23 +123,35 @@ export class Twister {
     }
 
     pastilleTouched(tuioTouch) {
-        console.log(tuioTouch);
+        if (this.pastillesTouched.find(tuioTouch._id) === null || this.pastillesTouched.find(tuioTouch._id) === undefined) {
+            this.pastillesTouched.push(tuioTouch._id);
+
+            console.log(tuioTouch._widgets._domElem.data('color'));
+
+            this.pastilles[tuioTouch._widgets._domElem.data('color')].done += 1;
+        }
+    }
+
+    pastilleUnTouched(tuioTouch) {
+        const index = this.pastillesTouched.indexOf(tuioTouch._id);
+        
+        if (index >= 0) {
+            this.pastillesTouched.splice(index, 1);
+        }
     }
 
     addListeners() {
         let that = this;
-        
+
         $('#pastilles .pastille')
-            .on('mousedown', function() {
+            .on('mousedown', function () {
                 const color = $(this).data('color');
 
                 that.pastilles[color].done += 1;
 
-                console.log(that.pastilles[color]);
-
                 that.checkForTotal(color);
             })
-            .on('mouseup', function() {
+            .on('mouseup', function () {
                 // const color = $(this).data('color');
 
                 // that.pastilles[color].done -= 1;
