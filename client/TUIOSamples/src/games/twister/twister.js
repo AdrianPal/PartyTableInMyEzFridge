@@ -69,17 +69,25 @@ export class Twister {
         let content = '';
 
         for (let i = 0; i < colors.length; i++) {
-            content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles"></div>';
+            content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles">';
+
+            for (let j = 0; j < Twister.pastillesPerLines; j++) {
+                content += '<div class="pastille '+ colors[i] +'"></div>';
+            }
+            
+            content += '</div>';
         }
 
         $('#pastilles').html(content);
 
-        for (let i = 0; i < colors.length; i++) {
-            for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                const l = new Pastille(colors[i], this);
-                l.addTo($('#rowOf' + colors[i] + 'Color').get(0));
-            }
-        }
+        setTimeout(function() {
+            const that = this;
+            $('.pastille').each(function() {
+                const color = $(this).data('color');
+                const l = new Pastille($(this).position().left, $(this).position().top, color, that);
+                l.addTo($('#rowOf' + color + 'Color').get(0));
+            });
+        }, 750);
     }
 
     getInstructions() {
