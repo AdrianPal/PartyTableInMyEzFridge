@@ -1,8 +1,8 @@
 import ElementWidget from 'tuiomanager/widgets/ElementWidget/ElementWidget';
 
 export default class Pastille extends ElementWidget {
-    constructor(x, y, color) {
-        super(x, y, 100, 100, 0, 1);
+    constructor(color) {
+        super(0, 0, 100, 100, 0, 1);
 
         this._domElem = $('<div>');
         this._domElem.attr('class', 'pastille ' + color);
