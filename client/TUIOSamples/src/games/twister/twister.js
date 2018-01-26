@@ -72,7 +72,7 @@ export class Twister {
             content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles">';
 
             for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                content += '<div class="pastille ' + colors[i] + '" data-color="' + colors[i] + '"></div>';
+                content += '<div class="pastille toRemove' + colors[i] + '" data-color="' + colors[i] + '"></div>';
             }
 
             content += '</div>';
@@ -87,6 +87,8 @@ export class Twister {
                 const color = $(this).data('color');
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
+
+                $(this).hide();
             });
         }, 750);
     }
