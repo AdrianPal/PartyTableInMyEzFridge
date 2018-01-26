@@ -72,7 +72,7 @@ export class Twister {
             content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles">';
 
             for (let j = 0; j < Twister.pastillesPerLines; j++) {
-                content += '<div class="pastille ' + colors[i] + '"></div>';
+                content += '<div class="pastille ' + colors[i] + '" data-color="' + colors[i] + '"></div>';
             }
 
             content += '</div>';
