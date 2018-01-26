@@ -54,7 +54,7 @@ export class Twister {
         let content = '';
 
         for (let i = 0; i < colors.length; i++) {
-            content += '<div class="row rowOfPastilles">';
+            content += '<div id="rowOf' + colors[i] + 'Color" class="row rowOfPastilles">';
 
             for (let j = 0; j < Twister.pastillesPerLines; j++) {
                 content += '<div data-color="'+ colors[i] +'" class="pastille '+ colors[i] +'"></div>';
@@ -70,10 +70,13 @@ export class Twister {
 
         $('#pastilles').html(content);
 
-        $('.pastille').each(function() {
-            const l = new Pastille($(this).offset.top, $(this).offset.left, $(this).width(), $(this).height(), 0, 1, 'https://www.bonbonweb.com/10108/pastille-menthe-verte.jpg');
-            l.addTo($('#pastilles').get(0));
-        });
+        setTimeout(function() {
+            $('.pastille').each(function() {
+                const color = $(this).data('color');
+                const l = new Pastille($(this).position().left, $(this).position().top, color);
+                l.addTo($('#rowOf' + color + 'Color').get(0));
+            });
+        }, 1000);
     }
     
 
