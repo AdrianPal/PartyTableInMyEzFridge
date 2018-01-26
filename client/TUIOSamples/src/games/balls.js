@@ -9,7 +9,7 @@ import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContaine
  {
     $('#boardView').remove();
     $('#app').append('<div id="ballsView"> </div>');
-    $('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
+    //$('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
     addBallContainers(players);
    
     players[1].score = 45;
@@ -29,26 +29,26 @@ import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContaine
         let y = 0;
         if(index == 0)
         {
-             x = $(window).width()/ 2 - ballContainerWidth;
+             x = $(window).width()/ 2 - ballContainerWidth/2;
              y = 10;
             
         }
 
         else if(index == 1)
         {
-             x = $(window).width()/ 2 - ballContainerWidth;
-             y = $(window).height() - ballContainerHeight;
+             x = $(window).width()/ 2 - ballContainerWidth/2;
+             y = $(window).height() - ballContainerHeight/2;
         }
 
         else if(index == 2)
         {
              x = 10;
-             y = $(window).height()/ 2 - ballContainerHeight;
+             y = $(window).height()/ 2 - ballContainerHeight/2;
         }
         else if(index == 3)
         {
-             x = $(window).width() - ballContainerWidth;
-             y = $(window).height()/ 2 - ballContainerHeight;
+             x = $(window).width() - ballContainerWidth/2;
+             y = $(window).height()/ 2 - ballContainerHeight/2;
         }    
         addBallContainer(x,y,ballContainerWidth,'#FF3366', players[index].name);    
     }
