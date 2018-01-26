@@ -129,6 +129,8 @@ export class Twister {
             this.pastillesTouched.push(tuioTouchId);
 
             this.pastilles[color].done += 1;
+
+            this.checkForTotal();
         }
     }
 
@@ -137,6 +139,8 @@ export class Twister {
         
         if (index >= 0) {
             this.pastillesTouched.splice(index, 1);
+
+            this.pastilles[color].done -= 1;
         }
     }
 
