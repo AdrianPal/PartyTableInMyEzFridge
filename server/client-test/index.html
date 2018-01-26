@@ -42,7 +42,7 @@
         let usersCount = 0,
             gameId = null;
 
-        var socket = io.connect('http://172.20.10.3:3000');
+        var socket = io.connect('http://0.0.0.0:3000');
 
         socket.on('refresh game', function (d) {
             d.game.forEach(function(e) {
