@@ -123,7 +123,9 @@ export class Twister {
     }
 
     pastilleTouched(tuioTouch) {
-        if (this.pastillesTouched.find(tuioTouch._id) === null || this.pastillesTouched.find(tuioTouch._id) === undefined) {
+        const index = this.pastillesTouched.indexOf(tuioTouch._id);
+        
+        if (index < 0) {
             this.pastillesTouched.push(tuioTouch._id);
 
             console.log(tuioTouch._widgets._domElem.data('color'));
