@@ -3,6 +3,8 @@
  */
 import showBoardView from '../../board';
 import { setTimeout } from 'timers';
+import Pastille from './pastille';
+import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 
 export class Twister {
 
@@ -63,7 +65,10 @@ export class Twister {
             content += '</div>';
         }
 
-        $('#pastilles').html(content);
+        const l = new Pastille(100, 100, 100, 100, 0, 1, 'https://cdn.pixabay.com/photo/2013/04/06/11/50/image-editing-101040_1280.jpg');
+        l.addTo($('#pastilles').get(0));
+
+        // $('#pastilles').html(content);
     }
     
 
