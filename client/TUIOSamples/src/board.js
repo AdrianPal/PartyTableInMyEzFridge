@@ -15,7 +15,7 @@ let _players = [];
 let _currentPlayer;
 
 let _games = [
-    {launch:function(){
+    {launch:function(){        
         launchPictionary(_players);
     }},
     {launch:function(){

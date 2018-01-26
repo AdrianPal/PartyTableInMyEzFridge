@@ -36,7 +36,27 @@ export default class Pastille extends ElementWidget {
     onTagUpdate(tuioTag) {
         if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
             if (tuioTag.id === this.idTagMove && this.canMoveTangible) {
+                console.log('----');
+                console.log('tag');
+                console.log('----');
+
                 this.parent.pastilleTouched(tuioTag.id, this.color);
+
+                const lastTagValue = this._lastTagsValues[tuioTag.id];
+                const diffX = tuioTag.x - lastTagValue.x;
+                const diffY = tuioTag.y - lastTagValue.y;
+
+                const newX = this.internX + diffX;
+                const newY = this.internY + diffY;
+
+
+                this._lastTagsValues = {
+                    ...this._lastTagsValues,
+                    [tuioTag.id]: {
+                        x: tuioTag.x,
+                        y: tuioTag.y,
+                    },
+                };
             }
         }
     }
@@ -49,8 +69,11 @@ export default class Pastille extends ElementWidget {
      */
     onTagDeletion(tuioTagId) {
         if (typeof (this._tags[tuioTagId]) !== 'undefined') {
+            console.log('----');
+            console.log('untag');
+            console.log('----');
             this.parent.pastilleUnTouched(tuioTagId, this.color);
-            
+
             delete this._tags[tuioTagId];
         }
     }
