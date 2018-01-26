@@ -122,20 +122,18 @@ export class Twister {
         }, 800);
     }
 
-    pastilleTouched(tuioTouch) {
-        const index = this.pastillesTouched.indexOf(tuioTouch._id);
+    pastilleTouched(tuioTouchId, color) {
+        const index = this.pastillesTouched.indexOf(tuioTouchId);
         
         if (index < 0) {
-            this.pastillesTouched.push(tuioTouch._id);
+            this.pastillesTouched.push(tuioTouchId);
 
-            console.log(tuioTouch._widgets._domElem.data('color'));
-
-            this.pastilles[tuioTouch._widgets._domElem.data('color')].done += 1;
+            this.pastilles[color].done += 1;
         }
     }
 
-    pastilleUnTouched(tuioTouch) {
-        const index = this.pastillesTouched.indexOf(tuioTouch._id);
+    pastilleUnTouched(tuioTouchId) {
+        const index = this.pastillesTouched.indexOf(tuioTouchId);
         
         if (index >= 0) {
             this.pastillesTouched.splice(index, 1);
