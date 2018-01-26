@@ -12,6 +12,8 @@
     position: fixed;
     z-index: 9999999;
 
+    color: white;
+
     background: rgba(0, 0, 0, 0.5);
 
     font-size: 100px;
