@@ -81,12 +81,12 @@
     width: calc(100% + 30px);
     margin-left: -15px;
     color: white;
-    font-size: 20px;
+    font-size: 50px;
     text-align: center;
 }
 
 #total i.fa.fa-trophy {
-    font-size: 30px;
+    font-size: 60px;
 }
 
 #win {
