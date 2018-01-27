@@ -73,8 +73,12 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  function addBallContainer(x, y, width, color, name, rotation)
  {
-    const libstack = new BallContainer(x, y, width, name, color, false, [],rotation);
-    libstack.addTo($('#ballsView').get(0));
+    const container = new BallContainer(x, y, width, name, color, false, [],rotation);
+    container.canRotate(false, false);
+    container.canMove(false, false);
+    container.canZoom(false, false);
+    container.canDelete(false, false);
+    container.addTo($('#ballsView').get(0));
  }
 
  function spawnBalls()
