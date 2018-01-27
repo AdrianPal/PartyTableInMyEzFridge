@@ -30,7 +30,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
    spawnBalls();
 
-   //tes for addig balls
+   //test for adding balls count
    /*$('#tt').on('click', function()
     {
         console.log("hey hey");
@@ -102,7 +102,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         const height = $(window).height();
         const spawnX = Math.random() * (width - 0) + 0;
         const spawnY = Math.random() * (height - 0) + 0;
-        const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/joy.png');
+        const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ball.png');
         mahball.canRotate(false, false);
         mahball.canMove(true, false);
         mahball.canZoom(false, false);
