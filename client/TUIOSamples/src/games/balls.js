@@ -12,6 +12,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  let _colors = [];
  let _tags = [];
+ let _containers = [];
 
  export default function launchBalls(players)
  {
@@ -19,7 +20,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     
 
     $('#boardView').remove();
-    $('#app').append('<div id="ballsView"> </div>');
+    $('#app').append('<div id="ballsView"> <button id="tt">TT</button></div>');
     //$('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
     getColors();
     getTags();
@@ -28,6 +29,15 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     players[1].score = 45;
 
    spawnBalls();
+
+   //tes for addig balls
+   /*$('#tt').on('click', function()
+    {
+        console.log("hey hey");
+        for (let index = 0; index < _containers.length; index++) {
+            _containers[index].addBall();            
+        }
+    })*/
 
     /*setTimeout(function()
     {
@@ -69,18 +79,19 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation);    
+        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation,index);    
     }
  }
 
- function addBallContainer(x, y, width, color, name, rotation)
+ function addBallContainer(x, y, width, color, name, rotation,playerid)
  {
-    const container = new BallContainer(x, y, width, name, color, false, [],rotation);
+    const container = new BallContainer(x, y, width, name, color, false, [],rotation,'player'+playerid);
     //container.canRotate(false, false);
     //container.canMove(false, false);
     //container.canZoom(false, false);
    // container.canDelete(false, false);
     container.addTo($('#ballsView').get(0));
+    _containers.push(container);
  }
 
  function spawnBalls()
@@ -126,5 +137,4 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     _tags.push('BB');
     _tags.push('CC');
     _tags.push('DD');
-    console.log(_tags);
  }

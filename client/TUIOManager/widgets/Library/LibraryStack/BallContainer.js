@@ -31,7 +31,7 @@ class BallContainer extends TUIOWidget {
    * @param {boolean} isFull - Define if the stack has border or a full background color
    * @param {String Array} allowcontentsArray - Array of allowed ElementWidget to fill the stack. Set an empty array to accept all kind of ElementWidget
    */
-  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation) {
+  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation, playerid) {
     super(x, y, size, size);
 
     this._lastTouchesValues = {};
@@ -89,6 +89,9 @@ class BallContainer extends TUIOWidget {
     this.scale = 1;
     // this.allTheStacks.push(this);
 
+    this._ballsCount = 0;
+    this._playerid = playerid;
+
     //Rotating the element
     this._domElem.css({
       '-webkit-transform' : 'rotate('+rotation+'deg)',
@@ -99,7 +102,13 @@ class BallContainer extends TUIOWidget {
     
         });
 
-    this._domElem.append('<h3 class="ballsCount">0</h3>')
+    this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
+  }
+
+  addBall()
+  {
+    this._ballsCount++;
+    $('#' + this._playerid).text(this._ballsCount);
   }
 
   /**
