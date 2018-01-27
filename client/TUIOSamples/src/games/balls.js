@@ -14,6 +14,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  let _tags = [];
  let _containers = [];
  let _players = [];
+ let _isGameOver = false;
 
  export default function launchBalls(players)
  {
@@ -22,20 +23,22 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     getPlayers(players);
     getTags();
     addBallContainers(players);
-   
-    players[1].score = 45;
-
-   spawnBalls();
+    spawnBalls();
+    setCountdown();
 
    //test for adding balls count
    $('#tt').on('click', function()
     {
         console.log("hey hey");
-        for (let index = 0; index < _containers.length; index++) 
+        /*for (let index = 0; index < _containers.length; index++) 
         {
             const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _players[Math.floor(Math.random() * (_players.length))].color);
             _containers[index].addElementWidget(mahball);   
-        }
+        }*/
+
+        const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633');
+        _containers[3].addElementWidget(mahball);   
+        
     })
 
     /*setTimeout(function()
@@ -107,27 +110,42 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  {
     window.setInterval(function()
     {
-        const width = $(window).width();
-        const height = $(window).height();
-        const spawnX = Math.random() * (width - 0) + 0;
-        const spawnY = Math.random() * (height - 0) + 0;
-        const color = _players[Math.floor(Math.random() * (_players.length))].color;
-        const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png', color);
-        mahball.canRotate(false, false);
-        mahball.canMove(true, false);
-        mahball.canZoom(false, false);
-        mahball.canDelete(false, false);        
-        const tag = _tags[Math.floor(Math.random() * (_tags.length) )];
-        mahball.setTagMove(tag);
-        mahball.addTo($('#ballsView').get(0));
+        if(!_isGameOver)
+        {
 
-        setTimeout( function(){ 
-            mahball.destroy();
-          }  , 5000 );
-        //socket.emit("balls",{stringO: 'Sendin dem balls'});
-        //console.log(socket);
-    }, 1000);
- }
+        
+            const width = $(window).width();
+            const height = $(window).height();
+            const spawnX = Math.random() * (width - 0) + 0;
+            const spawnY = Math.random() * (height - 0) + 0;
+            const color = _players[Math.floor(Math.random() * (_players.length))].color;
+            const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png', color);
+            mahball.canRotate(false, false);
+            mahball.canMove(true, false);
+            mahball.canZoom(false, false);
+            mahball.canDelete(false, false);        
+            const tag = _tags[Math.floor(Math.random() * (_tags.length) )];
+            mahball.setTagMove(tag);
+            mahball.addTo($('#ballsView').get(0));
+
+                setTimeout( function(){ 
+                    mahball.destroy();
+                }  , 5000 );
+                //socket.emit("balls",{stringO: 'Sendin dem balls'});
+                //console.log(socket);
+        }//if
+    }, 1000);     //setIntervall()   
+ }//spawnBalls()
+
+ function setCountdown()
+ {
+    setTimeout( function()
+    { 
+        _isGameOver = true;
+        displayGameOver();
+        showWinner();
+    }  , 4000 ); 
+}
 
  function getPlayers(players)
  {
@@ -141,6 +159,25 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     );
         
     }
+ }
+
+ function displayGameOver()
+ {
+    console.log("Game over");
+ }
+
+ function showWinner()
+ {
+    let winner  =_players[0];
+    for (let index = 1; index < _players.length; index++) 
+    {
+        if(_players[index].stack._ballsCount > winner.stack._ballsCount)
+        {
+            winner = _players[index];
+        }        
+    }
+
+    console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
  function getTags()
