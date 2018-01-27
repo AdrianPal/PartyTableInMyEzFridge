@@ -85,7 +85,7 @@ export class Twister {
             $('.pastille.toRemove').each(function () {
                 const color = $(this).data('color');
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
-                l.setTagMove('4');
+                l.setTagMove(4);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
 

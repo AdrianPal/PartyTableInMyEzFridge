@@ -1,0 +1,68 @@
+#homeView {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#centerUsers {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.avatar {
+    border: 8px solid black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 170px;
+    width: 170px;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 5px;
+}
+
+.avatar .qrcodeUser > img {
+    width: 100px;
+    height: 100px;
+}
+
+.avatar .name {
+    padding: 10px;
+    width: 100%;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    text-align: center;
+    font-size: 17px;
+
+    display: none;
+
+    text-transform: uppercase;
+}
+
+.user .leftPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#leftUser {
+    transform: rotate(90deg);
+}
+
+#rightUser {
+    transform: rotate(-90deg);
+}
+
+#upUser {
+    transform: rotate(180deg);
+}

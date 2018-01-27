@@ -4,11 +4,9 @@
  */
 import SocketManager from "../../socket.manager";
 
-console.log('----');
-console.log(SocketManager.get());
-console.log('----');
+const config = require('../../config');
 
-var socket = io.connect(URL_SERVER);
+var socket = io.connect(config.server);
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)

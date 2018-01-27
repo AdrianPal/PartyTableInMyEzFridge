@@ -7,7 +7,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   socketEvents = require('./socketEvents'),
   config = require('./config/main'),
-  SOCKET_SAVE = require('./utils/constants').SOCKET_SAVE; 
+  SOCKET_SAVE = require('./utils/constants').SOCKET_SAVE,
+  fileUpload = require('express-fileupload');
 
 // Database Setup
 mongoose.connect(config.database);
@@ -31,6 +32,11 @@ app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 
+app.use(config.assetStaticPath, express.static('assets'));
+
+// default options
+app.use(fileUpload());
+
 // Enable CORS from client-side
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -41,7 +47,7 @@ app.use((req, res, next) => {
 });
 
 // Import routes to be served
-router(app);
+router(app, io);
 
 // necessary for testing
 module.exports = server;

@@ -3,13 +3,13 @@ const express = require('express'),
   GameController = require('./controllers/game'),
   UserController = require('./controllers/user');
 
-module.exports = function (app) {
+module.exports = function (app, io) {
   // Initializing route groups
   const apiRoutes = express.Router(),
+    userRoutes = express.Router(),
     gameRoutes = express.Router(),
     gameUserRoutes = express.Router(),
     testServerRoutes = express.Router();
-
 
   //= ========================
   // Game Routes
@@ -18,15 +18,25 @@ module.exports = function (app) {
 
   // Create a new game
   gameRoutes.post('/', GameController.newGame);
-  //= ========================
-
+  
   //= ========================
   // Game Users Routes
   //= ========================
   gameRoutes.use('/user', gameUserRoutes);
 
   // Add user to a game
-  gameUserRoutes.post('/', UserController.newUserForGame);
+  gameUserRoutes.post('/:pos', UserController.newUserForGame);
+
+  //= ========================
+  // Users Routes
+  //= ========================
+  apiRoutes.use('/user', userRoutes);
+
+  // Get all users for a game
+  userRoutes.get('/:gameId', UserController.allUsersForGame);
+  
+  // Get all users for a game
+  userRoutes.get('/:gameId/:pos', UserController.userForGameAndPosition);
   //= ========================
 
   // Set url for API group routes
