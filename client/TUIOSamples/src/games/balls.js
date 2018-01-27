@@ -13,11 +13,13 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  let _colors = [];
  let _tags = [];
  let _containers = [];
+ let _players = [{name:'AA'},{name:'BB'},{name:'CC'},{name:'DD'}];
 
  export default function launchBalls(players)
  {
     $('#boardView').remove();
     $('#app').append('<div id="ballsView"> <button id="tt">TT</button></div>');
+    getPlayers(players);
     getColors();
     getTags();
     addBallContainers(players);
@@ -77,7 +79,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation,index);    
+        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation,_players[index].name);    
     }
  }
 
@@ -125,7 +127,20 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     }, 1000);
  }
 
- function getColors()
+ function getPlayers(players)
+ {
+    for (let index = 0; index < players.length; index++) 
+    {
+        _players.push(
+        {
+                name:players[index].name,                 
+        }
+    );
+        
+    }
+ }
+
+ function getColors(players)
  {
     //Get colors from the server, but for right now
 
@@ -133,6 +148,12 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     _colors.push('#0050ef');
     _colors.push('#d80073');
     _colors.push('#fa6800');
+
+    for (let index = 0; index < players.length; index++)
+    {
+        //Put colors in the players from board.js when launching the balls game
+        //_players[index].color = players[index].color;        
+    }
     
  }
 
