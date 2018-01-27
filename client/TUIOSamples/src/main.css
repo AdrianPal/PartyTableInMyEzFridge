@@ -125,3 +125,9 @@ width: 100%;
 {
   text-align: center;
 }
+
+.ball
+{
+  background-color: #00C853;
+  border-radius: 50%;
+}
