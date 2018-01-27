@@ -11,6 +11,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  //var socket = SocketManager.get();
 
  let _colors = [];
+ let _tags = [];
 
  export default function launchBalls(players)
  {
@@ -21,6 +22,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     $('#app').append('<div id="ballsView"> </div>');
     //$('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
     getColors();
+    getTags();
     addBallContainers(players);
    
     players[1].score = 45;
@@ -74,10 +76,10 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  function addBallContainer(x, y, width, color, name, rotation)
  {
     const container = new BallContainer(x, y, width, name, color, false, [],rotation);
-    container.canRotate(false, false);
-    container.canMove(false, false);
-    container.canZoom(false, false);
-    container.canDelete(false, false);
+    //container.canRotate(false, false);
+    //container.canMove(false, false);
+    //container.canZoom(false, false);
+   // container.canDelete(false, false);
     container.addTo($('#ballsView').get(0));
  }
 
@@ -93,8 +95,9 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         mahball.canRotate(false, false);
         mahball.canMove(true, false);
         mahball.canZoom(false, false);
-        mahball.canDelete(false, false);
-        mahball.setTagMove('9B');//CHANGE DISSSSSSSSS
+        mahball.canDelete(false, false);        
+        const tag = _tags[Math.floor(Math.random() * (_tags.length) )];
+        mahball.setTagMove(tag);
         mahball.addTo($('#ballsView').get(0));
 
         //socket.emit("balls",{stringO: 'Sendin dem balls'});
@@ -111,4 +114,14 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     _colors.push('#d80073');
     _colors.push('#fa6800');
     
+ }
+
+ function getTags()
+ {
+    //Get the tags from the server, but for right now
+    _tags.push('AA');
+    _tags.push('BB');
+    _tags.push('CC');
+    _tags.push('DD');
+    console.log(_tags);
  }
