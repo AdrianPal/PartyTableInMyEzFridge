@@ -26,12 +26,12 @@ class BallContainer extends TUIOWidget {
    * @param {number} x - X position of the stack
    * @param {number} y - Y position of the stack
    * @param {number} size - Size of the stack
-   * @param {string} stackTitle - Title of the stack
+   * @param {string} stackTitle - Title of the stack (should be unique throughout the DOM like an id)
    * @param {string} color - Color in Hexadecimal of the border or background of the stack
    * @param {boolean} isFull - Define if the stack has border or a full background color
    * @param {String Array} allowcontentsArray - Array of allowed ElementWidget to fill the stack. Set an empty array to accept all kind of ElementWidget
    */
-  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation, playerid) {
+  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation) {
     super(x, y, size, size);
 
     this._lastTouchesValues = {};
@@ -90,7 +90,7 @@ class BallContainer extends TUIOWidget {
     // this.allTheStacks.push(this);
 
     this._ballsCount = 0;
-    this._playerid = playerid;
+    this._playerid = stackTitle;
 
     //Rotating the element
     this._domElem.css({
