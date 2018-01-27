@@ -38,6 +38,7 @@ import SocketManager from "../../socket.manager";
         const ballContainerHeight = 200;
         let x = 0;
         let y = 0;
+        let rotation = 0;
         if(index == 0)//top container
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
@@ -55,19 +56,21 @@ import SocketManager from "../../socket.manager";
         {
              x = 1;
              y = $(window).height()/ 2 - ballContainerHeight/2;
+             rotation = -90;
         }
         else if(index == 3)//right container
         {
              x = $(window).width() - ballContainerWidth;
              y = $(window).height()/ 2 - ballContainerHeight/2;
+             rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,'#FF3366', players[index].name);    
+        addBallContainer(x,y,ballContainerWidth,'#FF3366', players[index].name, rotation);    
     }
  }
 
- function addBallContainer(x, y, width, color, name)
+ function addBallContainer(x, y, width, color, name, rotation)
  {
-    const libstack = new BallContainer(x, y, width, name, color, false, []);
+    const libstack = new BallContainer(x, y, width, name, color, false, [],rotation);
     libstack.addTo($('#ballsView').get(0));
  }
 

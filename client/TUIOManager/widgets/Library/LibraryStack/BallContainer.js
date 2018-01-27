@@ -21,7 +21,7 @@ import Point from '../../../src/utils/Point';
  */
 class BallContainer extends TUIOWidget {
   /**
-   * Constructor LibraryStack
+   * Constructor BallContainer
    *
    * @param {number} x - X position of the stack
    * @param {number} y - Y position of the stack
@@ -31,7 +31,7 @@ class BallContainer extends TUIOWidget {
    * @param {boolean} isFull - Define if the stack has border or a full background color
    * @param {String Array} allowcontentsArray - Array of allowed ElementWidget to fill the stack. Set an empty array to accept all kind of ElementWidget
    */
-  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray) {
+  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation) {
     super(x, y, size, size);
 
     this._lastTouchesValues = {};
@@ -88,6 +88,16 @@ class BallContainer extends TUIOWidget {
     this.showTag = '';
     this.scale = 1;
     // this.allTheStacks.push(this);
+
+    console.log("Rotation is " + rotation);
+    this._domElem.css({
+      '-webkit-transform' : 'rotate('+rotation+'deg)',
+         '-moz-transform' : 'rotate('+rotation+'deg)',  
+          '-ms-transform' : 'rotate('+rotation+'deg)',  
+           '-o-transform' : 'rotate('+rotation+'deg)',  
+              'transform' : 'rotate('+rotation+'deg)'
+    
+        });
   }
 
   /**
