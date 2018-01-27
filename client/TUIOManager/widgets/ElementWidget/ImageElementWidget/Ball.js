@@ -29,10 +29,10 @@ class Ball extends ElementWidget {
   * @param {number} initialScale - Initial scale. Set to 1 of no rescale
   * @param {string} src - Source of the image
   */
-  constructor(x, y, width, height, initialRotation, initialScale, src) {
+  constructor(x, y, width, height, initialRotation, initialScale, src, color) {
     super(x, y, width, height, initialRotation, initialScale);
     this.src = src;
-    this._domElem = $('<img>');
+    this._domElem = $('<img class="ball">');
     this._domElem.attr('src', src);
     this._domElem.css('width', `${this.width}px`);
     this._domElem.css('height', `${this.height}px`);
@@ -44,6 +44,8 @@ class Ball extends ElementWidget {
     this._domElem.css('transform-origin', `scale(${initialScale})`);
     this.hasDuplicate = false;
 
+    console.log("In Ball, the color is  " + color);
+    this._domElem.css('background-color', color);
 
     /*setTimeout( function(){ 
       console.log("destroyed balll");
