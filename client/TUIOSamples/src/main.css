@@ -118,3 +118,10 @@ width: 100%;
 {
   position: absolute;
 }
+
+/*_____________________BALLS PART*____________________*/
+
+.ballsCount
+{
+  text-align: center;
+}

@@ -98,6 +98,8 @@ class BallContainer extends TUIOWidget {
               'transform' : 'rotate('+rotation+'deg)'
     
         });
+
+    this._domElem.append('<h3 class="ballsCount">0</h3>')
   }
 
   /**
