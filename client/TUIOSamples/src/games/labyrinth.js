@@ -4,11 +4,7 @@
  */
 import SocketManager from "../../socket.manager";
 
-console.log('----');
-console.log(SocketManager.get());
-console.log('----');
-
-var socket = io.connect(URL_SERVER);
+var socket = SocketManager.get();
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)
