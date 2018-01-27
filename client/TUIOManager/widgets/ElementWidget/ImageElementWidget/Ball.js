@@ -18,7 +18,7 @@ import TUIOManager from '../../../core/TUIOManager';
   */
 class Ball extends ElementWidget {
   /**
-  * ImageElementWidget constructor.
+  * Ball constructor.
   *
   * @constructor
   * @param {number} x - ImageElementWidget's upperleft coin abscissa.
@@ -43,6 +43,15 @@ class Ball extends ElementWidget {
     this._domElem.css('transform', `rotate(${initialRotation}deg)`);
     this._domElem.css('transform-origin', `scale(${initialScale})`);
     this.hasDuplicate = false;
+
+
+    /*setTimeout( function(){ 
+      console.log("destroyed balll");
+      this._domElem.remove();
+      this.deleteWidget();
+    }  , 500 );*/
+
+
   } // constructor
 
   /**
@@ -76,6 +85,11 @@ class Ball extends ElementWidget {
         this.hasDuplicate = false;
       }
     }
+  }
+
+  destroy()
+  {
+    this._domElem.remove();
   }
 } // class ImageElementWidget
 

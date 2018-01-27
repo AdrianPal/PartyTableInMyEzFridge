@@ -100,6 +100,9 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         mahball.setTagMove(tag);
         mahball.addTo($('#ballsView').get(0));
 
+        setTimeout( function(){ 
+            mahball.destroy();
+          }  , 5000 );
         //socket.emit("balls",{stringO: 'Sendin dem balls'});
         //console.log(socket);
     }, 1000);
