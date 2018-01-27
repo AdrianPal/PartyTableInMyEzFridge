@@ -3,7 +3,7 @@ import SocketManager from "../../socket.manager";
 exports = module.exports = function (io, gameId, pos) {
     let prefix = 'mobile';
 
-    SocketManager.get().emit('mobile enter game', {
+    SocketManager.get().emit(prefix +' enter game', {
         gameId: gameId,
         pos: pos
     });
