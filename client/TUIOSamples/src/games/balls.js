@@ -90,10 +90,15 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         const spawnX = Math.random() * (width - 0) + 0;
         const spawnY = Math.random() * (height - 0) + 0;
         const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/joy.png');
+        mahball.canRotate(false, false);
+        mahball.canMove(true, false);
+        mahball.canZoom(false, false);
+        mahball.canDelete(false, false);
+        mahball.setTagMove('9B');//CHANGE DISSSSSSSSS
         mahball.addTo($('#ballsView').get(0));
 
         //socket.emit("balls",{stringO: 'Sendin dem balls'});
-        console.log(socket);
+        //console.log(socket);
     }, 1000);
  }
 
