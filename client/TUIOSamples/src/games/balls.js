@@ -16,12 +16,8 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  export default function launchBalls(players)
  {
-
-    
-
     $('#boardView').remove();
     $('#app').append('<div id="ballsView"> <button id="tt">TT</button></div>');
-    //$('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
     getColors();
     getTags();
     addBallContainers(players);
@@ -31,13 +27,15 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
    spawnBalls();
 
    //test for adding balls count
-   /*$('#tt').on('click', function()
+   $('#tt').on('click', function()
     {
         console.log("hey hey");
-        for (let index = 0; index < _containers.length; index++) {
-            _containers[index].addBall();            
+        for (let index = 0; index < _containers.length; index++) 
+        {
+            const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _colors[Math.floor(Math.random() * (_colors.length))]);
+            _containers[index].addElementWidget(mahball);   
         }
-    })*/
+    })
 
     /*setTimeout(function()
     {
@@ -92,6 +90,13 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
    // container.canDelete(false, false);
     container.addTo($('#ballsView').get(0));
     _containers.push(container);
+
+/*
+    --------    TESTS   - -----
+
+    const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF3366');
+    container.addElementWidget(mahball);
+    */
  }
 
  function spawnBalls()

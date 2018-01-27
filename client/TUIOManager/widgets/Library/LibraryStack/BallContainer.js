@@ -462,6 +462,8 @@ class BallContainer extends TUIOWidget {
 
       this._stackList.push(elementToAdd);
     }
+
+    this.addBall();
   }
 
   /**
