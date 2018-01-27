@@ -38,27 +38,27 @@ import SocketManager from "../../socket.manager";
         const ballContainerHeight = 200;
         let x = 0;
         let y = 0;
-        if(index == 0)
+        if(index == 0)//top container
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
-             y = 10;
+             y = 1;
             
         }
 
-        else if(index == 1)
+        else if(index == 1)//bottom container
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
-             y = $(window).height() - ballContainerHeight/2;
+             y = $(window).height() - ballContainerHeight;
         }
 
-        else if(index == 2)
+        else if(index == 2) //left container
         {
-             x = 10;
+             x = 1;
              y = $(window).height()/ 2 - ballContainerHeight/2;
         }
-        else if(index == 3)
+        else if(index == 3)//right container
         {
-             x = $(window).width() - ballContainerWidth/2;
+             x = $(window).width() - ballContainerWidth;
              y = $(window).height()/ 2 - ballContainerHeight/2;
         }    
         addBallContainer(x,y,ballContainerWidth,'#FF3366', players[index].name);    
