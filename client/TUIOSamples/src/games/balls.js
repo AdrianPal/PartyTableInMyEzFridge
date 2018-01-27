@@ -4,11 +4,13 @@
 import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContainer';
 import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
-import SocketManager from "../../socket.manager";
+//import SocketManager from "../../socket.manager";
 
 
  import showBoardView from "../board";
- var socket = SocketManager.get();
+ //var socket = SocketManager.get();
+
+ let _colors = [];
 
  export default function launchBalls(players)
  {
@@ -18,6 +20,7 @@ import SocketManager from "../../socket.manager";
     $('#boardView').remove();
     $('#app').append('<div id="ballsView"> </div>');
     //$('#ballsView').append('<br><br><h1>You lucky dude launched the BALLS game !</h1>');
+    getColors();
     addBallContainers(players);
    
     players[1].score = 45;
@@ -64,7 +67,7 @@ import SocketManager from "../../socket.manager";
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,'#FF3366', players[index].name, rotation);    
+        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation);    
     }
  }
 
@@ -85,7 +88,18 @@ import SocketManager from "../../socket.manager";
         const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/joy.png');
         mahball.addTo($('#ballsView').get(0));
 
-        socket.emit("balls",{stringO: 'Sendin dem balls'});
+        //socket.emit("balls",{stringO: 'Sendin dem balls'});
         console.log(socket);
     }, 1000);
+ }
+
+ function getColors()
+ {
+    //Get colors from the server, but for right now
+
+    _colors.push('#088a00');
+    _colors.push('#0050ef');
+    _colors.push('#d80073');
+    _colors.push('#fa6800');
+    
  }

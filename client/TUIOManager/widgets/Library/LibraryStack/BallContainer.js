@@ -89,7 +89,7 @@ class BallContainer extends TUIOWidget {
     this.scale = 1;
     // this.allTheStacks.push(this);
 
-    console.log("Rotation is " + rotation);
+    //Rotating the element
     this._domElem.css({
       '-webkit-transform' : 'rotate('+rotation+'deg)',
          '-moz-transform' : 'rotate('+rotation+'deg)',  
