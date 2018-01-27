@@ -463,6 +463,8 @@ class BallContainer extends TUIOWidget {
       this._stackList.push(elementToAdd);
     }
 
+    elementToAdd._domElem.css('transform', 'scale(0.4)');
+
     this.addBall();
   }
 
