@@ -78,11 +78,11 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation,_players[index].name);    
+        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation,_players[index].name, index);    
     }
  }
 
- function addBallContainer(x, y, width, color, name, rotation,playerid)
+ function addBallContainer(x, y, width, color, name, rotation,playerid, index)
  {
     const container = new BallContainer(x, y, width, name, color, false, [],rotation,'player'+playerid);
     //container.canRotate(false, false);
@@ -90,7 +90,10 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     //container.canZoom(false, false);
    // container.canDelete(false, false);
     container.addTo($('#ballsView').get(0));
+    _players[index].stack = container;
+    //Just for the tests
     _containers.push(container);
+    
 
 /*
     --------    TESTS   - -----
@@ -142,6 +145,8 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  function getTags()
  {
+
+    //!!!! THSI SHOULD BE DONE IN MENU.JS
     //Get the tags from the server, but for right now
     _tags.push('AA');
     _tags.push('BB');
