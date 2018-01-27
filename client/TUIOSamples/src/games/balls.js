@@ -13,14 +13,13 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  let _colors = [];
  let _tags = [];
  let _containers = [];
- let _players = [{name:'AA'},{name:'BB'},{name:'CC'},{name:'DD'}];
+ let _players = [];
 
  export default function launchBalls(players)
  {
     $('#boardView').remove();
     $('#app').append('<div id="ballsView"> <button id="tt">TT</button></div>');
     getPlayers(players);
-    getColors();
     getTags();
     addBallContainers(players);
    
@@ -34,7 +33,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         console.log("hey hey");
         for (let index = 0; index < _containers.length; index++) 
         {
-            const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _colors[Math.floor(Math.random() * (_colors.length))]);
+            const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _players[Math.floor(Math.random() * (_players.length))].color);
             _containers[index].addElementWidget(mahball);   
         }
     })
@@ -79,7 +78,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_colors[index], players[index].name, rotation,_players[index].name);    
+        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation,_players[index].name);    
     }
  }
 
@@ -109,7 +108,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         const height = $(window).height();
         const spawnX = Math.random() * (width - 0) + 0;
         const spawnY = Math.random() * (height - 0) + 0;
-        const color = _colors[Math.floor(Math.random() * (_colors.length))];
+        const color = _players[Math.floor(Math.random() * (_players.length))].color;
         const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png', color);
         mahball.canRotate(false, false);
         mahball.canMove(true, false);
@@ -133,28 +132,12 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     {
         _players.push(
         {
-                name:players[index].name,                 
+                name:players[index].name,
+                color: players[index].color                 
         }
     );
         
     }
- }
-
- function getColors(players)
- {
-    //Get colors from the server, but for right now
-
-    _colors.push('#088a00');
-    _colors.push('#0050ef');
-    _colors.push('#d80073');
-    _colors.push('#fa6800');
-
-    for (let index = 0; index < players.length; index++)
-    {
-        //Put colors in the players from board.js when launching the balls game
-        //_players[index].color = players[index].color;        
-    }
-    
  }
 
  function getTags()
