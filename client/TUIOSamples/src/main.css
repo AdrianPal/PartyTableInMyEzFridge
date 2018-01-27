@@ -122,3 +122,16 @@ width: 100%;
 .center {
   text-align: center;
 }
+
+/*_____________________BALLS PART*____________________*/
+
+.ballsCount
+{
+  text-align: center;
+}
+
+.ball
+{
+  /*background-color: #00C853;*/
+  border-radius: 50%;
+}

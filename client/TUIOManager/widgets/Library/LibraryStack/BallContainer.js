@@ -21,17 +21,17 @@ import Point from '../../../src/utils/Point';
  */
 class BallContainer extends TUIOWidget {
   /**
-   * Constructor LibraryStack
+   * Constructor BallContainer
    *
    * @param {number} x - X position of the stack
    * @param {number} y - Y position of the stack
    * @param {number} size - Size of the stack
-   * @param {string} stackTitle - Title of the stack
+   * @param {string} stackTitle - Title of the stack (should be unique throughout the DOM like an id)
    * @param {string} color - Color in Hexadecimal of the border or background of the stack
    * @param {boolean} isFull - Define if the stack has border or a full background color
    * @param {String Array} allowcontentsArray - Array of allowed ElementWidget to fill the stack. Set an empty array to accept all kind of ElementWidget
    */
-  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray) {
+  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation) {
     super(x, y, size, size);
 
     this._lastTouchesValues = {};
@@ -88,6 +88,27 @@ class BallContainer extends TUIOWidget {
     this.showTag = '';
     this.scale = 1;
     // this.allTheStacks.push(this);
+
+    this._ballsCount = 0;
+    this._playerid = stackTitle;
+
+    //Rotating the element
+    this._domElem.css({
+      '-webkit-transform' : 'rotate('+rotation+'deg)',
+         '-moz-transform' : 'rotate('+rotation+'deg)',  
+          '-ms-transform' : 'rotate('+rotation+'deg)',  
+           '-o-transform' : 'rotate('+rotation+'deg)',  
+              'transform' : 'rotate('+rotation+'deg)'
+    
+        });
+
+    this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
+  }
+
+  addBall()
+  {
+    this._ballsCount++;
+    $('#' + this._playerid).text(this._ballsCount);
   }
 
   /**
@@ -441,6 +462,10 @@ class BallContainer extends TUIOWidget {
 
       this._stackList.push(elementToAdd);
     }
+
+    elementToAdd._domElem.css('transform', 'scale(0.4)');
+
+    this.addBall();
   }
 
   /**
