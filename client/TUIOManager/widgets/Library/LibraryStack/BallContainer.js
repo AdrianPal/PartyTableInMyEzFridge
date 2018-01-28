@@ -107,6 +107,7 @@ class BallContainer extends TUIOWidget {
 
   addBall()
   {
+    $('#picksound')[0].play();
     this._ballsCount++;
     $('#' + this._playerid).text(this._ballsCount);
   }
