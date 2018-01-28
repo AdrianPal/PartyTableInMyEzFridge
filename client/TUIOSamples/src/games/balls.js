@@ -19,7 +19,11 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  export default function launchBalls(players)
  {
     $('#boardView').remove();
-    $('#app').append('<div id="ballsView"> <button id="tt">TT</button></div>');
+    $('#app').append('<div id="ballsView"> <button id="tt">TT</button>'+
+    '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+    '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+    
+    '</div>');
     getPlayers(players);
     getTags();
     addBallContainers(players);
@@ -163,6 +167,8 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  function displayGameOver()
  {
+    $('#gameoversound')[0].play();
+     
     console.log("Game over");
  }
 
@@ -183,7 +189,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  function getTags()
  {
 
-    //!!!! THSI SHOULD BE DONE IN MENU.JS
+    //!!!! THIS SHOULD BE DONE IN MENU.JS
     //Get the tags from the server, but for right now
     _tags.push('AA');
     _tags.push('BB');
