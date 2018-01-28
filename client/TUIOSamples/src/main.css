@@ -131,3 +131,7 @@ width: 100%;
   /*background-color: #00C853;*/
   border-radius: 50%;
 }
+audio
+{
+  display: none;
+}
