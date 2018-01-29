@@ -12,12 +12,18 @@ export default class User {
         return '/src/user';
     }
 
+    static get userTag() {
+        return '#usersView';
+    }
+
     constructor(elements, gameId) {
         this.container = null;
         this.body = $('body');
 
         this.elements = elements;
         this.gameId = gameId;
+
+        this.userView = $(User.userTag);
 
         this.createView();
     }
@@ -30,6 +36,11 @@ export default class User {
 
     createView() {
         const that = this;
+
+        if (this.userView.length !== 0) {
+            that.constructElements();
+            return;
+        }
 
         $.ajax({
             type: "GET",
@@ -99,6 +110,10 @@ export default class User {
     }
 
     removeView() {
-        this.userView.remove();
+        User.remove();
+    }
+
+    static remove() {
+        $(User.userTag).remove();
     }
 }

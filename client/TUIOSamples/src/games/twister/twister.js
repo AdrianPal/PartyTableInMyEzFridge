@@ -7,6 +7,7 @@ import {
 } from 'timers';
 import Pastille from './pastille';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
+import User from '../../user/user';
 
 export class Twister {
 
@@ -26,6 +27,8 @@ export class Twister {
     constructor() {
         this.app = $('#app');
         this.totalWin = 0;
+
+        User.remove();
 
         this.newGame();
 
