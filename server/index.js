@@ -32,11 +32,6 @@ app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 
-app.use(config.assetStaticPath, express.static('assets'));
-
-// default options
-app.use(fileUpload());
-
 // Enable CORS from client-side
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -45,6 +40,11 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+
+app.use(config.assetStaticPath, express.static('assets'));
+
+// default options
+app.use(fileUpload());
 
 // Import routes to be served
 router(app, io);

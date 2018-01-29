@@ -34,8 +34,10 @@ exports.newUserForGame = function (req, res, next) {
         path = './assets/' + req.params.pos + '-default.png';
     else {
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-        let avatar = req.files.avatar;
+        avatar = req.files.avatar;
         let extension = avatar.mimetype.replace(/image\//, '');
+
+        console.log(avatar);
 
         // Generate a unique name
         path = './assets/' + uuidV4() + '.' + extension;
