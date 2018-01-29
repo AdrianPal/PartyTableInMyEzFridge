@@ -83,7 +83,9 @@ export default class MobileLogin extends MobileHandler {
                     return that.loadUnusedView(d);
                 })
                 .fail(function (e) {
-                    alert('Error: ' + e.responseText);
+                    let json = JSON.parse(e.responseText);
+
+                    alert(json.message);
                     console.log(e);
                 });;
 

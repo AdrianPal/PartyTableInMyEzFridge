@@ -25,6 +25,10 @@ exports.newUserForGame = function (req, res, next) {
         return res.status(400).json({
             message: 'The requested GameId is incorrect.'
         });
+    } else if (req.body.name === null || req.body.name === undefined || req.body.name.trim() === "") {
+        return res.status(400).json({
+            message: 'Please enter your name.'
+        });
     }
 
     let path = null,
