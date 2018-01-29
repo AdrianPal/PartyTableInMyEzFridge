@@ -9,6 +9,8 @@ Pour afficher la vue des joueurs, et de manière à ce qu'elle soit la même que
     * La liste des utilisateurs, aussi avec la clef __pos__.
 * __gameId__, l'ID de la partie en cours.
 
+Pour mettre à jour les éléments, vous pouvez utilisater la méthode __`updateElements(newElements)`__.
+
 La liste des utilisateurs peut etre retrouvée sur l'API à l'adresse `api/user/{gameId}`.
 
 Un exemple d'utilisation de cette classe se trouve dans la classe __[Home](../src/home/home.js)__.
