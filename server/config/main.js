@@ -18,5 +18,7 @@ module.exports = {
   // necessary in order to run tests in parallel of the main app
   test_port: 3001,
   test_db: 'mern-starter-test',
-  test_env: 'test'
+  test_env: 'test',
+
+  assetStaticPath: '/static',
 };

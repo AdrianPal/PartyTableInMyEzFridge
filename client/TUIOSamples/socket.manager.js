@@ -1,8 +1,10 @@
+const config = require('./config');
+
 module.exports = SocketManager = (function () {
   var socket;
 
   function createInstance() {
-    let s = io.connect('http://' + IP + ':4000');
+    let s = io.connect(config.server);
     return s;
   }
 

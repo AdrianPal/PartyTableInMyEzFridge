@@ -35,6 +35,12 @@ export default class Pastille extends ElementWidget {
 
     onTagUpdate(tuioTag) {
         if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
+            console.log('----');
+            console.log('tag');
+            console.log(tuioTag);
+            console.log(tuioTag.id, this.idTagMove);
+            console.log('----');
+
             if (tuioTag.id === this.idTagMove) {
                 console.log('----');
                 console.log('tag');
@@ -48,7 +54,6 @@ export default class Pastille extends ElementWidget {
 
                 const newX = this.internX + diffX;
                 const newY = this.internY + diffY;
-
 
                 this._lastTagsValues = {
                     ...this._lastTagsValues,

@@ -7,7 +7,9 @@ import { fail } from "assert";
 
 var context;
 
-var socket = io.connect(URL_SERVER);
+const config = require('../../config');
+
+var socket = io.connect(config.server);
 
 
 const width = window.innerWidth;

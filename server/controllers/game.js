@@ -24,7 +24,7 @@ exports.refreshGame = function (req, res, next) {
     User.find({
             gameId: req.body.gameId
         })
-        .select('name pos')
+        .select('name pos avatarPath color')
         .exec((err, users) => {
             if (err) {
                 return next(err);
@@ -34,3 +34,17 @@ exports.refreshGame = function (req, res, next) {
             io.sockets.in(req.body.gameId).emit('refresh game', { game: users });
         });
 };
+
+exports.checkIfThisGameIsTheLastest = function (gameId) {
+    Game.findOne()
+        .sort([
+            ['_id', -1]
+        ])
+        .exec((err, game) => {
+            if (err || game._id === gameId) {
+                return true;
+            } else {
+                return true;
+            }
+        });
+}

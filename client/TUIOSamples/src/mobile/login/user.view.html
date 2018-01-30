@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/src/css/mobile/login.css">
+
+<div id="main">
+    <div class="page-header">
+        <h1 class="center">Hey you!</h1>
+    </div>
+
+    <form enctype="multipart/form-data" id="loginUserForm">
+        <input type="hidden" name="gameId" id="gameId" />
+        <label for="name">Name</label>
+        <input type="text" class="form-control" placeholder="Name" name="name" id="name" />
+
+        <br>
+
+        <label for="avatar">Avatar</label>
+        <input name="avatar" id="avatar" type="file" accept="image/x-png,image/gif,image/jpeg" />
+        <p class="help-block">We'll use your picture over many games, so be as beautiful as you can! :-) But if you don't want to send us your best selfie, we'll give you a default avatar. </p>
+
+        <br>
+
+        <button class="btn btn-success" id="newUser">It's me!</button>
+    </form>
+</div>
+
+<div id="success" style="display: none">
+    <h1>Amazing! :-)</h1>
+</div>
