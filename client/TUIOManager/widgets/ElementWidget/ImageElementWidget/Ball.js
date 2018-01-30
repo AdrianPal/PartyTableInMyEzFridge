@@ -2,7 +2,7 @@
  * @author Kevin Duglue <kevin.duglue@gmail.com>
  * @author Rémy Kaloustian <remy.kaloustian@gmail.com>
  */
-
+//RRAIAIIMEEM
 
 // Import JQuery
 import $ from 'jquery/dist/jquery.min';
@@ -44,17 +44,43 @@ class Ball extends ElementWidget {
     this._domElem.css('transform-origin', `scale(${initialScale})`);
     this.hasDuplicate = false;
 
-    console.log("In Ball, the color is  " + color);
+    //console.log("In Ball, the color is  " + color);
     this._domElem.css('background-color', color);
+	
+	this._isTouched = false;
 
-    /*setTimeout( function(){ 
-      console.log("destroyed balll");
-      this._domElem.remove();
-      this.deleteWidget();
-    }  , 500 );*/
-
-
+    
+  
   } // constructor
+  
+   /**
+   * Call after a TUIOTouch creation.
+   *
+   * @method onTouchCreation
+   * @param {TUIOTouch} tuioTouch - A TUIOTouch instance.
+   */
+  onTouchCreation(tuioTouch) {
+    if (!this._isInStack) {
+      super.onTouchCreation(tuioTouch);
+      
+    }
+  }
+  
+  
+  /**
+   * Call after a TUIOTag creation.
+   *
+   * @method onTagCreation
+   * @param {TUIOTag} tuioTag - A TUIOTag instance.
+   */
+  onTagCreation(tuioTag) {
+    if (!this._isInStack) {
+      super.onTagCreation(tuioTag);
+	  this._isTouched = true;
+	  
+	}
+  }
+
 
   /**
    * Call after a TUIOTag update.
@@ -64,6 +90,7 @@ class Ball extends ElementWidget {
    */
   onTagUpdate(tuioTag) {
     super.onTagUpdate(tuioTag);
+	this._isTouched = true;
     if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
       if (tuioTag.id === this.tagDuplicate && !this.hasDuplicate) {
         const clone = new ImageElementWidget(this.x + 10, this.y + 10, this.width, this.height, this._currentAngle, 1, this.src, this.tagMove, this.tagDelete, this.tagZoom, this.tagDuplicate);
@@ -91,8 +118,28 @@ class Ball extends ElementWidget {
 
   destroy()
   {
-    this._domElem.remove();
+	this._domElem.remove();
+    this.deleteWidget();
+	
   }
+
+
+
+/**
+   * Call after a TUIOTouch update.
+   *
+   * @method onTouchUpdate
+   * @param {TUIOTouch} tuioTouch - A TUIOTouch instance.
+   */
+  onTouchUpdate(tuioTouch) {
+    super.onTouchUpdate(tuioTouch);
+    this._domElem.addClass('ballTouched'); 
+  
+  }
+    
+
+
+
 } // class ImageElementWidget
 
 export default Ball;
