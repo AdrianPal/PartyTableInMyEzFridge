@@ -118,9 +118,17 @@ class Ball extends ElementWidget {
 
   destroy()
   {
-	this._domElem.remove();
+    //this._domElem.$.transition({scale:0}, 500);
+    //this._domElem.transition({scale:0}, 500);
+	  this.destroyReal();
+    
+    this._domElem.animate(({width: '0px', height:'0px' }), 500);	 
+  }
+
+  destroyReal()
+  {
+    //this._domElem.remove();
     this.deleteWidget();
-	
   }
 
 
