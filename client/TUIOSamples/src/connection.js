@@ -2,7 +2,7 @@
 $( document ).ready(function() 
 {
 
-    const apiUrl = URL_SERVER;    
+    const apiUrl = config.server;    
         
     $('body').on('click', '#newGame', function (e) 
     {
@@ -30,7 +30,7 @@ $( document ).ready(function()
     let usersCount = 0,
         gameId = null;
 
-    var socket = io.connect(URL_SERVER);
+    var socket = io.connect(config.server);
 
     socket.on('refresh game', function (d) 
     {

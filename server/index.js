@@ -7,7 +7,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   socketEvents = require('./socketEvents'),
   config = require('./config/main'),
-  SOCKET_SAVE = require('./utils/constants').SOCKET_SAVE; 
+  SOCKET_SAVE = require('./utils/constants').SOCKET_SAVE,
+  fileUpload = require('express-fileupload');
 
 // Database Setup
 mongoose.connect(config.database);
@@ -40,8 +41,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(config.assetStaticPath, express.static('assets'));
+
+// default options
+app.use(fileUpload());
+
 // Import routes to be served
-router(app);
+router(app, io);
 
 // necessary for testing
 module.exports = server;

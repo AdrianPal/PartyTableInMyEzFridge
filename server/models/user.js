@@ -8,6 +8,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: { type: String },
   pos: { type: String },
+  avatarPath: { type: String },
+  color: { type: String },
   gameId: {
     type: Schema.Types.ObjectId,
     ref: 'Game'

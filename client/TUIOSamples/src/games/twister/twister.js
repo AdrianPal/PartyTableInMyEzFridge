@@ -7,6 +7,7 @@ import {
 } from 'timers';
 import Pastille from './pastille';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
+import User from '../../user/user';
 
 export class Twister {
 
@@ -26,6 +27,8 @@ export class Twister {
     constructor() {
         this.app = $('#app');
         this.totalWin = 0;
+
+        User.remove();
 
         this.newGame();
 
@@ -85,7 +88,7 @@ export class Twister {
             $('.pastille.toRemove').each(function () {
                 const color = $(this).data('color');
                 const l = new Pastille($(this).position().left, $(this).position().top, color, that);
-                l.setTagMove('4');
+                l.setTagMove(4);
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
 

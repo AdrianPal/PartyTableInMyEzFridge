@@ -5,7 +5,7 @@ const combineLoaders = require('webpack-combine-loaders/combineLoaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 /* eslint-enable import/no-extraneous-dependencies */
-const IP = require(`./config`)
+const config = require(`./config`)
 
 
 
@@ -38,8 +38,8 @@ module.exports = () => (
     devServer: {
       inline: true,
       historyApiFallback: true,
-      port: 3000,
-      host: IP
+      port: config.port,
+      host: config.ip
     },
     entry: './src/index.js',
     output: {
