@@ -1,8 +1,11 @@
 /**
  * @author: Rémy KALOUSTIAN
  */
+/* eslint-disable*/
 import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContainer';
 import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
+import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
+
 
 //import SocketManager from "../../socket.manager";
 
@@ -15,6 +18,10 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  let _containers = [];
  let _players = [];
  let _isGameOver = false;
+ let _ballsCount = 0;
+ let _gameTime = 30000; //in milliseconds
+
+ const BALLWIDTH = 75;
 
  export default function launchBalls(players)
  {
@@ -24,11 +31,13 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
     '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     
     '</div>');
+	  getTags();
     getPlayers(players);
-    getTags();
+  
     addBallContainers(players);
     spawnBalls();
     setCountdown();
+	triggerTime();
 
    //test for adding balls count
    $('#tt').on('click', function()
@@ -64,6 +73,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
              y = 1;
+			 rotation = 180;
             
         }
 
@@ -77,21 +87,21 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         {
              x = 1;
              y = $(window).height()/ 2 - ballContainerHeight/2;
-             rotation = -90;
+             rotation = 90;
         }
         else if(index == 3)//right container
         {
              x = $(window).width() - ballContainerWidth;
              y = $(window).height()/ 2 - ballContainerHeight/2;
-             rotation = 90;
+             rotation = -90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation,_players[index].name, index);    
+        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation, index);    
     }
  }
 
- function addBallContainer(x, y, width, color, name, rotation,playerid, index)
+ function addBallContainer(x, y, width, color, name, rotation, index)
  {
-    const container = new BallContainer(x, y, width, name, color, false, [],rotation,'player'+playerid);
+    const container = new BallContainer(x, y, width, name, color, false, ['Ball'],rotation, _gameTime);
     //container.canRotate(false, false);
     //container.canMove(false, false);
     //container.canZoom(false, false);
@@ -114,31 +124,43 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
  {
     window.setInterval(function()
     {
-        if(!_isGameOver)
+        if(!_isGameOver && _ballsCount < 10)
         {
 
         
             const width = $(window).width();
             const height = $(window).height();
-            const spawnX = Math.random() * (width - 0) + 0;
-            const spawnY = Math.random() * (height - 0) + 0;
-            const color = _players[Math.floor(Math.random() * (_players.length))].color;
-            const mahball = new Ball(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png', color);
+            const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
+            const spawnY = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+			const index = Math.floor(Math.random() * (_players.length));
+            const color = _players[index].color;
+			const tag = _players[index].tag;
+
+            const mahball = new Ball(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/ballt.png', color);
+			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
+
             mahball.canRotate(false, false);
-            mahball.canMove(true, false);
+            mahball.canMove(true, true);
             mahball.canZoom(false, false);
             mahball.canDelete(false, false);        
-            const tag = _tags[Math.floor(Math.random() * (_tags.length) )];
+			
             mahball.setTagMove(tag);
             mahball.addTo($('#ballsView').get(0));
+			_ballsCount++;
 
-                setTimeout( function(){ 
-                    mahball.destroy();
-                }  , 5000 );
+                setTimeout( function()
+				{ 
+					//if(!mahball._isTouched)
+					//{
+						  mahball.destroy();
+						_ballsCount--;
+					//}
+                  
+                }  , 2300 );
                 //socket.emit("balls",{stringO: 'Sendin dem balls'});
                 //console.log(socket);
         }//if
-    }, 1000);     //setIntervall()   
+    }, 100);     //setIntervall()   
  }//spawnBalls()
 
  function setCountdown()
@@ -148,7 +170,31 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         _isGameOver = true;
         displayGameOver();
         showWinner();
-    }  , 4000 ); 
+    }  , _gameTime ); 
+}
+
+function triggerTime()
+{
+	  
+	window.setInterval( function()
+	{ 
+		if(_gameTime>0)
+		{
+			_gameTime  -=  1000;
+		
+		
+		for (let index = 0; index < _containers.length; index++) 
+		{
+			_containers[index].updateTime(_gameTime);
+		}
+		
+	  
+		}
+		
+	}  , 1000 );
+	
+
+	
 }
 
  function getPlayers(players)
@@ -158,7 +204,8 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
         _players.push(
         {
                 name:players[index].name,
-                color: players[index].color                 
+                color: players[index].color,
+				tag: _tags[index]
         }
     );
         
@@ -174,14 +221,30 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
  function showWinner()
  {
-    let winner  =_players[0];
+    let winner  = 0;
+    //finding the winner
     for (let index = 1; index < _players.length; index++) 
     {
-        if(_players[index].stack._ballsCount > winner.stack._ballsCount)
+        if(_players[index].stack._ballsCount > _players[winner].stack._ballsCount)
         {
-            winner = _players[index];
+            winner = index;
         }        
     }
+
+    //Display "you win" , "you lose"
+    for (let index = 0; index < _players.length; index++) 
+    {
+        if(index === winner )
+        {
+            _players[index].stack.showOutcome(true);
+        }    
+        else
+        {
+            _players[index].stack.showOutcome(false);
+        }    
+    }
+
+
 
     console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
@@ -191,8 +254,8 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 
     //!!!! THIS SHOULD BE DONE IN MENU.JS
     //Get the tags from the server, but for right now
-    _tags.push('AA');
-    _tags.push('BB');
-    _tags.push('CC');
-    _tags.push('DD');
+    _tags.push('10');
+    _tags.push('7');
+    _tags.push('7');
+    _tags.push('7');
  }

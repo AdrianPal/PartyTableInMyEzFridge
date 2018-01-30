@@ -1,6 +1,10 @@
 /**
  * @author Christian Brel <ch.brel@gmail.com>
  */
+ 
+ ///RRRRAAAAAAAAAAAAAAIIIIMIIIEE
+
+ /* eslint-disable */
 
 // Import JQuery
 import $ from 'jquery/dist/jquery.min';
@@ -31,7 +35,7 @@ class BallContainer extends TUIOWidget {
    * @param {boolean} isFull - Define if the stack has border or a full background color
    * @param {String Array} allowcontentsArray - Array of allowed ElementWidget to fill the stack. Set an empty array to accept all kind of ElementWidget
    */
-  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation) {
+  constructor(x, y, size, stackTitle, color, isFull, allowcontentsArray, rotation, gameTime) {
     super(x, y, size, size);
 
     this._lastTouchesValues = {};
@@ -91,6 +95,8 @@ class BallContainer extends TUIOWidget {
 
     this._ballsCount = 0;
     this._playerid = stackTitle;
+	this._gameTime = gameTime
+	console.log("In constructor" + this._gameTime);
 
     //Rotating the element
     this._domElem.css({
@@ -101,8 +107,22 @@ class BallContainer extends TUIOWidget {
               'transform' : 'rotate('+rotation+'deg)'
     
         });
+		
 
-    this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
+  this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
+	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
+	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'end"></h3>');
+	
+	
+	
+  }
+  
+  
+  updateTime(time)
+  {
+    this._gameTime = time;
+    console.log(this._gameTime);
+    $('#'+this._playerid + 'time').text(this._gameTime/1000);
   }
 
   addBall()
@@ -110,6 +130,18 @@ class BallContainer extends TUIOWidget {
     $('#picksound')[0].play();
     this._ballsCount++;
     $('#' + this._playerid).text(this._ballsCount);
+  }
+
+  showOutcome(hasWon)
+  {
+      if(hasWon)
+      {
+        $('#' + this._playerid + 'end').text("You win !");
+      }
+      else
+      {
+        $('#' + this._playerid + 'end').text("You lose.");
+      }
   }
 
   /**
@@ -128,7 +160,7 @@ class BallContainer extends TUIOWidget {
    * @param {number} y - Point's ordinate to test.
    */
   isTouched(x, y) {
-    this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
+    //this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
     const nx = this._domElem[0].getBoundingClientRect().left;
     const ny = this._domElem[0].getBoundingClientRect().top;
     const width = this._domElem.width();
@@ -136,8 +168,8 @@ class BallContainer extends TUIOWidget {
     const ox = (nx + (width / 2));
     const oy = (ny + (height / 2));
     const p = new Point(x, y);
-    p.rotate((360 - this._currentAngle), ox, oy);
-    this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
+   // p.rotate((360 - this._currentAngle), ox, oy);
+    //this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
     return (p.x >= nx && p.x <= nx + width && p.y >= ny && p.y <= ny + height) && !this.isDisabled;
     // return (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) && !this.isDisabled;
   }
@@ -149,6 +181,7 @@ class BallContainer extends TUIOWidget {
    * @param {TUIOTouch} tuioTouch - A TUIOTouch instance.
    */
   onTouchCreation(tuioTouch) {
+	  
     super.onTouchCreation(tuioTouch);
     if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
       this._lastTouchesValues = {
@@ -163,8 +196,8 @@ class BallContainer extends TUIOWidget {
       }
 
       this.touchedTimestamp = Date.now();
-      this.touchedInitX = tuioTouch.x;
-      this.touchedInitY = tuioTouch.y;
+      //this.touchedInitX = tuioTouch.x;
+      //this.touchedInitY = tuioTouch.y;
     }
   }
 
@@ -228,7 +261,7 @@ class BallContainer extends TUIOWidget {
             this._stackList[i].internY = newY;
           }
 
-          this.moveTo(newX, newY);
+          //this.moveTo(newX, newY);
           this._lastTouchesValues = {
             ...this._lastTouchesValues,
             [tuioTouch.id]: {
@@ -251,13 +284,13 @@ class BallContainer extends TUIOWidget {
             newscale = this._lastTouchesValues.scale * 0.985; // new scale is 1.5 times the old scale
             this._lastTouchesValues.scale = newscale; //  We save the scale
           }
-          this.scale = newscale;
+          //this.scale = newscale;
           this._lastTouchesValues.pinchDistance = c;
         //}
 
         // Rotation d'une image
         //if (this.canRotateTactile) {
-          if (!this.lastAngle) {
+          /*if (!this.lastAngle) {
             this.lastAngle = touch1.angleWith(touch2);
           } else {
             if (this.lastAngle < touch1.angleWith(touch2)) {
@@ -267,10 +300,10 @@ class BallContainer extends TUIOWidget {
             }
             this._currentAngle = this._currentAngle % 360;
             this.lastAngle = touch1.angleWith(touch2);
-          }
+          }*/
         //}
-        this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
-        this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
+        //this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
+        //this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
         // this._x = this._domElem.position().left;
         // this._y = this._domElem.position().top;
       }
