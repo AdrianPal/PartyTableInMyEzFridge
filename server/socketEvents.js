@@ -1,16 +1,14 @@
 exports = module.exports = function (io) {
     // Set socket.io listeners.
 
-    let idTable;
-    let picPlayersId = [];
-
     const prefixMobile = 'mobile';
 
-    let users = [];
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
         let gameId;
+        let users = [];
+
 
         // On conversation entry, join broadcast channel
         socket.on('new game', (game) => {
@@ -28,6 +26,7 @@ exports = module.exports = function (io) {
             gameId = data.gameId;
 
             users[data.pos] = socket.id;
+            console.log(users);
         });
 
         socket.on(prefixMobile + ' trigger', (data) => {
@@ -45,24 +44,8 @@ exports = module.exports = function (io) {
             socket.leave(gameId);
         });
 
-        socket.on('wordInitialized', (word) => {
-            socket.broadcast.emit('wordInitialized', word);
-        })
-        socket.on('beginDraw', (east, north, drag) => {
-            socket.broadcast.emit('beginDraw', east, north, drag);
-        });
 
-        socket.on('isDrawing', (east, north, drag, color, drawSize) => {
-            socket.broadcast.emit('isDrawing', east, north, drag, color, drawSize);
-        });
 
-        socket.on('finishedDraw', (east, north, drag) => {
-            socket.broadcast.emit('finishedDraw', east, north, drag);
-        });
-
-        socket.on('clearCanvas', () => {
-            socket.broadcast.emit('clearCanvas');
-        })
 
         /****************************************** MAZE **********************************************/
         socket.on('mazeConnection', () => {
@@ -74,9 +57,37 @@ exports = module.exports = function (io) {
         });
 
         socket.on('result', (result) => {
-            socket.broadcast.emit('result', result);
+            socket.broadcast.emit('result', result);  
         })
         
+
+        /****************************************** PICTIONARY **********************************************/
+        socket.on('isDrawing', (east, north, drag, color, drawSize) => {
+            socket.broadcast.emit('isDrawing', east, north, drag, color, drawSize);
+        });
+
+        socket.on('wordInitialized', (word) => {
+            socket.broadcast.emit('wordInitialized', word);
+        })
+
+
+        socket.on('clearCanvas', () => {
+            socket.broadcast.emit('clearCanvas');
+        })
+
+
+        socket.on('mobile enter pictionary game',() => {
+            var randomPlayer = Math.random(users.length - 1);
+            for(let i = 0; i < users.length; i++) {
+                if (i == randomPlayer){
+                    socket.to(users[randomPlayer]).emit('mobile game pictionary', true);
+                    console.log(1);
+                } else {
+                    socket.to(users[randomPlayer]).emit('mobile game pictionary', false);
+                    console.log(2);
+                }
+            }
+        })
 
         //------------------------------------BALLS--------------------------
 
