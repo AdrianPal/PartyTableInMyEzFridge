@@ -176,7 +176,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
             const color = _players[index].color;
 			const tag = _players[index].tag;
 
-            const mahball = new Ball(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/ballt.png', color);
+            const mahball = new Ball(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/ballt.png', color, _players[index].name);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);

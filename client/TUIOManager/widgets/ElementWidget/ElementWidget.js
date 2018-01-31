@@ -59,6 +59,7 @@ class ElementWidget extends TUIOWidget {
 
     this.isDisabled = false;
     this.tagDuplicate = '';
+    this._playerid ="";
   }// constructor
 
   /**
@@ -230,7 +231,7 @@ class ElementWidget extends TUIOWidget {
       const y = lastTouchValue.y;
       if (!this._isInStack) {
         Object.keys(TUIOManager.getInstance()._widgets).forEach((widgetId) => {
-          if (TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'LibraryStack'  || TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'BallContainer' ) {
+          if ((TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'LibraryStack'  || TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'BallContainer') && TUIOManager.getInstance()._widgets[widgetId]._playerid === this._playerid) {
             if ( this.isInBounds(TUIOManager.getInstance()._widgets[widgetId], x, y) && !TUIOManager.getInstance()._widgets[widgetId].isDisabled && TUIOManager.getInstance()._widgets[widgetId].isAllowedElement(this)) {
               this._isInStack= true;
               TUIOManager.getInstance()._widgets[widgetId].addElementWidget(this);
