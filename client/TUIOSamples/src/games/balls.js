@@ -130,28 +130,29 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
          $('.timeBar').width(ballContainerWidth);
          if(index == 0)
          {
-            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
-            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x + 130);
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y + 70);
             
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(90deg)');
          
         }
          else if(index == 1)
          {
-            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
-            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x + 130);
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y+75);
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(-90deg)');
                        
          }
          else if(index == 2)
          {
-            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);           
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
              
          }
          else if(index == 3)
          {
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
-            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);           
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(180deg)');
             
          }
