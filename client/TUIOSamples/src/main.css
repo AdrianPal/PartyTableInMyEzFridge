@@ -144,3 +144,12 @@ audio
 {
   display: none;
 }
+
+.timeBar
+{
+  /*width:400px;*/
+  height:50px;
+  position: absolute;
+  background-color: #00C853;
+  /*transform: rotate(270deg);*/
+}

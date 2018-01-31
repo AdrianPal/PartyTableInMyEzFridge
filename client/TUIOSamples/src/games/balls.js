@@ -19,9 +19,11 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 30000; //in milliseconds
+ let _gameTime = 3000; //in milliseconds
 
  const BALLWIDTH = 75;
+ const ballContainerWidth = 200;
+ const ballContainerHeight = 200;
 
  export default function launchBalls(players)
  {
@@ -31,10 +33,11 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
     '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     
     '</div>');
-	  getTags();
+    getTags();
     getPlayers(players);
   
     addBallContainers(players);
+    addTimeBars();
     spawnBalls();
     setCountdown();
 	triggerTime();
@@ -64,8 +67,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
  {
     for (let index = 0; index < players.length; index++) 
     {
-        const ballContainerWidth = 200;
-        const ballContainerHeight = 200;
+        
         let x = 0;
         let y = 0;
         let rotation = 0;
@@ -118,6 +120,43 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
     const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF3366');
     container.addElementWidget(mahball);
     */
+ }
+
+ function addTimeBars()
+ {
+     for (let index = 0; index < _players.length; index++)
+     {
+         $('#ballsView').append('<p><progress class="timeBar" id="'+_players[index].name +'bar" value="100" max="100"></progress></p>');
+         $('.timeBar').width(ballContainerWidth);
+         if(index == 0)
+         {
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);
+            
+            $('#' + _players[index].name + 'bar').css('transform', 'rotate(90deg)');
+         
+        }
+         else if(index == 1)
+         {
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);
+            $('#' + _players[index].name + 'bar').css('transform', 'rotate(-90deg)');
+                       
+         }
+         else if(index == 2)
+         {
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);           
+             
+         }
+         else if(index == 3)
+         {
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y);           
+            $('#' + _players[index].name + 'bar').css('transform', 'rotate(180deg)');
+            
+         }
+         
+     }
  }
 
  function spawnBalls()
@@ -174,27 +213,32 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
 }
 
 function triggerTime()
-{
-	  
+{	  
+    const partToRemove = $('#' + _players[0].name + 'bar').val()/(_gameTime/1000);
+    console.log("Part to remove is " + partToRemove);
 	window.setInterval( function()
 	{ 
+        const frameTime = 1000
 		if(_gameTime>0)
 		{
-			_gameTime  -=  1000;
+			_gameTime  -=  frameTime;
 		
 		
-		for (let index = 0; index < _containers.length; index++) 
-		{
-			_containers[index].updateTime(_gameTime);
-		}
+            for (let index = 0; index < _containers.length; index++) 
+            {
+                _containers[index].updateTime(frameTime);
+            }
 		
-	  
-		}
-		
-	}  , 1000 );
-	
+            for (let index = 0; index < _players.length; index++)
+            {
+                //console.log("HHHHAIIIT" + ('#' + _players[index].name + 'bar').css('height'));
 
-	
+                const sub = 100 * (frameTime/_gameTime)
+                $('#' + _players[index].name + 'bar').val($('#' + _players[index].name + 'bar').val() - partToRemove);
+            }
+		}
+		
+	}  , 1000 );	
 }
 
  function getPlayers(players)
@@ -246,7 +290,7 @@ function triggerTime()
 
 
 
-    console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
+    //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
  function getTags()
