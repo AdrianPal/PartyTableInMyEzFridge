@@ -1,5 +1,6 @@
 const Game = require('../models/game'),
     User = require('../models/user'),
+    ObjectID = require('mongodb').ObjectID,
     socketHelper = require('../utils/socketHelper');
 
 exports.newGame = function (req, res, next) {
@@ -42,16 +43,23 @@ exports.newGameWithPlayersFromPrevious = function (req, res, next) {
 
                 console.log(users);
 
-                for (let i = 0; i < users.length; i++) {
+                for (let i = 0; i < users.length; i++)  {
                     users[i].gameId = newGame._id;
-                    
+                    users[i]._id = new ObjectID();
+
                     users[i].position = 0;
                     users[i].lap = 0;
                     users[i].points = 0;
                 }
 
-                User.collection.insert(users);
-                
+                User.collection.insert(users, function (err, newUsers) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log(newUsers);
+                    }
+                });
+
                 return res.status(200).json({
                     gameId: newGame._id,
                     users: users

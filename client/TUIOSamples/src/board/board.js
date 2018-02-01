@@ -9,7 +9,9 @@ import PlayButton from './play.button';
 // Games
 import launchLabyrinth from '../games/labyrinth';
 import launchBalls from '../games/balls';
-import { Twister } from '../games/twister/twister';
+import {
+    Twister
+} from '../games/twister/twister';
 import launchPictionary from '../games/pictionary';
 
 const config = require('../../config');
@@ -29,7 +31,6 @@ export default class Board {
 
         this.gameId = gameId;
 
-        console.log(_users, this.users);
         this.users = _users;
 
         this.currentPlayer = null;
@@ -156,6 +157,8 @@ export default class Board {
     currentPlayerWon() {
         const that = this;
 
+        that.dice.deleteWidget();
+
         $.ajax({
             type: "GET",
             url: Board.currentFolder + '/curtain.view.html',
@@ -165,7 +168,7 @@ export default class Board {
 
                 setTimeout(function () {
                     $('#winnerIs').css('visibility', 'visible');
-                    
+
                     let $newGameBtn = $('#playAgain');
                     let $newGamePlayersBtn = $('#playAgainSamePlayers');
 
@@ -201,7 +204,7 @@ export default class Board {
         const updatedPosition = this.currentPlayer.position + diceVal;
 
         if (updatedPosition >= Board.numberOfTiles) { // Won!
-            this.currentPlayerWon();
+            return this.currentPlayerWon();
         }
 
         $.ajax({
@@ -236,19 +239,58 @@ export default class Board {
     launchRandomGame() {
         let numberOfGames = 4;
 
-        switch(Math.floor(Math.random() * numberOfGames) + 1) {
-            case 1:
-                return launchPictionary(this.gameId);
+        let gameName = null;
 
-            case 2: 
-                return launchLabyrinth(this.gameId);
+        let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-            case 3:
-                return launchBalls(this.gameId);
+        console.log('Rand: '+ rand);
 
-            default:
-                return new Twister(this.gameId);
-        }
+        this.letsPlayView("Twister");
+                new Twister(this.gameId);
+
+        // switch (rand) {
+        //     case 1:
+        //         this.letsPlayView("Pictionary");
+        //         launchPictionary(this.gameId);
+        //         break;
+
+        //     case 2:
+        //         this.letsPlayView("Labyrinth");
+        //         launchLabyrinth(this.gameId);
+        //         break;
+
+        //     case 3:
+        //         this.letsPlayView("Balls");
+        //         launchBalls(this.gameId);
+        //         break;
+
+        //     default:
+        //         this.letsPlayView("Twister");
+        //         new Twister(this.gameId);
+        //         break;
+        // }
+    }
+
+    letsPlayView(name) {
+        $.ajax({
+            type: "GET",
+            url: Board.currentFolder + '/play.view.html',
+            success: function (text) {
+                $('body').prepend(text).find('#playingView').hide().fadeIn(350);
+
+                $('#gameName').hide().html(name + '!');
+
+                // Display name
+                setTimeout(function () {
+                    $('#gameName').slideDown(1000);
+                }, 750);
+
+                // Hide view
+                setTimeout(function () {
+                    $('#playingView').remove();
+                }, 4000);
+            }
+        });
     }
 
     newGameClicked(type) {
@@ -260,7 +302,7 @@ export default class Board {
                 break;
 
             case "newWithPlayers":
-                location.href = url + '/?players='+ this.gameId;
+                location.href = url + '/?players=' + this.gameId;
                 break;
         }
     }

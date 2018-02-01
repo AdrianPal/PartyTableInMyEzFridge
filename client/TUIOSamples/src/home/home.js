@@ -28,7 +28,7 @@ export default class Home {
         return 2;
     }
 
-    constructor(_gameId) {
+    constructor(_gameId, _copy) {
         this.app = $('#app');
         this.totalWin = 0;
 
@@ -39,10 +39,32 @@ export default class Home {
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
 
-            this.initGameWithPlayersFromPreviousGame();
+            if (_copy) { // NEW game from previous config
+                this.initGameWithPlayersFromPreviousGame();
+            } else { // Just display the board
+                this.getUsersFromServerBeforeDisplayingBoard();
+            }
         } else {
             this.createNewGame();
         }
+    }
+
+    getUsersFromServerBeforeDisplayingBoard() {
+        const that = this;
+
+        $.get(config.server + '/api/user/' + this.gameId)
+            .done(function (d) {
+                that.users = d;
+
+                that.userView = new User(d, that.gameId);
+
+                that.addBoard();
+            })
+            .fail(function (e) {
+                alert('Error: can\'t get players.');
+                console.log(e);
+            });
+
     }
 
     createNewGame() {
@@ -101,12 +123,12 @@ export default class Home {
         $('#start').appendTo('body');
 
         $('#start').css('display', 'block');
-        
+
         $('#start').addClass('doNotUse');
 
         $('#start').on('click', function () {
             if (!that.users || that.users.length < Home.minimumRequiredUsers) {
-                alert('You must have at least '+ Home.minimumRequiredUsers + ' players.');
+                alert('You must have at least ' + Home.minimumRequiredUsers + ' players.');
                 return;
             }
 

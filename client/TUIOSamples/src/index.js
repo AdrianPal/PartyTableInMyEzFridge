@@ -43,7 +43,7 @@ $(window).ready(() => {
     SocketMobile(io, gameId, pos);
   } else {
     let copyGameId = getUrlParameter('players');
-    new Home(copyGameId);
+    new Home(copyGameId, true);
   }
   // buildApp();
 });

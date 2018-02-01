@@ -63,6 +63,4 @@ typings/
 data/db/*
 
 
-client/TUIOSamples/config.js
-
 server/assets/*
