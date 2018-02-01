@@ -182,9 +182,6 @@ export class Twister {
     }
 
     checkForTotal(color) {
-        console.log(color);
-        console.log(this.pastilles[color]);
-
         if (this.pastilles[color].done >= this.pastilles[color].toDo) {
             $('#' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
             $('#' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');
