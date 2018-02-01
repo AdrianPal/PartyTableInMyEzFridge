@@ -12,7 +12,7 @@ import Home from '../../home/home';
 import {
     Game
 } from '../game';
-import Anywhere from '../../board/anywhere';
+import Anywhere from './anywhere';
 
 export class Twister extends Game {
 
@@ -27,6 +27,9 @@ export class Twister extends Game {
     }
     static randBetween(min, max) {
         return Math.floor((Math.random() * max) + min);
+    }
+    static get gameDuration() {
+        return 10;
     }
 
     constructor(_gameId) {
@@ -49,14 +52,14 @@ export class Twister extends Game {
         this.initGame();
     }
 
-    getCurrentPlayersName() {
+    getPlayersName(p) {
         let players = "";
 
-        this.currentPlayers.forEach(function (e) {
+        p.forEach(function (e) {
             players += e.name + ", ";
         });
 
-        players = players.substring(0, players.length - 1);
+        players = players.substring(0, players.length - 2);
 
         return players;
     }
@@ -68,7 +71,7 @@ export class Twister extends Game {
             this.currentPlayers = this.teamTwo;
         }
 
-        let players = this.getCurrentPlayersName();
+        let players = this.getPlayersName(this.currentPlayers);
 
         $('body').append(`
             <div id="turnView">
@@ -77,18 +80,91 @@ export class Twister extends Game {
                 <span class="clickAnywhere">Click anywhere to start the game.</span>
             </div>`);
 
-        let anywhere = new Anywhere(this);
+        let anywhere = new Anywhere(this, this.dismissTeamMessageAndStart);
         anywhere.addTo($('body').get(0));
     }
 
-    dismissTeamMessage(widget) {
+    dismissTeamMessageAndStart(widget) {
         widget.deleteWidget();
 
         $('#turnView').remove();
 
-        let players = this.getCurrentPlayersName();
-        
+        let players = this.getPlayersName(this.currentPlayers);
+
         $('#currentTeam').html(players);
+
+        this.setProgressBar(Twister.gameDuration, Twister.gameDuration, this.createProgressBar());
+    }
+
+    createProgressBar() {
+        $('#instructions').prepend('<div id="countDown"><div class="bar"></div></div>');
+        return $('#countDown');
+    }
+
+    setProgressBar(timeleft, timetotal, $element) {
+        let progressBarWidth = timeleft * $element.width() / timetotal;
+        const that = this;
+
+        $element.find('div').animate({
+            width: progressBarWidth
+        }, 500).html(Math.floor(timeleft / 60) + ":" + timeleft % 60);
+
+        if (timeleft > 0) {
+            setTimeout(function () {
+                that.setProgressBar(timeleft - 1, timetotal, $element);
+            }, 1000);
+        } else {
+            this.endOfCurrentTurn();
+        }
+    }
+
+    endOfCurrentTurn() {
+        this.currentPlayers['points'] = this.totalWin;
+
+        if (this.currentPlayers == this.teamOne) { // Call team two
+            this.teamOne = this.currentPlayers;
+
+            this.totalWin = 0;
+
+            this.newGame();
+
+            this.addGameElements();
+
+            this.setTurn(2);
+        } else {
+            this.teamTwo = this.currentPlayers;
+
+            this.endThisGame();
+        }
+    }
+
+    endThisGame() {
+        let players;
+        let winPoints, losePoint;
+
+        if (this.teamOne.points > this.teamTwo.points) {
+            players = this.getPlayersName(this.teamOne);
+            winPoints = this.teamOne.points;
+            losePoint = this.teamTwo.points;
+        } else {
+            players = this.getPlayersName(this.teamTwo);
+            winPoints = this.teamTwo.points;
+            losePoint = this.teamOne.points;
+        }
+
+        $('body').append(`
+            <div id="turnView">
+                <h1>` + players + `</h1>
+                <span>won with ` + winPoints + ` against ` + losePoint + `!</span>
+                <span class="clickAnywhere">Click anywhere to come back to the board.</span>
+            </div>`);
+
+        let anywhere = new Anywhere(this, this.updatePointsAndGoBackToBoard);
+        anywhere.addTo($('body').get(0));
+    }
+
+    updatePointsAndGoBackToBoard() {
+        return new Home(this.gameId);
     }
 
     fetchPlayersAndBuildTeam() {
@@ -167,6 +243,8 @@ export class Twister extends Game {
     }
 
     addGameElements() {
+        console.log('ADDING ELEMENTS');
+
         this.getPastilles();
 
         this.getInstructions();
@@ -183,7 +261,8 @@ export class Twister extends Game {
 
         for (let i = 0; i < colors.length; i++) {
             this.pastilles[colors[i]] = {
-                toDo: Twister.randBetween(0, colors.length + 1),
+                // toDo: Twister.randBetween(0, colors.length + 1),
+                toDo: Twister.randBetween(0, 2),
                 done: 0
             };
         }
@@ -221,10 +300,14 @@ export class Twister extends Game {
         }, 750);
     }
 
-    getInstructions() {
+    getInstructions(doNotCreateTable) {
         const colors = Twister.colors;
 
         let content = '<div id="currentTeam"></div><table>';
+
+        if (doNotCreateTable) {
+            content = '';
+        }
 
         for (let i = 0; i < colors.length; i++) {
             const nbre = this.pastilles[colors[i]].toDo;
@@ -236,9 +319,18 @@ export class Twister extends Game {
                 </tr>`;
         }
 
-        content += '</table>';
+        if (!doNotCreateTable) {
+            content += '</table>';
 
-        $('#instructions').html(content);
+            $('#instructions').html(content);
+        } else {
+            $('#instructions table').html(content);
+        }
+
+        // Will be updated
+        $('#total').remove();
+        // Need to hide it
+        $('#instructions #win').remove();
     }
 
     getTotal() {
@@ -255,7 +347,7 @@ export class Twister extends Game {
         setTimeout(function () {
             that.newGame();
 
-            that.getInstructions();
+            that.getInstructions(true); // Do not create table
 
             that.getTotal();
         }, 800);

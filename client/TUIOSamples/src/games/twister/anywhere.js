@@ -3,10 +3,11 @@ import TUIOManager from 'tuiomanager/core/TUIOManager';
 
 
 export default class Anywhere extends ElementWidget {
-    constructor(parent) {
+    constructor(_parent, _callBack) {
         super(0, 0, 1920, 1080, 0, 1);
 
-        this.parent = parent;
+        this.callBack = _callBack;
+        this.parent = _parent;
 
         this.canMove(false, false);
         this.canRotate(false, false);
@@ -14,6 +15,6 @@ export default class Anywhere extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
-        this.parent.dismissTeamMessage(this);
+        this.callBack.call(this.parent, this);
     }
 }

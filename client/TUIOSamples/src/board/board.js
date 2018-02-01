@@ -243,32 +243,30 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        console.log('Rand: '+ rand);
-
-        this.letsPlayView("Twister");
-                new Twister(this.gameId);
-
-        // switch (rand) {
-        //     case 1:
-        //         this.letsPlayView("Pictionary");
-        //         launchPictionary(this.gameId);
-        //         break;
-
-        //     case 2:
-        //         this.letsPlayView("Labyrinth");
-        //         launchLabyrinth(this.gameId);
-        //         break;
-
-        //     case 3:
-        //         this.letsPlayView("Balls");
-        //         launchBalls(this.gameId);
-        //         break;
-
-        //     default:
-        //         this.letsPlayView("Twister");
+        // this.letsPlayView("Twister");
         //         new Twister(this.gameId);
-        //         break;
-        // }
+
+        switch (rand) {
+            case 1:
+                this.letsPlayView("Pictionary");
+                launchPictionary(this.gameId);
+                break;
+
+            case 2:
+                this.letsPlayView("Labyrinth");
+                launchLabyrinth(this.gameId);
+                break;
+
+            case 3:
+                this.letsPlayView("Balls");
+                launchBalls(this.gameId);
+                break;
+
+            default:
+                this.letsPlayView("Twister");
+                new Twister(this.gameId);
+                break;
+        }
     }
 
     letsPlayView(name) {

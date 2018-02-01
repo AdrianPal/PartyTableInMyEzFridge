@@ -197,3 +197,18 @@
     margin-top: 100px;
     color: silver;
 }
+
+#countDown {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    background: #af2b2b;
+    color: white;
+    font-size: 16px;
+}
+
+#countDown > div {
+    overflow: hidden;
+    background: #ff3e3e;
+    text-align: right;
+    padding: 0 10px;
+}
