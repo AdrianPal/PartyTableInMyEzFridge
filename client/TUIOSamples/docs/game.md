@@ -2,7 +2,7 @@
 
 ## Hériter de Game
 
-Si vous le souhaitez, et pour pouvoir récupérer facilement les joueurs, vous pouvez faire hériter vos jeux de la classe __[`Game`](../src/games/game.js)__. De ce fait, vous pourrez alors utiliser la méthode __`getPlayers()`__ pour récupérer les joueurs _(en faisant un `.done(...).fail(...)`)_.
+Si vous le souhaitez, et pour pouvoir récupérer facilement les joueurs, vous pouvez faire hériter vos jeux de la classe __[Game](../src/games/game.js)__. De ce fait, vous pourrez alors utiliser la méthode __`getPlayers()`__ pour récupérer les joueurs _(en faisant un `.done(...).fail(...)`)_.
 
 ## Utiliser le "Cliquez n'importe où pour..."
 
