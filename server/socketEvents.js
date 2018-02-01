@@ -2,12 +2,12 @@ exports = module.exports = function (io) {
     // Set socket.io listeners.
 
     const prefixMobile = 'mobile';
+    let users = [];
 
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
         let gameId;
-        let users = [];
 
 
         // On conversation entry, join broadcast channel
@@ -26,7 +26,6 @@ exports = module.exports = function (io) {
             gameId = data.gameId;
 
             users[data.pos] = socket.id;
-            console.log(users);
         });
 
         socket.on(prefixMobile + ' trigger', (data) => {
@@ -77,16 +76,28 @@ exports = module.exports = function (io) {
 
 
         socket.on('mobile enter pictionary game',() => {
-            var randomPlayer = Math.random(users.length - 1);
-            for(let i = 0; i < users.length; i++) {
-                if (i == randomPlayer){
-                    socket.to(users[randomPlayer]).emit('mobile game pictionary', true);
-                    console.log(1);
+            var usersSize = Object.keys(users).length;
+            var randomPlayer = Math.floor(Math.random() * Math.floor(usersSize));
+
+
+            const possibleWord = ['CAT', 'DOG', 'PLATE', 'SPOON', 'KNIFE', 'FORK', 'COW', 'CUCUMBER', 'STAIRS', 'PLANET', 'EMPIRE STATE BUILDING', 'BRIDGE', 'GREEN'];
+            const randomWord  = Math.floor(Math.random() * (possibleWord.length) + 0);
+    
+
+            var userIndex = 0;
+
+            for(let userPos in users) {
+                if (userIndex == randomPlayer){
+                    socket.to(users[userPos]).emit('mobile game pictionary', true, possibleWord[randomWord]);
                 } else {
-                    socket.to(users[randomPlayer]).emit('mobile game pictionary', false);
-                    console.log(2);
+                    socket.to(users[userPos]).emit('mobile game pictionary', false, null);
                 }
+                userIndex++;
             }
+        })
+
+        socket.on('decreaseCountdown', (value) => {
+            socket.broadcast.emit('decreaseCountdown', value);
         })
 
         //------------------------------------BALLS--------------------------

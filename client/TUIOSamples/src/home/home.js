@@ -6,8 +6,10 @@ import Pastille from '../games/twister/pastille';
 import SocketManager from '../../socket.manager';
 import User from '../user/user';
 
-import launchBalls from '../games/balls';
-import { Twister } from '../games/twister/twister';
+// import launchBalls from '../games/balls';
+import {
+    Twister
+} from '../games/twister/twister';
 import launchLabyrinth from '../games/labyrinth';
 import launchPictionary from '../games/pictionary';
 
@@ -68,13 +70,24 @@ export default class Home {
     }
 
     addElements() {
-        let qrCodes = [
-            { pos: 'bottom', qrCode: true },
-            { pos: 'left', qrCode: true },
-            { pos: 'top', qrCode: true },
-            { pos: 'right', qrCode: true },
+        let qrCodes = [{
+                pos: 'bottom',
+                qrCode: true
+            },
+            {
+                pos: 'left',
+                qrCode: true
+            },
+            {
+                pos: 'top',
+                qrCode: true
+            },
+            {
+                pos: 'right',
+                qrCode: true
+            },
         ];
-        
+
         this.userView = new User(qrCodes, this.gameId);
 
         this.addSocketListener();
@@ -84,12 +97,7 @@ export default class Home {
         let that = this;
 
         SocketManager.get().on('refresh game', function (d) {
-            let users = d.game;
-            
-            if (d.game.length === 1)
-                users = [d.game];
-
-            that.userView.updateElements(users);
+            that.userView.updateElements(d.game);
         });
     }
 }

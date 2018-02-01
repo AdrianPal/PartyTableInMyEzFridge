@@ -1,0 +1,29 @@
+html, body {
+    position: fixed !important;
+}
+
+#word {
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+#pictionaryMobileContainer {
+    height: 100%;
+}
+
+#start {
+    text-align: center;
+    padding: 0.5em;
+    border: 0.4em;
+    background-color: red;
+}
+
+#countdown {
+    display: none;
+    text-align: center;
+}
+
+#pictionaryCanvas {
+    border: 0.2em solid black;
+}

@@ -58,6 +58,8 @@ export default class User {
     constructElements() {
         const that = this;
 
+        console.log(that.elements);
+
         $.each(that.elements, function (index, value) {
             let pos = value.pos;
 
@@ -75,25 +77,20 @@ export default class User {
         new QRCode('qrcode_' + pos, link);
     }
 
-    buildUser(user) {
-        let that = this;
+    buildUser(e) {
+        console.log(e);
+        $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>');
+        $('#' + e.pos + 'User .name').css('background-color', this.getAvatarNameBackground(e.color));
+        $('#' + e.pos + 'User .name').show();
 
-        console.log(user);
+        let linkImage = config.server + '/' + e.avatarPath;
 
-        user.forEach(function (e) {
-            $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>');
-            $('#' + e.pos + 'User .name').css('background-color', that.getAvatarNameBackground(e.color));
-            $('#' + e.pos + 'User .name').show();
-
-            let linkImage = config.server + '/' + e.avatarPath;
-
-            $('#' + e.pos + 'User .avatar').css({
-                'backgroundImage': 'url(' + config.server + '/' + e.avatarPath + ')',
-                'borderColor': e.color
-            });
-
-            $('#qrcode_' + e.pos).hide();
+        $('#' + e.pos + 'User .avatar').css({
+            'backgroundImage': 'url(' + config.server + '/' + e.avatarPath + ')',
+            'borderColor': e.color
         });
+
+        $('#qrcode_' + e.pos).hide();
     }
 
     getAvatarNameBackground(hex) {
