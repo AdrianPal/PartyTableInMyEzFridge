@@ -2,7 +2,7 @@
  * @author Kevin Duglue <kevin.duglue@gmail.com>
  * @author Rémy Kaloustian <remy.kaloustian@gmail.com>
  */
-
+//raimmmmmmeeeee
 
 import TUIOWidget from '../../core/TUIOWidget';
 import TUIOManager from '../../core/TUIOManager';
@@ -86,6 +86,7 @@ class ElementWidget extends TUIOWidget {
     const p = new Point(x, y);
     p.rotate((360 - this._currentAngle), ox, oy);
     this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
+    
     return (p.x >= nx && p.x <= nx + width && p.y >= ny && p.y <= ny + height) && !this.isDisabled;
   }
 
@@ -140,6 +141,7 @@ class ElementWidget extends TUIOWidget {
    */
   onTouchUpdate(tuioTouch) {
     if (typeof (this._lastTouchesValues[tuioTouch.id]) !== 'undefined') {
+      
       if (this.zIndex !== ElementWidget.zIndexGlobal) {
         ElementWidget.zIndexGlobal += 1;
         this.zIndex = ElementWidget.zIndexGlobal;
@@ -228,7 +230,7 @@ class ElementWidget extends TUIOWidget {
       const y = lastTouchValue.y;
       if (!this._isInStack) {
         Object.keys(TUIOManager.getInstance()._widgets).forEach((widgetId) => {
-          if (TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'LibraryStack') {
+          if (TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'LibraryStack'  || TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'BallContainer' ) {
             if ( this.isInBounds(TUIOManager.getInstance()._widgets[widgetId], x, y) && !TUIOManager.getInstance()._widgets[widgetId].isDisabled && TUIOManager.getInstance()._widgets[widgetId].isAllowedElement(this)) {
               this._isInStack= true;
               TUIOManager.getInstance()._widgets[widgetId].addElementWidget(this);
@@ -345,7 +347,26 @@ class ElementWidget extends TUIOWidget {
    */
   onTagDeletion(tuioTagId) {
     super.onTagDeletion(tuioTagId);
-  }
+	
+	 super.onTagDeletion(tuioTagId);
+    if (typeof (this._lastTagsValues[tuioTagId]) !== 'undefined') {
+      const lastTagValue = this._lastTagsValues[tuioTagId];
+      const x = lastTagValue.x;
+      const y = lastTagValue.y;
+      if (!this._isInStack) {
+        Object.keys(TUIOManager.getInstance()._widgets).forEach((widgetId) => {
+          if (TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'LibraryStack'  || TUIOManager.getInstance()._widgets[widgetId].constructor.name === 'BallContainer' ) {
+            if ( this.isInBounds(TUIOManager.getInstance()._widgets[widgetId], x, y) && !TUIOManager.getInstance()._widgets[widgetId].isDisabled && TUIOManager.getInstance()._widgets[widgetId].isAllowedElement(this)) {
+              this._isInStack= true;
+              TUIOManager.getInstance()._widgets[widgetId].addElementWidget(this);
+              return;
+            }
+          }
+        });
+      }
+    }
+}
+
 
   /**
    * Call to enable/disable rotation
