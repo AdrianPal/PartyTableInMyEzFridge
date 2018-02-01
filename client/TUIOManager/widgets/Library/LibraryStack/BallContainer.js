@@ -155,6 +155,13 @@ class BallContainer extends TUIOWidget {
       }
   }
 
+  areCoordsRight(x, y) 
+  {
+    
+        return true;
+  }
+  
+
   /**
    * LibraryStack's domElem.
    *
@@ -456,61 +463,64 @@ class BallContainer extends TUIOWidget {
    */
   addElementWidget(elementWidget) {
     let elementToAdd;
-    if (this.isAllowedElement(elementWidget)) {
-      elementToAdd = elementWidget;
-      elementToAdd._domElem.css('transform', 'rotate(360deg)');
-      const elemWidth = elementToAdd._domElem.width();
-      const elemHeight = elementToAdd._domElem.height();
-      this.elementInfoArray.push(
-        {
-          x: elementToAdd.x,
-          y: elementToAdd.y,
-          width: elemWidth,
-          height: elemHeight,
-          angle: elementToAdd._currentAngle,
-          scale: elementToAdd.scale,
-          zIndex: elementToAdd.zIndex,
-        },
-      );
-      elementToAdd._x = this._x;
-      elementToAdd._y = this._y;
-      this.zIndexElem += 1;
-      elementToAdd.zIndex = this.zIndexElem;
+    if(elementWidget._playerid == this._playerid)
+    {    
+      if (this.isAllowedElement(elementWidget)) {
+        elementToAdd = elementWidget;
+        elementToAdd._domElem.css('transform', 'rotate(360deg)');
+        const elemWidth = elementToAdd._domElem.width();
+        const elemHeight = elementToAdd._domElem.height();
+        this.elementInfoArray.push(
+          {
+            x: elementToAdd.x,
+            y: elementToAdd.y,
+            width: elemWidth,
+            height: elemHeight,
+            angle: elementToAdd._currentAngle,
+            scale: elementToAdd.scale,
+            zIndex: elementToAdd.zIndex,
+          },
+        );
+        elementToAdd._x = this._x;
+        elementToAdd._y = this._y;
+        this.zIndexElem += 1;
+        elementToAdd.zIndex = this.zIndexElem;
 
-      elementToAdd._isInStack = true;
-      elementToAdd.disable(true);
-      
-      let newWidth;
-      let newHeight;
-      
-      if (elemWidth > elemHeight) {
-        newWidth = this.width - 50;
-        newHeight = (elemHeight * newWidth) / elemWidth;
-      } else {
-        newHeight = this.width - 50;
-        newWidth = (elemWidth * newHeight) / elemHeight;
+        elementToAdd._isInStack = true;
+        elementToAdd.disable(true);
+        
+        let newWidth;
+        let newHeight;
+        
+        if (elemWidth > elemHeight) {
+          newWidth = this.width - 50;
+          newHeight = (elemHeight * newWidth) / elemWidth;
+        } else {
+          newHeight = this.width - 50;
+          newWidth = (elemWidth * newHeight) / elemHeight;
+        }
+
+        const newLeft = (this.width / 2) - (newWidth / 2);
+        const newTop = (this.height / 2) - (newHeight / 2);
+        elementToAdd._domElem.addClass('stack-element')
+                              .css('left', newLeft)
+                              .css('top', newTop)
+                              .css('overflow', 'hidden')
+                              .css('width', newWidth)
+                              .css('height', newHeight);
+        const angle = this._stackList.length * 10;
+        elementToAdd._currentAngle = angle;
+        elementToAdd.scale = 1;
+        elementToAdd._domElem.css('transform', `rotate(${angle}deg)`)
+                            .appendTo(this.stackDiv);
+
+        this._stackList.push(elementToAdd);
       }
 
-      const newLeft = (this.width / 2) - (newWidth / 2);
-      const newTop = (this.height / 2) - (newHeight / 2);
-      elementToAdd._domElem.addClass('stack-element')
-                            .css('left', newLeft)
-                            .css('top', newTop)
-                            .css('overflow', 'hidden')
-                            .css('width', newWidth)
-                            .css('height', newHeight);
-      const angle = this._stackList.length * 10;
-      elementToAdd._currentAngle = angle;
-      elementToAdd.scale = 1;
-      elementToAdd._domElem.css('transform', `rotate(${angle}deg)`)
-                           .appendTo(this.stackDiv);
+      elementToAdd._domElem.css('transform', 'scale(0.4)');
 
-      this._stackList.push(elementToAdd);
+      this.addBall();
     }
-
-    elementToAdd._domElem.css('transform', 'scale(0.4)');
-
-    this.addBall();
   }
 
   /**

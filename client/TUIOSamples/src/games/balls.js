@@ -52,8 +52,8 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
             _containers[index].addElementWidget(mahball);   
         }*/
 
-        const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633');
-        _containers[3].addElementWidget(mahball);   
+        const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
+        _containers[2].addElementWidget(mahball);   
         
     })
 
@@ -170,8 +170,11 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
         
             const width = $(window).width();
             const height = $(window).height();
-            const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
-            const spawnY = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+            //const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
+            //const spawnY = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+            const coords = getSpawnCoords();
+            const spawnX = coords.x;
+            const spawnY = coords.y;
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
 			const tag = _players[index].tag;
@@ -202,6 +205,30 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
         }//if
     }, 100);     //setIntervall()   
  }//spawnBalls()
+
+ function getSpawnCoords()
+ {
+    const width = $(window).width();
+    const height = $(window).height();
+    let areCoordsRight = false;
+    let x = 0;
+    let y = 0;
+    while(!areCoordsRight)
+    {
+        x = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
+        y = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+        areCoordsRight = true;
+        for (let index = 0; index < _containers.length; index++) 
+        {
+            if(!_containers[index].areCoordsRight(x, y))
+            {
+                areCoordsRight = false;
+            }        
+        }        
+    }  
+
+     return {x:x, y:y};
+ }
 
  function setCountdown()
  {
