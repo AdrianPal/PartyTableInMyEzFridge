@@ -29,7 +29,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 10;
+        return 30;
     }
 
     constructor(_gameId) {
