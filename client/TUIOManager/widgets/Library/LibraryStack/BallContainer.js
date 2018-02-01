@@ -110,7 +110,7 @@ class BallContainer extends TUIOWidget {
 		
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
-	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
+	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
 	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'end"></h3>');
   
   /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
@@ -126,7 +126,7 @@ class BallContainer extends TUIOWidget {
   {
     //this._gameTime = time;
     this._gameTime -= time;
-    $('#'+this._playerid + 'time').text(this._gameTime/1000);
+   // $('#'+this._playerid + 'time').text(this._gameTime/1000);
     const sub = time/this._gameTime;
     const widthToDelete = $('#' + this._playerid + 'bar').width() * sub;
     const newWidth = $('#' + this._playerid + 'bar').width() - widthToDelete;

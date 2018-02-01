@@ -53,7 +53,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
         }*/
 
         const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
-        _containers[2].addElementWidget(mahball);   
+        _containers[0].addElementWidget(mahball);   
         
     })
 
