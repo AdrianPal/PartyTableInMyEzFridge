@@ -10,6 +10,9 @@ const UserSchema = new Schema({
   pos: { type: String },
   avatarPath: { type: String },
   color: { type: String },
+  position: { type: Number },
+  points: { type: Number },
+  lap: { type: Number },
   gameId: {
     type: Schema.Types.ObjectId,
     ref: 'Game'

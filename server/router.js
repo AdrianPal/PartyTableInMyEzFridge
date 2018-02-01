@@ -18,6 +18,8 @@ module.exports = function (app, io) {
 
   // Create a new game
   gameRoutes.post('/', GameController.newGame);
+
+  gameRoutes.get('/new/:gameId', GameController.newGameWithPlayersFromPrevious);
   
   //= ========================
   // Game Users Routes
@@ -32,6 +34,9 @@ module.exports = function (app, io) {
   //= ========================
   apiRoutes.use('/user', userRoutes);
 
+  // Update user position & lap
+  userRoutes.put('/', UserController.updatePositionAndLapForUser);
+  
   // Get all users for a game
   userRoutes.get('/:gameId', UserController.allUsersForGame);
   

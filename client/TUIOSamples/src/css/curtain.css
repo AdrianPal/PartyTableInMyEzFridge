@@ -1,0 +1,132 @@
+.curtain {
+    margin: 0 auto;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.curtain__wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.curtain__wrapper input[type=checkbox] {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    opacity: 0;
+    top: 0;
+    left: 0;
+}
+
+.curtain__wrapper input[type=checkbox]:checked~div.curtain__panel--left {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.curtain__wrapper input[type=checkbox]:checked~div.curtain__panel--right {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.curtain__panel {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: orange;
+    color: #fff;
+    float: left;
+    position: relative;
+    width: 50%;
+    height: 100vh;
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+    z-index: 2;
+}
+
+.curtain__panel h1 {
+    font-size: 100px;
+}
+
+.curtain__panel--left {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+
+.curtain__panel--right {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+.curtain__content {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    position: absolute;
+    text-align: center;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+.curtain__content .user {
+    position: inherit !important;
+}
+
+.curtain__content img {
+    width: 20%;
+}
+
+#playButtons {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+#playButtons .play,
+.playButton {
+    background: rgb(0, 155, 0);
+    font-size: 30px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+#playButtons .play .fa-users,
+.playButton .fa-users,
+#playButtons .play .fa-play-circle,
+.playButton .fa-play-circle {
+    margin-right: 13px;
+}
+
+#playButtons .play.newWithPlayers .text,
+.playButton.newWithPlayers .text {
+    display: flex;
+    flex-direction: column;
+}
+
+#playButtons .play.newWithPlayers .text .small,
+.playButton.newWithPlayers .text .small {
+    font-size: 20px;
+}

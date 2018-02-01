@@ -14,3 +14,7 @@ Pour mettre à jour les éléments, vous pouvez utilisater la méthode __`update
 La liste des utilisateurs peut etre retrouvée sur l'API à l'adresse `api/user/{gameId}`.
 
 Un exemple d'utilisation de cette classe se trouve dans la classe __[Home](../src/home/home.js)__.
+
+## Enlever la vue
+
+Pour enlever la vue des joueurs, vous pouvez appeler la méthode statique de la classe User : __`User.remove()`__.

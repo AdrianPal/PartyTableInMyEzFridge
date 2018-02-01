@@ -2,21 +2,43 @@ html, body {
     position: fixed !important;
 }
 
+#header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#instructions {
+    display: flex;
+    flex-direction: row;
+}
+
+#instructionsField {
+    margin-left: 1em;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+#wordWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
 #word {
     text-align: center;
-    text-decoration: underline;
     font-weight: bold;
+    margin-left: 1em;
+    color: rgb(0, 109, 240);
 }
 
 #pictionaryMobileContainer {
     height: 100%;
 }
 
-#start {
+#startPic {
     text-align: center;
     padding: 0.5em;
-    border: 0.4em;
-    background-color: red;
 }
 
 #countdown {
@@ -27,3 +49,45 @@ html, body {
 #pictionaryCanvas {
     border: 0.2em solid black;
 }
+
+
+#pictionaryMobileContainer {
+    display: none;
+    justify-content: center;
+}
+
+#responseWrapper {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
+}
+#response {
+    margin-left: 0.5em;
+    width: 75%;
+}
+#responseField {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    align-items: center;
+    flex-direction: column;
+    padding: 3em;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #40C4FF; 
+}
+
+#sendResponse {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    padding: 0.8em;
+    margin-top: 2em; 
+}
+
+#sendLabel {
+    margin-left: 1em;
+    font-size: 18px;
+}
+

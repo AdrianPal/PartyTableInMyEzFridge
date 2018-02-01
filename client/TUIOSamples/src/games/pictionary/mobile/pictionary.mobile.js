@@ -21,12 +21,12 @@ export default class PictionaryMobile extends MobileHandler {
             if(isChoosenMobile){
                 that.initChosenMobile(word);
                 that.canvas = document.getElementById('pictionaryCanvas');
-                that.canvas.height = document.body.clientHeight * 0.75;
-                that.canvas.width = document.body.clientWidth;
+                that.canvas.height = document.body.clientHeight * 0.50;
+                that.canvas.width = document.body.clientWidth * 0.90;
              
 
-                that.width = that.canvas.height
-                that.height = that.canvas.height  
+                that.width = that.canvas.height;
+                that.height = that.canvas.width;  
         
                 that.context = document.getElementById('pictionaryCanvas').getContext('2d');
                 that.pointsEast = new Array();
@@ -39,20 +39,33 @@ export default class PictionaryMobile extends MobileHandler {
                 that.isPaletteOpened = false;
                 that.drawSize = 5;
                 that.color = '#000000';
-                that.startEventType = 'mousedown';
-                that.moveEventType = 'mousemove';
-                that.endEventType   = 'mouseup';
+                that.startEventType = 'touchstart';
+                that.moveEventType = 'touchmove';
+                that.endEventType   = 'touchend';
+                $('#instructionsField').append('Try to guess the word below by drawing it in the box below ! Accept or decline your opponent\'s purposes');        
+
+            } else {
+                $('#wordWrapper').hide();
+                $('#startPic').hide();
+                $('#instructionsField').append('Find the word drawn on the table and send your response with the field below !');
+                SocketManager.get().on('startPic', function(){
+                    $('#responseWrapper').css('display','flex');
+                })
+
             }
+
         });    
     }   
 
 
     initChosenMobile(word) {
         const that = this;
-        $('#word').append('Word: ' + word);
-        $('#start').on('click',function(){
+        $('#word').append(word);
+        $('#startPic').on('click',function(){
+            $('#pictionaryMobileContainer').show().css('display', 'flex');;
+            SocketManager.get().emit('startPic');
             that.initCanvasEvent();
-            $('#start').hide();
+            $('#startPic').hide();
             $('#countdown').show();
             $('#countdown').html("<span>90</span>")
             setInterval(function() {

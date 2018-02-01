@@ -14,6 +14,7 @@ import launchLabyrinth from '../games/labyrinth';
 import launchPictionary from '../games/pictionary';
 
 import Pictionary from '../games/pictionary/pictionary'
+import Board from '../board/board';
 
 const config = require('../../config');
 
@@ -23,7 +24,11 @@ export default class Home {
         return '/src/home';
     }
 
-    constructor() {
+    static get minimumRequiredUsers() {
+        return 2;
+    }
+
+    constructor(_gameId) {
         this.app = $('#app');
         this.totalWin = 0;
 
@@ -31,7 +36,13 @@ export default class Home {
 
         this.userView = null;
 
-        this.createNewGame();
+        if (_gameId !== undefined && _gameId !== null) {
+            this.gameId = _gameId;
+
+            this.initGameWithPlayersFromPreviousGame();
+        } else {
+            this.createNewGame();
+        }
     }
 
     createNewGame() {
@@ -51,13 +62,119 @@ export default class Home {
             });
     }
 
+    initGameWithPlayersFromPreviousGame() {
+        const that = this;
+
+        this.app.load(Home.currentFolder + '/home.view.html', function () {
+            that.startGameListener();
+
+            $.get(config.server + '/api/game/new/' + that.gameId)
+                .done(function (d) {
+                    that.users = d.users;
+
+                    that.gameId = d.gameId;
+
+                    this.userView = new User(d.users, that.gameId);
+
+                    that.toggleStartButtonAndCallBoard(true);
+                })
+                .fail(function (e) {
+                    alert('Can\'t get the game players.');
+                });
+        });
+    }
+
     initGame() {
         const that = this;
         this.app.load(Home.currentFolder + '/home.view.html', function () {
             that.addElements();
 
             that.addGameListener();
+
+            that.startGameListener();
         });
+    }
+
+    startGameListener() {
+        const that = this;
+
+        $('#start').appendTo('body');
+
+        $('#start').css('display', 'block');
+        
+        $('#start').addClass('doNotUse');
+
+        $('#start').on('click', function () {
+            if (!that.users || that.users.length < Home.minimumRequiredUsers) {
+                alert('You must have at least '+ Home.minimumRequiredUsers + ' players.');
+                return;
+            }
+
+            that.toggleStartButtonAndCallBoard();
+        });
+    }
+
+    toggleStartButtonAndCallBoard(cancelAnimateFirstPart) {
+        const that = this;
+        let $start = $('#start');
+
+        this.allowStartButton();
+
+        if (cancelAnimateFirstPart) {
+            $start.find('.greenCircle').css({
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                borderRadius: 0,
+                fontSize: '200px',
+            });
+
+            $start.css({
+                animation: 'inherit',
+                transform: 'rotate(0deg)',
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                margin: 0,
+            });
+        } else {
+            $start.find('.greenCircle').animate({
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                borderRadius: 0,
+                fontSize: '200px',
+            }, 1000);
+
+            $start.css({
+                'animation': 'inherit',
+                'transform': 'rotate(0deg)'
+            }).animate({
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                margin: 0,
+            }, 1000)
+        }
+
+        setTimeout(function () {
+            $('#start .greenCircle .fa-paper-plane').animate({
+                marginTop: '-150%',
+                marginRight: '-150%'
+            }, 2000);
+
+            $('#start').delay(700).fadeOut(1000);
+
+            that.addBoard();
+        }, 1000);
+    }
+
+    addBoard() {
+        new Board(this.users, this.gameId);
     }
 
     addGameListener() {
@@ -97,7 +214,17 @@ export default class Home {
         let that = this;
 
         SocketManager.get().on('refresh game', function (d) {
+            that.users = d.game;
+
+            if (that.users.length >= Home.minimumRequiredUsers)
+                that.allowStartButton();
+
             that.userView.updateElements(d.game);
         });
+    }
+
+    allowStartButton() {
+        console.log('shopw!');
+        $('#start').removeClass('doNotUse');
     }
 }

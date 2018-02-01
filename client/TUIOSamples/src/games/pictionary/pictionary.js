@@ -16,6 +16,7 @@ export default class Pictionary {
     }
 
     constructor(gameId) {
+        $('#start').hide();
         this.app = $('#app');
         this.initGame();        
 
@@ -23,14 +24,14 @@ export default class Pictionary {
         this.pointsNorth = new Array();
         this.pointsDrag = new Array();
         this.isPainting = false;
-
+        this.context = null;
     }
 
     initGame() {
         const that = this;
         this.app.load(Pictionary.getCurrentDirectory + 'pictionary.view.html', function(){
             SocketManager.get().emit('mobile enter pictionary game');
-            that.initCountdown()
+            that.initCountdown();
         });
     }
 
@@ -40,22 +41,24 @@ export default class Pictionary {
         canvas.height = document.body.clientHeight * 0.50;
         this.context = canvas.getContext('2d');
 
-        this.width = that.canvas.height
-        this.height = that.canvas.height  
-
+        this.width = canvas.width;
+        this.height = canvas.height;  
     }
 
     initDrawingSocketBinding(){
         SocketManager.get().on('isDrawing', (east, north, drag, distantColor, size) => {
-            refreshCanvasOnSocket(east,north,drag, distantColor, size);
+            this.refreshCanvasOnSocket(east,north,drag, distantColor, size);
         });
     }
     initCountdown() {
         var countdown = $('#countdown');
         countdown.html(Pictionary.countDownTime);
         const that = this;
+        that.initDrawingSocketBinding();
         SocketManager.get().on('decreaseCountdown', function(value) {
-            that.initDrawingSocketBinding();
+            if(that.context == null) {
+                that.initCanvas();
+            }
             $('#pictionaryCanvas').show();
             $('#instructions').hide();
             countdown.html(value);

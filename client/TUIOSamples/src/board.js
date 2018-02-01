@@ -3,7 +3,7 @@
  * Contains the actions related to the board view
  */
 
-import launchBalls from './games/balls';
+// import launchBalls from './games/balls';
 import launchTwister, { Twister } from './games/twister/twister';
 import launchLabyrinth from './games/labyrinth';
 import launchPictionary from './games/pictionary';
@@ -24,9 +24,9 @@ let _games = [
     {launch:function(){
         launchLabyrinth(_players);
     }},
-    {launch:function(){
-        launchBalls(_players);
-    }},
+    // {launch:function(){
+    //     launchBalls(_players);
+    // }},
 ];
 
 //Called when switching from home to board OOOOR when finishing a game and going back to board view

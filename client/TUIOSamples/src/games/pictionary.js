@@ -58,9 +58,9 @@ export default function launchPictionary(players)
 
 
 
-socket.on('isDrawing', (east, north, drag, distantColor, size) => {
+/* socket.on('isDrawing', (east, north, drag, distantColor, size) => {
     refreshCanvasOnSocket(east,north,drag, distantColor, size);
-});
+}); */
 
 socket.on('connectedPic', (isTableResponse) => {
     isTable = isTableResponse;

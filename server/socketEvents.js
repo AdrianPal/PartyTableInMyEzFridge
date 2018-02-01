@@ -96,6 +96,10 @@ exports = module.exports = function (io) {
             }
         })
 
+        socket.on('startPic', () => {
+            socket.broadcast.emit('startPic');
+        });
+
         socket.on('decreaseCountdown', (value) => {
             socket.broadcast.emit('decreaseCountdown', value);
         })
