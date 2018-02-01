@@ -10,7 +10,7 @@ import $ from 'jquery/dist/jquery.min';
 // Import TUIOManager
 import TUIOManager from 'tuiomanager/core/TUIOManager';
 
-import buildMenu from './menu';
+// import buildMenu from './menu';
 
 import Home from './home/home';
 
@@ -42,7 +42,8 @@ $(window).ready(() => {
 
     SocketMobile(io, gameId, pos);
   } else {
-    new Home;
+    let copyGameId = getUrlParameter('players');
+    new Home(copyGameId);
   }
   // buildApp();
 });

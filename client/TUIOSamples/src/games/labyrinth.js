@@ -3,6 +3,7 @@
  *
  */
 import SocketManager from "../../socket.manager";
+import User from "../user/user";
 
 var socket = SocketManager.get();
 
@@ -288,7 +289,7 @@ function initGame() {
 }
 
 export default function launchLabyrinth(players) {
-    $('#boardView').remove();
+    User.remove();
 
     // setTimeout(function()
     // {

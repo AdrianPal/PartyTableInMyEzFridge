@@ -89,38 +89,44 @@ h1
   bottom:0px;
 }
 
-#boardView{
-width: 100%;
-}
-#board
-{
-  display: inline-block;
-}
-.boardTile
-{
-  width:100px;
-  height: 200px;  
-  display: inline-block;
-}
-
-#lastTile
-{
-  background-color: #00C853;
-
-}
-
-#dice
-{
-  position: absolute;
-}
-
-.playerAvatar
-{
-  position: absolute;
-}
-
 .center {
   text-align: center;
+}
+
+#start {
+  width: 200px;
+  height: 250px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -125px;
+  margin-left: -100px;
+  z-index: 99999;
+}
+
+#start .greenCircle {
+  height: 200px;
+  width: 200px;
+  font-size: 100px;
+  background: rgb(15, 177, 15);
+  border-radius: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#start .text {
+  font-size: 40px;
+  text-align: center;
+}
+
+#start.doNotUse .greenCircle {
+  background: silver;
+}
+
+#start.doNotUse .text {
+  color: silver;
 }
 
 /*_____________________BALLS PART*____________________*/

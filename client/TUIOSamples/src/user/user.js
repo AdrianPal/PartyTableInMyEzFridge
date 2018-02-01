@@ -79,7 +79,7 @@ export default class User {
 
     buildUser(e) {
         console.log(e);
-        $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>');
+        $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>').css('display', 'block');
         $('#' + e.pos + 'User .name').css('background-color', this.getAvatarNameBackground(e.color));
         $('#' + e.pos + 'User .name').show();
 
@@ -112,5 +112,12 @@ export default class User {
 
     static remove() {
         $(User.userTag).remove();
+    }
+
+    static updateCurrentPlayer(pos) {
+        console.log('adding class to current player: '+pos);
+        console.log($('#' + pos + 'User'));
+        $('.currentPlayer').removeClass('currentPlayer');
+        $('#' + pos + 'User').addClass('currentPlayer');
     }
 }

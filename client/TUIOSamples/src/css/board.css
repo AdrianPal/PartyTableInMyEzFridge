@@ -1,0 +1,55 @@
+#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.diceClicked {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both infinite;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+#boardContainer {
+    width: 100%;
+}
+
+#board {
+    display: flex;
+    width: 65%;
+    margin-left: 17.5%;
+}
+
+.boardTile {
+    height: 250px;
+    flex-grow: 100;
+}
+
+#lastTile {
+    background-color: #00C853;
+}
+
+.playerBoardAvatar {
+    position: absolute;
+}
+
+@keyframes shake {
+    10%,
+    90% {
+        transform: translate3d(-12px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(13px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-15px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(15px, 0, 0);
+    }
+}
