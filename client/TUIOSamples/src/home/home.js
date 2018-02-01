@@ -13,6 +13,7 @@ import {
 import launchLabyrinth from '../games/labyrinth';
 import launchPictionary from '../games/pictionary';
 
+import Pictionary from '../games/pictionary/pictionary'
 import Board from '../board/board';
 
 const config = require('../../config');
@@ -201,16 +202,10 @@ export default class Home {
     addGameListener() {
         let that = this;
 
-        $('#pic').on('click', function () {
-            launchPictionary(that.gameId);
-        });
-        $('#lab').on('click', function () {
-            launchLabyrinth(that.gameId);
-        });
-        // $('#bal').on('cliqck', function() { launchBalls(that.gameId); });
-        $('#twi').on('click', function () {
-            new Twister(that.gameId);
-        });
+        $('#pic').on('click', function() { new Pictionary() });
+        $('#lab').on('click', function() { launchLabyrinth(that.gameId); });
+        $('#bal').on('click', function() { launchBalls(that.gameId); });
+        $('#twi').on('click', function() { new Twister(that.gameId); });
     }
 
     addElements() {

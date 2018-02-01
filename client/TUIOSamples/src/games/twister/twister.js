@@ -9,8 +9,12 @@ import Pastille from './pastille';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 import User from '../../user/user';
 import Home from '../../home/home';
+import {
+    Game
+} from '../game';
+import Anywhere from '../../board/anywhere';
 
-export class Twister {
+export class Twister extends Game {
 
     static get currentFolder() {
         return '/src/games/twister';
@@ -26,14 +30,133 @@ export class Twister {
     }
 
     constructor(_gameId) {
+        super(_gameId);
+
+        User.remove();
+
         this.app = $('#app');
         this.totalWin = 0;
 
-        User.remove();
+        this.teamOne = [];
+        this.teamTwo = [];
+
+        this.currentPlayers = null;
+
+        this.fetchPlayersAndBuildTeam();
 
         this.newGame();
 
         this.initGame();
+    }
+
+    getCurrentPlayersName() {
+        let players = "";
+
+        this.currentPlayers.forEach(function (e) {
+            players += e.name + ", ";
+        });
+
+        players = players.substring(0, players.length - 1);
+
+        return players;
+    }
+
+    setTurn(id) {
+        if (id == 1) {
+            this.currentPlayers = this.teamOne;
+        } else {
+            this.currentPlayers = this.teamTwo;
+        }
+
+        let players = this.getCurrentPlayersName();
+
+        $('body').append(`
+            <div id="turnView">
+                <h1>` + players + `</h1>
+                <span>this is your turn!</span>
+                <span class="clickAnywhere">Click anywhere to start the game.</span>
+            </div>`);
+
+        let anywhere = new Anywhere(this);
+        anywhere.addTo($('body').get(0));
+    }
+
+    dismissTeamMessage(widget) {
+        widget.deleteWidget();
+
+        $('#turnView').remove();
+
+        let players = this.getCurrentPlayersName();
+        
+        $('#currentTeam').html(players);
+    }
+
+    fetchPlayersAndBuildTeam() {
+        const that = this;
+
+        this.getPlayers()
+            .done(function (d) {
+                that.users = d;
+
+                if (that.users.length > 2)
+                    that.buildTeam();
+                else {
+                    that.teamOne.push(that.users[0]);
+                    that.teamTwo.push(that.users[1]);
+
+                    that.setTurn(1);
+                }
+            })
+            .fail(function (e) {
+                alert("Can't get the players -- twister.");
+                console.log(e);
+            })
+    }
+
+    buildTeam() {
+        const that = this;
+
+        $.ajax({
+            type: "GET",
+            url: Twister.currentFolder + '/team.view.html',
+            success: function (text) {
+                $('body').prepend(text).find('#team').hide().fadeIn(350);
+
+                let team = [];
+                let r = -1;
+
+                do {
+                    let r = Math.floor(Math.random() * that.users.length);
+
+                    if (!team.includes(r))
+                        team.push(r);
+                } while (team.length !== 2); // we set 2 players inside the first team
+
+                team.forEach(function (t) {
+                    that.teamOne.push(that.users[t]);
+                });
+
+                that.users.forEach(function (e) {
+                    if (!that.teamOne.includes(e))
+                        that.teamTwo.push(e);
+                });
+
+                let i = 1;
+                that.teamOne.forEach(function (e) {
+                    $('#team1 .player' + (i++)).html(e.name);
+                });
+
+                i = 1;
+                that.teamTwo.forEach(function (e) {
+                    $('#team2 .player' + (i++)).html(e.name);
+                });
+
+                setTimeout(function () {
+                    $('#team').remove();
+                    that.setTurn(1);
+                }, 8000);
+            }
+        });
     }
 
     initGame() {
@@ -101,7 +224,7 @@ export class Twister {
     getInstructions() {
         const colors = Twister.colors;
 
-        let content = '<table>';
+        let content = '<div id="currentTeam"></div><table>';
 
         for (let i = 0; i < colors.length; i++) {
             const nbre = this.pastilles[colors[i]].toDo;

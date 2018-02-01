@@ -1,0 +1,51 @@
+#pictionaryContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    height: 100%;
+} 
+#countdown {
+    margin-left: 5em;
+}
+
+#header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#instructions {
+    padding: 5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#instructionsTitle {
+    font-weight: bold;
+    font-size: 2em;
+}
+
+#instructionsContent {
+    font-size: 1em;
+    width: 100%;
+    text-align: center;
+}
+
+#pictionaryCanvas {
+    display: none;
+    border: 0.2em solid black;
+    width: 65%;
+}
+
+#drawingZone {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
