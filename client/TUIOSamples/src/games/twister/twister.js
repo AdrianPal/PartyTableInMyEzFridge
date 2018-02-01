@@ -12,7 +12,7 @@ import Home from '../../home/home';
 import {
     Game
 } from '../game';
-import Anywhere from './anywhere';
+import Anywhere from '../../tools/anywhere';
 
 export class Twister extends Game {
 
