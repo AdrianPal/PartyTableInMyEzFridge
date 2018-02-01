@@ -31,7 +31,6 @@ export default class Board {
 
         this.gameId = gameId;
 
-        console.log(_users, this.users);
         this.users = _users;
 
         this.currentPlayer = null;
@@ -158,6 +157,8 @@ export default class Board {
     currentPlayerWon() {
         const that = this;
 
+        that.dice.deleteWidget();
+
         $.ajax({
             type: "GET",
             url: Board.currentFolder + '/curtain.view.html',
@@ -203,7 +204,7 @@ export default class Board {
         const updatedPosition = this.currentPlayer.position + diceVal;
 
         if (updatedPosition >= Board.numberOfTiles) { // Won!
-            this.currentPlayerWon();
+            return this.currentPlayerWon();
         }
 
         $.ajax({
@@ -240,27 +241,34 @@ export default class Board {
 
         let gameName = null;
 
-        switch (Math.floor(Math.random() * numberOfGames) + 1) {
-            case 1:
-                this.letsPlayView("Pictionary");
-                launchPictionary(this.gameId);
-                break;
+        let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-            case 2:
-                this.letsPlayView("Labyrinth");
-                launchLabyrinth(this.gameId);
-                break;
+        console.log('Rand: '+ rand);
 
-            case 3:
-                this.letsPlayView("Balls");
-                launchBalls(this.gameId);
-                break;
-
-            default:
-                this.letsPlayView("Twister");
+        this.letsPlayView("Twister");
                 new Twister(this.gameId);
-                break;
-        }
+
+        // switch (rand) {
+        //     case 1:
+        //         this.letsPlayView("Pictionary");
+        //         launchPictionary(this.gameId);
+        //         break;
+
+        //     case 2:
+        //         this.letsPlayView("Labyrinth");
+        //         launchLabyrinth(this.gameId);
+        //         break;
+
+        //     case 3:
+        //         this.letsPlayView("Balls");
+        //         launchBalls(this.gameId);
+        //         break;
+
+        //     default:
+        //         this.letsPlayView("Twister");
+        //         new Twister(this.gameId);
+        //         break;
+        // }
     }
 
     letsPlayView(name) {

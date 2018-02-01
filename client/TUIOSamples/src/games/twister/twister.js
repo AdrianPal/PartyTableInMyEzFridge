@@ -8,6 +8,7 @@ import {
 import Pastille from './pastille';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 import User from '../../user/user';
+import Home from '../../home/home';
 
 export class Twister {
 
@@ -24,7 +25,7 @@ export class Twister {
         return Math.floor((Math.random() * max) + min);
     }
 
-    constructor() {
+    constructor(_gameId) {
         this.app = $('#app');
         this.totalWin = 0;
 

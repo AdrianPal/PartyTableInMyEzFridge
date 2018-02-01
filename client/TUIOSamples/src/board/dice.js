@@ -11,6 +11,8 @@ export default class Dice extends ImageElementWidget {
 
         this.diceInterval = null;
 
+        this.diceClicked = false;
+
         this.canMove(false, false);
         this.canRotate(false, false);
         this.canZoom(false, false);
@@ -19,7 +21,8 @@ export default class Dice extends ImageElementWidget {
     onTouchCreation(tuioTouch) {
         super.onTouchCreation(tuioTouch);
 
-        if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
+        if (!this.diceClicked && this.isTouched(tuioTouch.x, tuioTouch.y)) {
+            this.diceClicked = true;
             this.randomDiceForSeconds(1500);
         }
     }
