@@ -1,17 +1,11 @@
 /**
  * @author: Adrian PALUMBO  
  */
-import showBoardView from '../../board';
-import {
-    setTimeout
-} from 'timers';
+import { setTimeout } from 'timers';
 import Pastille from './pastille';
-import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 import User from '../../user/user';
 import Home from '../../home/home';
-import {
-    Game
-} from '../game';
+import { Game } from '../game';
 import Anywhere from '../../tools/anywhere';
 
 export class Twister extends Game {

@@ -26,10 +26,6 @@ tuioManager.start();
 
 /** App Code **/
 
-const buildApp = () => {
-  buildMenu();
-};
-
 $(window).ready(() => {
   if (getUrlParameter('view') === 'mobile' &&
     getUrlParameter('gameId') != undefined && getUrlParameter('gameId') != null &&
@@ -45,5 +41,4 @@ $(window).ready(() => {
     let copyGameId = getUrlParameter('players');
     new Home(copyGameId, true);
   }
-  // buildApp();
 });
