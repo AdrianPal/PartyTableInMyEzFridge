@@ -130,7 +130,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
          $('.timeBar').width(ballContainerWidth);
          if(index == 0)
          {
-            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x + 130);
+            $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x - ballContainerWidth +72);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y + 70);
             
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(90deg)');
@@ -145,7 +145,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
          }
          else if(index == 2)
          {
-            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
+            $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y + ballContainerWidth+3);           
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
              
          }
