@@ -93,7 +93,7 @@ export default class Pictionary {
     goHome(widget) {
         widget.deleteWidget();
 
-        new Home(gameId);
+        new Home(this.gameId);
     }
 
 
