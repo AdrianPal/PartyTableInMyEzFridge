@@ -66,7 +66,7 @@ export default class Pictionary {
                 $('#pictionaryContainer').hide();
                 $('#lostWrapper').show().css('display', 'flex');
                 User.remove();
-                let anywhere = new Anywhere(this, this.goHome);
+                let anywhere = new Anywhere(that, that.goHome);
                 anywhere.addTo($('body').get(0));
             } else {
                 countdown.html(value);
@@ -83,7 +83,7 @@ export default class Pictionary {
                     $('#drawerName').html(user.name);
                     User.remove();
 
-                    let anywhere = new Anywhere(this, this.goHome);
+                    let anywhere = new Anywhere(that, that.goHome);
                     anywhere.addTo($('body').get(0));
                 });
 
