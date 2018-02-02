@@ -16,7 +16,7 @@ export default class Pastille extends ElementWidget {
         this._domElem.css('width', `${this.width}px`);
         this._domElem.css('height', `${this.height}px`);
         this._domElem.css('position', 'absolute');
-        this._domElem.css('z-index', `${this.zIndex}`);
+        this._domElem.css('z-index', `99`);
         this._domElem.css('left', `${x}px`);
         this._domElem.css('top', `${y}px`);
 

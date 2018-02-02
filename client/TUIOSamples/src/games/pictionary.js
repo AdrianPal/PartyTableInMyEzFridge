@@ -1,7 +1,6 @@
 /**
  * @author: Thomas GILLOT
  */
-import showBoardView from "../board";
 import { fail } from "assert";
 
 

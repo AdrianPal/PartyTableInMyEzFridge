@@ -12,7 +12,12 @@ import launchBalls from '../games/balls';
 import {
     Twister
 } from '../games/twister/twister';
-import launchPictionary from '../games/pictionary';
+
+import Pictionary from '../games/pictionary/pictionary';
+
+import Anywhere from '../tools/anywhere';
+
+import SocketManager from '../../socket.manager';
 
 const config = require('../../config');
 
@@ -27,6 +32,10 @@ export default class Board {
     }
 
     constructor(_users, gameId) {
+        console.log('----');
+        console.log('constructor of BOARD');
+        console.log('----');
+
         this.app = $('#app');
 
         this.gameId = gameId;
@@ -37,7 +46,13 @@ export default class Board {
 
         this.dice = null;
 
+        this.unuseMobile();
+
         this.createNewGame();
+    }
+
+    unuseMobile() {
+        SocketManager.get().emit('mobile unuse');
     }
 
     createNewGame() {
@@ -239,56 +254,100 @@ export default class Board {
     launchRandomGame() {
         let numberOfGames = 4;
 
-        let gameName = null;
-
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        // this.letsPlayView("Twister");
-        //         new Twister(this.gameId);
+        // this.letsPlayView(rand);
+        this.letsPlayView(1);
+    }
 
-        switch (rand) {
+    getGameNameFromId(id) {
+        switch (id) {
             case 1:
-                this.letsPlayView("Pictionary");
-                launchPictionary(this.gameId);
-                break;
+                return "Pictionary";
 
             case 2:
-                this.letsPlayView("Labyrinth");
-                launchLabyrinth(this.gameId);
-                break;
+                return "Labyrinth";
 
             case 3:
-                this.letsPlayView("Balls");
-                launchBalls(this.gameId);
-                break;
+                return "Balls";
 
             default:
-                this.letsPlayView("Twister");
-                new Twister(this.gameId);
-                break;
+                return "Twister";
         }
     }
 
-    letsPlayView(name) {
+    letsPlayView(id) {
+        const that = this;
+        let gameName = this.getGameNameFromId(id);
+
         $.ajax({
             type: "GET",
             url: Board.currentFolder + '/play.view.html',
             success: function (text) {
                 $('body').prepend(text).find('#playingView').hide().fadeIn(350);
 
-                $('#gameName').hide().html(name + '!');
+                $('#gameName').hide().html(gameName + '!');
 
                 // Display name
                 setTimeout(function () {
                     $('#gameName').slideDown(1000);
+                    $('#app').html('');
                 }, 750);
 
                 // Hide view
                 setTimeout(function () {
-                    $('#playingView').remove();
-                }, 4000);
+                    that.launchRulesForGame(gameName, id);
+                }, 3500);
             }
         });
+    }
+
+    launchRulesForGame(name, id) {
+        const that = this;
+        let htmlRulesFile = "/src/rules/" + name.toLowerCase() + ".rules.html";
+
+        $.ajax({
+            type: "GET",
+            url: Board.currentFolder + '/rules.view.html',
+            success: function (text) {
+                $('body').prepend(text);
+
+                $('#rulesView .headerGameRules .gameName').html(name + "'s");
+
+                $.ajax({
+                    type: "GET",
+                    url: htmlRulesFile,
+                    success: function (text) {
+                        $('#playingView').delay(500).remove();
+
+                        $('#rules').html(text);
+
+                        let anywhere = new Anywhere(that, that.dismissRulesAndPlayGame, id);
+                        anywhere.addTo($('body').get(0));
+                    }
+                });
+            }
+        });
+    }
+
+    dismissRulesAndPlayGame(widget, id) {
+        widget.deleteWidget();
+
+        $('#rulesView').remove();
+
+        switch (id) {
+            case 1:
+                return new Pictionary(this.gameId);
+
+            case 2:
+                return launchLabyrinth(this.gameId);
+
+            case 3:
+                return launchBalls(this.gameId);
+
+            default:
+                return new Twister(this.gameId);
+        }
     }
 
     newGameClicked(type) {

@@ -10,7 +10,6 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
 //import SocketManager from "../../socket.manager";
 
 
- import showBoardView from "../board";
  //var socket = SocketManager.get();
 
  let _colors = [];

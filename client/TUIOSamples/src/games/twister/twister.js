@@ -1,17 +1,11 @@
 /**
  * @author: Adrian PALUMBO  
  */
-import showBoardView from '../../board';
-import {
-    setTimeout
-} from 'timers';
+import { setTimeout } from 'timers';
 import Pastille from './pastille';
-import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 import User from '../../user/user';
 import Home from '../../home/home';
-import {
-    Game
-} from '../game';
+import { Game } from '../game';
 import Anywhere from '../../tools/anywhere';
 
 export class Twister extends Game {
@@ -29,7 +23,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 30;
+        return 5;
     }
 
     constructor(_gameId) {
@@ -73,7 +67,7 @@ export class Twister extends Game {
 
         let players = this.getPlayersName(this.currentPlayers);
 
-        $('body').append(`
+        $('body #app').append(`
             <div id="turnView">
                 <h1>` + players + `</h1>
                 <span>this is your turn!</span>
@@ -152,7 +146,7 @@ export class Twister extends Game {
             losePoint = this.teamOne.points;
         }
 
-        $('body').append(`
+        $('body #app').append(`
             <div id="turnView">
                 <h1>` + players + `</h1>
                 <span>won with ` + winPoints + ` against ` + losePoint + `!</span>
@@ -163,7 +157,11 @@ export class Twister extends Game {
         anywhere.addTo($('body').get(0));
     }
 
-    updatePointsAndGoBackToBoard() {
+    updatePointsAndGoBackToBoard(widget) {
+        widget.deleteWidget();
+
+        console.log('TWISTER -> HOME');
+
         return new Home(this.gameId);
     }
 
@@ -247,11 +245,17 @@ export class Twister extends Game {
 
         this.getPastilles();
 
+        console.log('GET PASTILLEs');
+
         this.getInstructions();
+
+        console.log('INSTRUCTIONS');
 
         this.getTotal();
 
-        this.addListeners();
+        console.log('TOTAL');
+        
+        console.log('----');
     }
 
     newGame() {
@@ -375,26 +379,6 @@ export class Twister extends Game {
 
             this.checkForTotal(color);
         }
-    }
-
-    addListeners() {
-        let that = this;
-
-        $('#pastilles .pastille')
-            .on('mousedown', function () {
-                const color = $(this).data('color');
-
-                that.pastilles[color].done += 1;
-
-                that.checkForTotal(color);
-            })
-            .on('mouseup', function () {
-                // const color = $(this).data('color');
-
-                // that.pastilles[color].done -= 1;
-
-                // that.checkForTotal(color);
-            });
     }
 
     checkForTotal(color) {
