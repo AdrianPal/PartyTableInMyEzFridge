@@ -80,7 +80,7 @@ class BonusBall extends ElementWidget {
 	  this._isTouched = true;
 	  
   }*/
-
+  console.log("TAG DETECTED "+ tuioTag.id);
   this._bonusHandler.onBonusTouched(tuioTag.id);
   this._domElem.removeEvent();
   this.deleteWidget();

@@ -96,7 +96,7 @@ class BallContainer extends TUIOWidget {
     this._ballsCount = 0;
     this._playerid = stackTitle;
 	this._gameTime = gameTime
-	console.log("In constructor" + this._gameTime);
+	//console.log("In constructor" + this._gameTime);
 
     //Rotating the element
     this._domElem.css({

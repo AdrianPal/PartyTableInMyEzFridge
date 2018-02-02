@@ -27,7 +27,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 
  let _bonusHandler = {
      onBonusTouched: function(tag){
-         console.log("Bonus Touchedw/ tag "+ tag);
+         console.log("Bonus Touched w/ tag "+ tag);
          for (let index = 0; index < _players.length; index++) {
             $('#bonusgainsound')[0].play();
              
@@ -71,7 +71,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
    //test for adding balls count
    $('#tt').on('click', function()
     {
-        console.log("hey hey");
+        //console.log("hey hey");
         /*for (let index = 0; index < _containers.length; index++) 
         {
             const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _players[Math.floor(Math.random() * (_players.length))].color);
@@ -296,7 +296,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
         }
         x = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
         y = Math.random() * ((height- BALLWIDTH) - 0) + 0;
-        console.log("Generated "+ x + " and " + y);
+        //console.log("Generated "+ x + " and " + y);
         areCoordsRight = true;
         for (let index = 0; index < _containers.length; index++) 
         {
@@ -306,7 +306,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
             }        
         }        
     }  
-    console.log("Coords right:  "+ x + " and " + y);
+    //console.log("Coords right:  "+ x + " and " + y);
     
 
      return {x:x, y:y};
@@ -325,7 +325,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 function triggerTime()
 {	  
     const partToRemove = $('#' + _players[0].name + 'bar').val()/(_gameTime/1000);
-    console.log("Part to remove is " + partToRemove);
+    //console.log("Part to remove is " + partToRemove);
 	window.setInterval( function()
 	{ 
         const frameTime = 1000
@@ -363,7 +363,7 @@ function triggerTime()
                 score:0
         }
     );
-        console.log(_players);
+        //console.log(_players);
     }
  }
 
@@ -371,7 +371,7 @@ function triggerTime()
  {
     $('#gameoversound')[0].play();
      
-    console.log("Game over");
+    //console.log("Game over");
  }
 
  function showWinner()
