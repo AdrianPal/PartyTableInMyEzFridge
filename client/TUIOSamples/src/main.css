@@ -162,7 +162,7 @@ audio
   z-index: 33;
   margin-left:-100px;
   width:20%;
-  transition-duration: 1s;  
+  transition-duration: 0.3s;  
 }
 
 .haswon
