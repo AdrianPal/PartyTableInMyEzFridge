@@ -183,7 +183,7 @@
 
     font-size: 60px;
 
-    z-index: 99;
+    z-index: 999;
     flex-direction: column;
 }
 

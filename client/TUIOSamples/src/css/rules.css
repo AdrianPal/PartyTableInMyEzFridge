@@ -1,0 +1,47 @@
+#rulesView {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    background: #6b6b6b;
+    color: white;   
+
+    z-index: 99999999;
+
+    font-size: 40px;
+}
+
+#rulesView .headerGameRules {
+    font-size: 55px;
+    border-bottom: 1px solid white;
+    padding: 10px 50px;
+    margin-bottom: 10px;
+}
+
+#rulesView .headerGameRules .gameName {
+    font-size: 60px;
+}
+
+#rules {
+    padding: 10px 30px;
+    height: 100%;
+    width: 65%;
+}
+
+#clickAnywhereDismissRules {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    font-size: 25px;
+    font-style: italic;
+}

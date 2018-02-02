@@ -3,11 +3,12 @@ import TUIOManager from 'tuiomanager/core/TUIOManager';
 
 
 export default class Anywhere extends ElementWidget {
-    constructor(_parent, _callBack) {
+    constructor(_parent, _callBack, _optionalParams) {
         super(0, 0, 1920, 1080, 0, 1);
 
         this.callBack = _callBack;
         this.parent = _parent;
+        this.optionalParams = _optionalParams;
 
         this.canMove(false, false);
         this.canRotate(false, false);
@@ -15,6 +16,6 @@ export default class Anywhere extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
-        this.callBack.call(this.parent, this);
+        this.callBack.call(this.parent, this, this.optionalParams);
     }
 }
