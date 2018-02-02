@@ -14,6 +14,8 @@ import {
 } from '../games/twister/twister';
 import launchPictionary from '../games/pictionary';
 
+import Pictionary from '../games/pictionary/pictionary';
+
 import Anywhere from '../tools/anywhere';
 
 const config = require('../../config');
@@ -243,7 +245,8 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        this.letsPlayView(rand);
+        // this.letsPlayView(rand);
+        this.letsPlayView(1);
     }
 
     getGameNameFromId(id) {
@@ -322,7 +325,7 @@ export default class Board {
 
         switch (id) {
             case 1:
-                return launchPictionary(this.gameId);
+                return new Pictionary(this.gameId);
 
             case 2:
                 return launchLabyrinth(this.gameId);
