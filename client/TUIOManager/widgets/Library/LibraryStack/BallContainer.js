@@ -155,10 +155,17 @@ class BallContainer extends TUIOWidget {
       }
   }
 
-  areCoordsRight(x, y) 
+  areCoordsRight(x, y, ballwidth, containerWidth) 
   {
-    
-        return true;
+      if((x+ballwidth < this.x || x> this.x+ containerWidth) 
+        && (y+ballwidth < this.y || y> this.y+containerWidth))
+        {
+          return true;          
+        }
+        else
+        {
+          return false;
+        }
   }
   
 

@@ -19,7 +19,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 3000; //in milliseconds
+ let _gameTime = 30000; //in milliseconds
 
  const BALLWIDTH = 75;
  const ballContainerWidth = 200;
@@ -208,6 +208,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
 
  function getSpawnCoords()
  {
+     let inc = 0;
     const width = $(window).width();
     const height = $(window).height();
     let areCoordsRight = false;
@@ -215,17 +216,25 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
     let y = 0;
     while(!areCoordsRight)
     {
+        ++inc;
+        if(inc > 1000)
+        {
+            //break;
+        }
         x = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
         y = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+        console.log("Generated "+ x + " and " + y);
         areCoordsRight = true;
         for (let index = 0; index < _containers.length; index++) 
         {
-            if(!_containers[index].areCoordsRight(x, y))
+            if(!_containers[index].areCoordsRight(x, y, BALLWIDTH, ballContainerWidth))
             {
                 areCoordsRight = false;
             }        
         }        
     }  
+    console.log("Coords right:  "+ x + " and " + y);
+    
 
      return {x:x, y:y};
  }
