@@ -10,7 +10,10 @@ import * as config from "../../config";
 var socket = SocketManager.get();
 var usersArray = [];
 var gameId = 0;
+var arrayForResolving = [];
 
+
+var launched = false;
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)
@@ -122,7 +125,7 @@ function convertDir(dir) {
 }
 
 
-function solveInstructions(array) {
+function solveInstructions(array, userId) {
     let start = gid('generateMaze').kid(1).kid(1);
     let end = gid('generateMaze').lastChild.previousSibling
         .lastChild.previousSibling;
@@ -130,12 +133,12 @@ function solveInstructions(array) {
     let currentPos = start;
     currentPos.cls('v');
     let res = '';
+    console.log('array : ', array);
     for (let i = 0; i < array.length; i++) {
         let dir = array[i];
-        console.log(currentPos);
 
         if (currentPos.className.match('end')) {
-            socket.emit("result", 'Victory');
+            socket.emit("result", 'Victory', userId);
             res = 'victory';
             break;
         }
@@ -144,13 +147,13 @@ function solveInstructions(array) {
             currentPos.cls('v');
         }
         else {
-            socket.emit("result", "Defeat");
+            socket.emit("result", "Defeat", userId);
             res = 'defeat';
             break;
         }
     }
     if (res === '') {
-        socket.emit("result", "Defeat");
+        socket.emit("result", "Defeat", userId);
     }
 
 
@@ -164,11 +167,21 @@ function isReady() {
     $('#isReadyDiv').click(function () {
         socket.emit("isReady");
         $('#isReadyDiv').remove();
-
-
     })
 
+}
 
+function resolveGame() {
+    socket.on("arrayToResolve", (array, userId) => {
+        arrayForResolving.push({array: array, pos: userId});
+        if (arrayForResolving.length === usersArray.length) {
+
+            document.getElementById('generateMaze').classList.remove("blured");
+            for (let i = 0; i < arrayForResolving.length; i++) {
+                solveInstructions(arrayForResolving[i].array, userId);
+            }
+        }
+    });
 }
 
 function initMobile() {
@@ -228,6 +241,8 @@ function initMobile() {
                 $('#array svg').last().remove();
             }
             array = new Array();
+            document.getElementById('maze').innerHTML = '<p>On attend les escargots</p>';
+
         });
 
         $('#up').click(function () {
@@ -300,11 +315,7 @@ function initTable() {
     });
 
 
-    socket.on("arrayToResolve", (array) => {
-        document.getElementById('generateMaze').classList.remove("blured");
-        solveInstructions(array.array);
-
-    });
+    resolveGame();
 
 
 }
@@ -314,19 +325,18 @@ function getPlayers() {
 }
 
 function initGame() {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && !launched) {
+        launched = true;
         initMobile();
-    } else {
-        getPlayers().done( res => {
-                socket.emit('mobile launch labyrinth');
+    } else if( !launched){
+        getPlayers().done(res => {
                 usersArray = res;
-                console.log(res);
-                console.log(usersArray);
                 initTable();
+                socket.emit('mobile launch labyrinth');
             }
         );
+        launched = true;
     }
-
 }
 
 export default function launchLabyrinth(gameIdParam) {

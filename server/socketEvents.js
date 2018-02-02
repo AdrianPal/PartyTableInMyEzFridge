@@ -56,11 +56,11 @@ exports = module.exports = function (io) {
         });
 
         socket.on('arrayToResolve', (array) => {
-            socket.broadcast.emit('arrayToResolve', array);
+            socket.to(tableId).emit('arrayToResolve', array, socket.id);
         });
 
-        socket.on('result', (result) => {
-            socket.broadcast.emit('result', result);  
+        socket.on('result', (result,userId) => {
+            socket.to(userId).emit('result', result);
         });
 
         socket.on('isReady',() => {
@@ -72,6 +72,10 @@ exports = module.exports = function (io) {
         });
         socket.on('mobile launch labyrinth',() => {
             socket.broadcast.emit('mobile launch labyrinth');
+        });
+        //TODO implémenter un compteur dans le jeu
+        socket.on('timeUp', () => {
+           socket.broadcast.emit('timeUp');
         });
 
         /****************************************** PICTIONARY **********************************************/

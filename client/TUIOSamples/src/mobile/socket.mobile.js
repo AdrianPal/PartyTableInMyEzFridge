@@ -1,5 +1,4 @@
 import SocketManager from "../../socket.manager";
-import PictureMobile from '../games/pictionary/mobile/pictionary.mobile'
 import PictionaryMobile from "../games/pictionary/mobile/pictionary.mobile";
 import launchLabyrinth from "../games/labyrinth";
 
