@@ -2,18 +2,10 @@
  * @author: Adrian PALUMBO  
  */
 
-import Pastille from '../games/twister/pastille';
 import SocketManager from '../../socket.manager';
 import User from '../user/user';
 
 // import launchBalls from '../games/balls';
-import {
-    Twister
-} from '../games/twister/twister';
-import launchLabyrinth from '../games/labyrinth';
-import launchPictionary from '../games/pictionary';
-
-import Pictionary from '../games/pictionary/pictionary'
 import Board from '../board/board';
 
 import StartButton from './start.button';
@@ -38,8 +30,6 @@ export default class Home {
 
         this.userView = null;
 
-        this.addGameListener();
-
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
 
@@ -52,16 +42,6 @@ export default class Home {
             this.createNewGame();
         }
     }
-
-    addGameListener() {
-        let that = this;
-
-        $('#pic').on('click', function() { new Pictionary() });
-        $('#lab').on('click', function() { launchLabyrinth(that.gameId); });
-        $('#bal').on('click', function() { launchBalls(that.gameId); });
-        $('#twi').on('click', function() { new Twister(that.gameId); });
-    }
-
 
     getUsersFromServerBeforeDisplayingBoard() {
         const that = this;
@@ -137,7 +117,8 @@ export default class Home {
             return;
         }
 
-        widget.deleteWidget();
+        if (widget)
+            widget.deleteWidget();
 
         this.toggleStartButtonAndCallBoard();
     }
@@ -153,6 +134,10 @@ export default class Home {
 
         let start = new StartButton($('#start'), this);
         start.addTo($('body').get(0));
+
+        $('#start').on('click', function() {
+            that.startClicked(null);
+        })
     }
 
     toggleStartButtonAndCallBoard(cancelAnimateFirstPart) {
