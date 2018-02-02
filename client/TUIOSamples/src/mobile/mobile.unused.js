@@ -15,8 +15,6 @@ export default class MobileUnused {
         this.gameId = gameId;
         this.pos = pos;
 
-        console.log(this.user);
-
         if (this.user !== undefined && this.user !== null) {
             this.updateView();
         } else {
@@ -28,7 +26,7 @@ export default class MobileUnused {
         $.get(config.server + '/api/user/' + this.gameId + '/' + this.pos)
             .done(function (d) {
                 // The user exists for the current pos and game
-                return that.loadUnusedView()
+                return that.updateView();
             })
             .fail(function (e) {
                 // New user for game and pos
