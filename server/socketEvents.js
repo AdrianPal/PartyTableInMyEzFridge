@@ -73,7 +73,6 @@ exports = module.exports = function (io) {
         socket.on('mobile launch labyrinth',() => {
             socket.broadcast.emit('mobile launch labyrinth');
         });
-        //TODO implémenter un compteur dans le jeu
         socket.on('timeUp', () => {
            socket.broadcast.emit('timeUp');
         });

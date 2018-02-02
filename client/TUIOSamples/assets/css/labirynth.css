@@ -11,7 +11,7 @@
 }
 
 #maze .blured {
-    filter: blur(30px) !important;
+    filter: blur(35px) !important;
 }
 
 #maze .hide{

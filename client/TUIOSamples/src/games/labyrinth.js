@@ -174,8 +174,8 @@ function isReady() {
 function resolveGame() {
     socket.on("arrayToResolve", (array, userId) => {
         arrayForResolving.push({array: array, pos: userId});
+        console.log('resolve: ',usersArray);
         if (arrayForResolving.length === usersArray.length) {
-
             document.getElementById('generateMaze').classList.remove("blured");
             for (let i = 0; i < arrayForResolving.length; i++) {
                 solveInstructions(arrayForResolving[i].array, userId);
@@ -270,6 +270,16 @@ function initMobile() {
             array.pop();
             $('#array svg').last().remove();
         });
+
+        socket.on('timeUp',() => {
+            socket.emit('arrayToResolve', {array: array});
+            for (let i = 0; i < array.length; i++) {
+                $('#array svg').last().remove();
+            }
+            array = new Array();
+            document.getElementById('maze').innerHTML = '<p>On attend les escargots</p>';
+        })
+
     });
 
 }
@@ -278,7 +288,7 @@ function initTable() {
     $('body').append('' +
         '<div id="maze">' +
         '<div>' +
-        '   <p id="startingInformation">Attrapez vos téléphones</p>' +
+        '   <h2 id="startingInformation">Attrapez vos téléphones</h2>' +
         '</div> ' +
         '   <table id="generateMaze" class="test"/>' +
         '</div>');
@@ -295,20 +305,27 @@ function initTable() {
 
             make_maze();
             var makeMaze = document.getElementById("startingInformation");
-            makeMaze.className += " hide";
-
+            makeMaze.innerHTML = '<h2>Retenez le chemin vers la sortie avant que tout disparaisse</h2>'
             $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
 
             var oldDate = new Date();
             var newDate = new Date(oldDate.getTime() + 10000);
+            var newDateTimer = new Date(oldDate.getTime() + 100000);
 
             $('#countdown').countdown(newDate, function (event) {
                 $(this).html(event.strftime('%M:%S'));
             }).on('finish.countdown', function (event) {
-                $('#titleDisappear').html('');
-                $('#countdown').html('');
+                $('#titleDisappear').html('<h3>Vous avez</h3>');
+                $('#countdown').countdown(newDateTimer, function (event) {
+                    $(this).html(event.strftime('%M:%S'));
+                }).on('finish.countdown', function (event) {
+                        socket.emit('timeUp');
+                });
                 var genMaze = document.getElementById("generateMaze");
                 genMaze.className += " blured";
+                var makeMaze = document.getElementById("startingInformation");
+                makeMaze.innerHTML = '<h2>Donnez les bonnes directions afin de sortir du labyrinth</h2>';
+
 
             });
         }
@@ -328,7 +345,7 @@ function initGame() {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && !launched) {
         launched = true;
         initMobile();
-    } else if( !launched){
+    } else if (!launched) {
         getPlayers().done(res => {
                 usersArray = res;
                 initTable();
