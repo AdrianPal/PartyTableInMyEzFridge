@@ -472,6 +472,7 @@ class BallContainer extends TUIOWidget {
     let elementToAdd;
     if(elementWidget._playerid == this._playerid)
     {    
+		this._isInStack= true;
       if (this.isAllowedElement(elementWidget)) {
         elementToAdd = elementWidget;
         elementToAdd._domElem.css('transform', 'rotate(360deg)');
