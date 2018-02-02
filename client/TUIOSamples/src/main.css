@@ -150,5 +150,19 @@ audio
   /*width:400px;*/
   height:50px;
   position: absolute;
+  z-index: 20;
   /*transform: rotate(270deg);*/
+}
+
+.outcome
+{
+  font-size:1.3rem;
+  background-color: #6a00ff;
+  color: white;
+  transform: scale(4);
+  z-index: 33;
+  margin-left:-100px;
+  width:20%;
+  transition-duration: 1s;
+  
 }

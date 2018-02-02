@@ -148,10 +148,13 @@ class BallContainer extends TUIOWidget {
       if(hasWon)
       {
         $('#' + this._playerid + 'end').text("You win !");
+        $('#' + this._playerid + 'end').addClass("outcome");
+        
       }
       else
       {
         $('#' + this._playerid + 'end').text("You lose.");
+        $('#' + this._playerid + 'end').addClass("outcome");        
       }
   }
 
