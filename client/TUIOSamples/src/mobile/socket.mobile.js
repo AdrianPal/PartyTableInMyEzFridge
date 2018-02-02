@@ -1,6 +1,7 @@
 import SocketManager from "../../socket.manager";
 import PictureMobile from '../games/pictionary/mobile/pictionary.mobile'
 import PictionaryMobile from "../games/pictionary/mobile/pictionary.mobile";
+import launchLabyrinth from "../games/labyrinth";
 
 exports = module.exports = function (io, gameId, pos) {
     let prefix = 'mobile';
@@ -20,6 +21,10 @@ exports = module.exports = function (io, gameId, pos) {
 
     SocketManager.get().on(prefix + ' game pictionary', (isChoosenMobile, word) => {
         new PictionaryMobile(gameId, pos, isChoosenMobile, word);
+    })
+
+    SocketManager.get().on(prefix + ' launch labyrinth', () => {
+        launchLabyrinth(gameId);
     })
 
 };

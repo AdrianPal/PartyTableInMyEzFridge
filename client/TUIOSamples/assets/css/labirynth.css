@@ -86,3 +86,23 @@ visibility: hidden !important;
 #maze #contentErase .btn{
     background-color: darkgrey !important;
 }
+
+body{
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+#isReady{
+    border-radius: 2.5em;
+    width: 6em;
+    background-color: darkgreen;
+    color: white;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 2px solid;
+}
+

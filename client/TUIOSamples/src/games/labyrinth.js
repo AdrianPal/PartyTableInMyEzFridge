@@ -4,8 +4,13 @@
  */
 import SocketManager from "../../socket.manager";
 import User from "../user/user";
+import PictionaryMobile from "./pictionary/mobile/pictionary.mobile";
+import * as config from "../../config";
 
 var socket = SocketManager.get();
+var usersArray = [];
+var gameId = 0;
+
 
 Node.prototype.add = function (tag, cnt, txt) {
     for (var i = 0; i < cnt; i++)
@@ -98,8 +103,8 @@ function walk(c) {
     }
 }
 
-function drawElem(elem){
-        $('#array').append(elem)
+function drawElem(elem) {
+    $('#array').append(elem)
 }
 
 function convertDir(dir) {
@@ -129,8 +134,8 @@ function solveInstructions(array) {
         let dir = array[i];
         console.log(currentPos);
 
-        if(currentPos.className.match('end')) {
-            socket.emit("result",'Victory');
+        if (currentPos.className.match('end')) {
+            socket.emit("result", 'Victory');
             res = 'victory';
             break;
         }
@@ -144,126 +149,155 @@ function solveInstructions(array) {
             break;
         }
     }
-    if(res === ''){
+    if (res === '') {
         socket.emit("result", "Defeat");
     }
 
 
 }
 
-function initMobile() {
-    socket.emit('mazeConnection');
-    let res = '';
-    socket.on('result', (result) => {
-       $('#modal').modal();
-       $('#maze').append(
-           '<div class="modal fade" id="modal" role="dialog">'+
-           '<div class="modal-dialog">'+
-           '<div class="modal-content">' +
-           '        <div class="modal-header">' +
-           '          <button type="button" class="close" data-dismiss="modal">&times;</button>' +
-           '          <h4 class="modal-title">'+result+'</h4>' +
-           '        </div>' +
-           '        <div class="modal-body">' +
-           '          <p>Jouer à ce jeu rend chauve</p>' +
-           '        </div>' +
-           '        <div class="modal-footer">' +
-           '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-           '        </div>' +
-           '      </div>' +
-           '    </div>' +
-           '</div>')
-    });
+function isReady() {
+    $('body').append('' +
+        '<div id="isReadyDiv">' +
+        '   <p id="isReady" class="btn btn-maze">Ready !</p>' +
+        '</div');
+    $('#isReadyDiv').click(function () {
+        socket.emit("isReady");
+        $('#isReadyDiv').remove();
 
-    $('#app').append('' +
-        '<div id="maze">' +
+
+    })
+
+
+}
+
+function initMobile() {
+
+    isReady();
+
+    socket.on('startLabyrinth', () => {
+        let res = '';
+
+        socket.on('result', (result) => {
+            $('#modal').modal();
+            $('#maze').append(
+                '<div class="modal fade" id="modal" role="dialog">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '        <div class="modal-header">' +
+                '          <button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                '          <h4 class="modal-title">' + result + '</h4>' +
+                '        </div>' +
+                '        <div class="modal-body">' +
+                '          <p>Jouer à ce jeu rend chauve</p>' +
+                '        </div>' +
+                '        <div class="modal-footer">' +
+                '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                '        </div>' +
+                '      </div>' +
+                '    </div>' +
+                '</div>')
+        });
+
+        $('body').append('' +
+            '<div id="maze">' +
+            '<p id="array"></p>' +
             '<div id="contentErase">' +
-                '<div id="erase" class="btn btn-secondary btn-maze"><i class="fa fa-arrow-left" aria-hidden="true"></i>Suppr</div>'+
-            '</div>'+
+            '<div id="erase" class="btn btn-secondary btn-maze"><i class="fa fa-arrow-left" aria-hidden="true"></i>Suppr</div>' +
+            '</div>' +
             '<div id="row-up">' +
             '   <div id="up" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>' +
             '</div>' +
             '<div class="row-bottom">' +
-                '   <div id="left" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>' +
-                '   <div id="down" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>' +
-                '   <div id="right" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>' +
+            '   <div id="left" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>' +
+            '   <div id="down" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>' +
+            '   <div id="right" class="btn btn-secondary btn-maze"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>' +
             '</div>' +
-            '<p id="array"></p>'+
             '<div class="send-container">' +
-                '<div class="btn btn-danger btn-maze" id="send">'+
-        '           <i class="fa fa-paper-plane"  aria-hidden="true"></i>' +
-                '</div>'+
-        '   </div>'+
-        '</>');
+            '<div class="btn btn-danger btn-maze" id="send">' +
+            '           <i class="fa fa-paper-plane"  aria-hidden="true"></i>' +
+            '</div>' +
+            '   </div>' +
+            '</>');
 
-    let array = [];
+        let array = [];
 
-    $('#send').on('click',function () {
-        socket.emit('arrayToResolve', {array:array});
-        for(let i =0; i<array.length;i++){
+        $('#send').on('click', function () {
+            socket.emit('arrayToResolve', {array: array});
+            for (let i = 0; i < array.length; i++) {
+                $('#array svg').last().remove();
+            }
+            array = new Array();
+        });
+
+        $('#up').click(function () {
+            array.push('n');
+            drawElem('<i class="fa fa-chevron-up" aria-hidden="true">');
+        });
+
+        $('#down').click(function () {
+            array.push('s');
+            drawElem('<i class="fa fa-chevron-down" aria-hidden="true">');
+
+        });
+        $('#left').click(function () {
+            array.push('w');
+            drawElem('<i class="fa fa-chevron-left" aria-hidden="true">');
+
+        });
+        $('#right').click(function () {
+            array.push('e');
+            drawElem('<i class="fa fa-chevron-right" aria-hidden="true">');
+
+        });
+
+        $('#erase').click(function () {
+            array.pop();
             $('#array svg').last().remove();
-        }
-        array = new Array();
-    });
-
-    $('#up').click(function () {
-        array.push('n');
-        drawElem('<i class="fa fa-chevron-up" aria-hidden="true">');
-    });
-
-    $('#down').click(function () {
-        array.push('s');
-        drawElem('<i class="fa fa-chevron-down" aria-hidden="true">');
-
-    });
-    $('#left').click(function () {
-        array.push('w');
-        drawElem('<i class="fa fa-chevron-left" aria-hidden="true">');
-
-    });
-    $('#right').click(function () {
-        array.push('e');
-        drawElem('<i class="fa fa-chevron-right" aria-hidden="true">');
-
-    });
-
-    $('#erase').click(function () {
-       array.pop();
-       $('#array svg').last().remove();
+        });
     });
 
 }
 
 function initTable() {
-    $('#app').append('' +
+    $('body').append('' +
         '<div id="maze">' +
         '<div>' +
-        '   <p id="makeMaze" class="btn btn-maze">Ready !</p>' +
+        '   <p id="startingInformation">Attrapez vos téléphones</p>' +
         '</div> ' +
         '   <table id="generateMaze" class="test"/>' +
         '</div>');
 
-    $('#makeMaze').click(function () {
-        make_maze();
-        var makeMaze = document.getElementById("makeMaze");
-        makeMaze.className += " hide";
+    var usersArrayReady = [];
 
-        $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
+    socket.on('isReady', (userId) => {
+        usersArrayReady.push(userId);
+        console.log(usersArray, usersArrayReady)
+        if (usersArrayReady.length === usersArray.length) {
 
-        var oldDate = new Date();
-        var newDate = new Date(oldDate.getTime() + 10000);
+            socket.emit('startLabyrinth');
+            socket.emit("result", '');
 
-        $('#countdown').countdown(newDate, function(event) {
-            $(this).html(event.strftime('%M:%S'));
-        }).on('finish.countdown', function(event) {
-            $('#titleDisappear').html('');
-            $('#countdown').html('');
-            var genMaze = document.getElementById("generateMaze");
-            genMaze.className += " blured";
+            make_maze();
+            var makeMaze = document.getElementById("startingInformation");
+            makeMaze.className += " hide";
 
-        });
+            $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
+
+            var oldDate = new Date();
+            var newDate = new Date(oldDate.getTime() + 10000);
+
+            $('#countdown').countdown(newDate, function (event) {
+                $(this).html(event.strftime('%M:%S'));
+            }).on('finish.countdown', function (event) {
+                $('#titleDisappear').html('');
+                $('#countdown').html('');
+                var genMaze = document.getElementById("generateMaze");
+                genMaze.className += " blured";
+
+            });
+        }
     });
-
 
 
     socket.on("arrayToResolve", (array) => {
@@ -272,24 +306,35 @@ function initTable() {
 
     });
 
-    socket.on("mazeConnection", () => {
-        console.log("newPlayer");
-        socket.emit("result",'');
 
-    })
+}
+
+function getPlayers() {
+    return $.get(config.server + '/api/user/' + gameId);
 }
 
 function initGame() {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         initMobile();
     } else {
-        initTable();
+        getPlayers().done( res => {
+                socket.emit('mobile launch labyrinth');
+                usersArray = res;
+                console.log(res);
+                console.log(usersArray);
+                initTable();
+            }
+        );
     }
 
 }
 
-export default function launchLabyrinth(players) {
+export default function launchLabyrinth(gameIdParam) {
     User.remove();
+    $('#app').remove();
+    $('#start').remove();
+
+    gameId = gameIdParam;
 
     // setTimeout(function()
     // {

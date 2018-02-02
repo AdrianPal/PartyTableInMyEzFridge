@@ -4,6 +4,8 @@ exports = module.exports = function (io) {
     const prefixMobile = 'mobile';
     let users = [];
 
+    let tableId = null;
+
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -17,6 +19,8 @@ exports = module.exports = function (io) {
             users = [];
 
             gameId = game;
+
+            tableId = socket.id;
         });
 
         // On conversation entry for mobile
@@ -48,7 +52,7 @@ exports = module.exports = function (io) {
 
         /****************************************** MAZE **********************************************/
         socket.on('mazeConnection', () => {
-            socket.emit('mazeConnection');
+            socket.to(tableId).emit('mazeConnection',JSON.parse(JSON.stringify(users)));
         });
 
         socket.on('arrayToResolve', (array) => {
@@ -57,8 +61,18 @@ exports = module.exports = function (io) {
 
         socket.on('result', (result) => {
             socket.broadcast.emit('result', result);  
-        })
-        
+        });
+
+        socket.on('isReady',() => {
+           socket.to(tableId).emit('isReady',socket.id);
+        });
+
+        socket.on('startLabyrinth',() => {
+            socket.broadcast.emit('startLabyrinth');
+        });
+        socket.on('mobile launch labyrinth',() => {
+            socket.broadcast.emit('mobile launch labyrinth');
+        });
 
         /****************************************** PICTIONARY **********************************************/
         socket.on('isDrawing', (east, north, drag, color, drawSize) => {
