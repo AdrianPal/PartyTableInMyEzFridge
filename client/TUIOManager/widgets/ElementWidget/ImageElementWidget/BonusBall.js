@@ -29,7 +29,7 @@ class BonusBall extends ElementWidget {
   * @param {number} initialScale - Initial scale. Set to 1 of no rescale
   * @param {string} src - Source of the image
   */
-  constructor(x, y, width, height, initialRotation, initialScale, src, color, playerid) {
+  constructor(x, y, width, height, initialRotation, initialScale, src, color, playerid, bonusHandler) {
     super(x, y, width, height, initialRotation, initialScale);
     this.src = src;
     this._domElem = $('<img class="ball">');
@@ -49,7 +49,7 @@ class BonusBall extends ElementWidget {
 	
 	  this._isTouched = false;
     this._playerid = playerid;
-    
+    this._bonusHandler = bonusHandler;
   
   } // constructor
   
@@ -74,11 +74,15 @@ class BonusBall extends ElementWidget {
    * @param {TUIOTag} tuioTag - A TUIOTag instance.
    */
   onTagCreation(tuioTag) {
-    if (!this._isInStack) {
+    /*if (!this._isInStack) {
       super.onTagCreation(tuioTag);
 	  this._isTouched = true;
 	  
-	}
+  }*/
+
+  this._bonusHandler.onBonusTouched(tuioTag.id);
+  this._domElem.removeEvent();
+  this.deleteWidget();
   }
 
 

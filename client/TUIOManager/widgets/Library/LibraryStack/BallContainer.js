@@ -143,6 +143,19 @@ class BallContainer extends TUIOWidget {
     $('#' + this._playerid).text(this._ballsCount);
   }
 
+  addBalls(amount)
+  {
+      this._ballsCount+= amount;
+      $('#' + this._playerid).text(this._ballsCount);
+      
+  }
+
+  removeBalls(amount)
+  {
+    this._ballsCount-= amount;
+    $('#' + this._playerid).text(this._ballsCount);
+  }
+
   showOutcome(hasWon)
   {
       if(hasWon)

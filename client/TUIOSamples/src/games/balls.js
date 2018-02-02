@@ -23,21 +23,38 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
  let _gameTime = 3000; //in milliseconds
  let _winners = [];
 
+ let _bonusHandler = {
+     onBonusTouched: function(tag){
+         console.log("Bonus Touchedw/ tag "+ tag);
+         for (let index = 0; index < _players.length; index++) {
+             if(_players[index].tag == tag){                 
+                _players[index].stack.addBalls(10);
+             }
+             else
+             {
+                 _players[index].stack.removeBalls(5);
+             }
+         }
+     }
+ };
+
  const BALLWIDTH = 75;
  const ballContainerWidth = 200;
  const ballContainerHeight = 200;
 
  export default function launchBalls(players)
  {
+    
     $('#boardView').remove();
-    $('#app').append('<div id="ballsView"> <button id="tt">TT</button>'+
+    $('#app').append('<div id="ballsView"> '+
     '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     
     '</div>');
-    getTags();
+
+    $('#ballsView').append('<button id="tt">TT</button>');
     getPlayers(players);
   
     addBallContainers(players);
@@ -57,9 +74,9 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
             _containers[index].addElementWidget(mahball);   
         }*/
 
-        const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
-        _containers[0].addElementWidget(mahball);   
-        
+        /*const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
+        _containers[0].addElementWidget(mahball);   */
+        _bonusHandler.onBonusTouched('tag0');        
     })
 
     /*setTimeout(function()
@@ -230,7 +247,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
             const color = _players[index].color;
 			const tag = _players[index].tag;
 
-            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/joy.png', color, _players[index].name);
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/joy.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);
@@ -338,10 +355,11 @@ function triggerTime()
         {
                 name:players[index].name,
                 color: players[index].color,
-				tag: _tags[index]
+                tag: 'tag'+index,
+                score:0
         }
     );
-        
+        console.log(_players);
     }
  }
 
@@ -382,13 +400,4 @@ function triggerTime()
     //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
- function getTags()
- {
-
-    //!!!! THIS SHOULD BE DONE IN MENU.JS
-    //Get the tags from the server, but for right now
-    _tags.push('10');
-    _tags.push('7');
-    _tags.push('7');
-    _tags.push('7');
- }
+ 
