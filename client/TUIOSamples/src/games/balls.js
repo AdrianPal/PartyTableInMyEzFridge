@@ -33,6 +33,8 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
     $('#app').append('<div id="ballsView"> <button id="tt">TT</button>'+
     '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+    '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+    '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
     
     '</div>');
     getTags();
@@ -238,6 +240,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 			
             mahball.setTagMove(tag);
             mahball.addTo($('#ballsView').get(0));
+            $('#bonusspawnsound')[0].play();
 			_ballsCount++;
 
                 setTimeout( function()
