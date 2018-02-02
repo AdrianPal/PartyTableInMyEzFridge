@@ -20,7 +20,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 3000; //in milliseconds
+ let _gameTime = 30000; //in milliseconds
  let _ballsLifespan = 2500;
  let _bonusFrequency = 5000;
  let _winners = [];
