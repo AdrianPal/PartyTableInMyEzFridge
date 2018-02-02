@@ -16,6 +16,8 @@ import launchPictionary from '../games/pictionary';
 import Pictionary from '../games/pictionary/pictionary'
 import Board from '../board/board';
 
+import StartButton from './start.button';
+
 const config = require('../../config');
 
 export default class Home {
@@ -113,10 +115,19 @@ export default class Home {
         this.app.load(Home.currentFolder + '/home.view.html', function () {
             that.addElements();
 
-            that.addGameListener();
-
             that.startGameListener();
         });
+    }
+
+    startClicked(widget) {
+        if (!this.users || this.users.length < Home.minimumRequiredUsers) {
+            alert('You must have at least ' + Home.minimumRequiredUsers + ' players.');
+            return;
+        }
+
+        widget.deleteWidget();
+
+        this.toggleStartButtonAndCallBoard();
     }
 
     startGameListener() {
@@ -128,14 +139,8 @@ export default class Home {
 
         $('#start').addClass('doNotUse');
 
-        $('#start').on('click', function () {
-            if (!that.users || that.users.length < Home.minimumRequiredUsers) {
-                alert('You must have at least ' + Home.minimumRequiredUsers + ' players.');
-                return;
-            }
-
-            that.toggleStartButtonAndCallBoard();
-        });
+        let start = new StartButton($('#start'), this);
+        start.addTo($('body').get(0));
     }
 
     toggleStartButtonAndCallBoard(cancelAnimateFirstPart) {
@@ -199,15 +204,6 @@ export default class Home {
 
     addBoard() {
         new Board(this.users, this.gameId);
-    }
-
-    addGameListener() {
-        let that = this;
-
-        $('#pic').on('click', function() { new Pictionary() });
-        $('#lab').on('click', function() { launchLabyrinth(that.gameId); });
-        $('#bal').on('click', function() { launchBalls(that.gameId); });
-        $('#twi').on('click', function() { new Twister(that.gameId); });
     }
 
     addElements() {
