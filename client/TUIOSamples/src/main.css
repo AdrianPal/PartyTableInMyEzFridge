@@ -157,12 +157,22 @@ audio
 .outcome
 {
   font-size:1.3rem;
-  background-color: #6a00ff;
   color: white;
   transform: scale(4);
   z-index: 33;
   margin-left:-100px;
   width:20%;
-  transition-duration: 1s;
+  transition-duration: 1s;  
+}
+
+.haswon
+{
+  background-color: #1C57E1;
   
+}
+
+.haslost
+{
+  background-color: #d33257;
+
 }
