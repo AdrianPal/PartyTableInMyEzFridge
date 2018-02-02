@@ -58,8 +58,6 @@ export default class User {
     constructElements() {
         const that = this;
 
-        console.log(that.elements);
-
         $.each(that.elements, function (index, value) {
             let pos = value.pos;
 
@@ -78,7 +76,6 @@ export default class User {
     }
 
     buildUser(e) {
-        console.log(e);
         $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>').css('display', 'block');
         $('#' + e.pos + 'User .name').css('background-color', this.getAvatarNameBackground(e.color));
         $('#' + e.pos + 'User .name').show();
@@ -115,8 +112,6 @@ export default class User {
     }
 
     static updateCurrentPlayer(pos) {
-        console.log('adding class to current player: '+pos);
-        console.log($('#' + pos + 'User'));
         $('.currentPlayer').removeClass('currentPlayer');
         $('#' + pos + 'User').addClass('currentPlayer');
     }

@@ -16,6 +16,7 @@ export default class Anywhere extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
+        console.log('ANYWHERE TOUCHED!');
         this.callBack.call(this.parent, this, this.optionalParams);
     }
 }

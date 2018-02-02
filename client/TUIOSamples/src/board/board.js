@@ -12,11 +12,15 @@ import launchBalls from '../games/balls';
 import {
     Twister
 } from '../games/twister/twister';
-import launchPictionary from '../games/pictionary';
+import { 
+    Pictionary
+} from '../games/pictionary/pictionary';
 
 import Pictionary from '../games/pictionary/pictionary';
 
 import Anywhere from '../tools/anywhere';
+
+import SocketManager from '../../socket.manager';
 
 const config = require('../../config');
 
@@ -31,6 +35,10 @@ export default class Board {
     }
 
     constructor(_users, gameId) {
+        console.log('----');
+        console.log('constructor of BOARD');
+        console.log('----');
+
         this.app = $('#app');
 
         this.gameId = gameId;
@@ -41,7 +49,13 @@ export default class Board {
 
         this.dice = null;
 
+        this.unuseMobile();
+
         this.createNewGame();
+    }
+
+    unuseMobile() {
+        SocketManager.get().emit('mobile unuse');
     }
 
     createNewGame() {
@@ -280,6 +294,7 @@ export default class Board {
                 // Display name
                 setTimeout(function () {
                     $('#gameName').slideDown(1000);
+                    $('#app').html('');
                 }, 750);
 
                 // Hide view
