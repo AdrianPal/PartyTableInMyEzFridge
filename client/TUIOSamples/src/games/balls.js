@@ -20,13 +20,17 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 3000; //in milliseconds
+ let _gameTime = 30000; //in milliseconds
+ let _ballsLifespan = 1500;
+ let _bonusFrequency = 5000;
  let _winners = [];
 
  let _bonusHandler = {
      onBonusTouched: function(tag){
          console.log("Bonus Touchedw/ tag "+ tag);
          for (let index = 0; index < _players.length; index++) {
+            $('#bonusgainsound')[0].play();
+             
              if(_players[index].tag == tag){                 
                 _players[index].stack.addBalls(10);
              }
@@ -221,7 +225,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 						_ballsCount--;
 					//}
                   
-                }  , 2300 );
+                }  , _ballsLifespan );
                 //socket.emit("balls",{stringO: 'Sendin dem balls'});
                 //console.log(socket);
         }//if
@@ -268,11 +272,11 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 						_ballsCount--;
 					//}
                   
-                }  , 2300 );
+                }  , _ballsLifespan );
                 //socket.emit("balls",{stringO: 'Sendin dem balls'});
                 //console.log(socket);
         }//if
-    }, 1000);     //setIntervall()   
+    }, _bonusFrequency);     //setIntervall()   
  }
 
  function getSpawnCoords()
