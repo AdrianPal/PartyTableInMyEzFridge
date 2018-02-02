@@ -144,6 +144,17 @@ class Ball extends ElementWidget {
     this._domElem.addClass('ballTouched'); 
   
   }
+
+  /**
+   * Call after a TUIOTouch deletion.
+   *
+   * @method onTouchDeletion
+   * @param {number/string} tuioTouchId - TUIOTouch's id to delete.
+   */
+  onTouchDeletion(tuioTouchId) {
+    super.onTouchDeletion(tuioTouchId);
+    this._domElem.removeClass('ballTouched');
+  }
     
 
 
