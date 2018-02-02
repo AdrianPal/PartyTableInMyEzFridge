@@ -1,6 +1,7 @@
 import SocketManager from "../../socket.manager";
 import PictureMobile from '../games/pictionary/mobile/pictionary.mobile'
 import PictionaryMobile from "../games/pictionary/mobile/pictionary.mobile";
+import MobileUnused from "./mobile.unused";
 
 const config = require('../../config');
 
@@ -20,6 +21,10 @@ exports = module.exports = function (io, gameId, pos) {
     SocketManager.get().on(prefix + ' update new game id', (data) => {
         let url = 'http://' + config.ip + ':' + config.port;
         location.href = url + '/?view=mobile&pos=' + pos + '&gameId=' + data.gameId;
+    });
+
+    SocketManager.get().on(prefix + ' unuse', (result) => {
+        new MobileUnused(gameId, pos);
     });
 
     SocketManager.get().on(prefix + ' test', (result) => {

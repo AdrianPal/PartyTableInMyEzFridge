@@ -18,6 +18,8 @@ import { 
 
 import Anywhere from '../tools/anywhere';
 
+import SocketManager from '../../socket.manager';
+
 const config = require('../../config');
 
 export default class Board {
@@ -45,7 +47,13 @@ export default class Board {
 
         this.dice = null;
 
+        this.unuseMobile();
+
         this.createNewGame();
+    }
+
+    unuseMobile() {
+        SocketManager.get().emit('mobile unuse');
     }
 
     createNewGame() {
