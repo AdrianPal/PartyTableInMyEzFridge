@@ -16,7 +16,7 @@ mongoose.connect(config.database);
 // Start the server
 let server;
 if (process.env.NODE_ENV != config.test_env) {
-  server = app.listen(config.port);
+  server = app.listen(config.port, '192.168.1.20');
   console.log(`Your server is running on port ${config.port}.`);
 } else {
   server = app.listen(config.test_port);

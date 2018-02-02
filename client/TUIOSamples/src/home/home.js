@@ -98,6 +98,8 @@ export default class Home {
 
                     this.userView = new User(d.users, that.gameId);
 
+                    SocketManager.get().emit('update mobile game new id', { gameId: that.gameId });
+
                     that.toggleStartButtonAndCallBoard(true);
                 })
                 .fail(function (e) {

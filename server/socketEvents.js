@@ -19,6 +19,10 @@ exports = module.exports = function (io) {
             gameId = game;
         });
 
+        socket.on('update mobile game new id', (data) => {
+            socket.broadcast.emit('mobile update new game id', { gameId: data.gameId });
+        });
+
         // On conversation entry for mobile
         socket.on(prefixMobile + ' enter game', (data) => {
             socket.join('mobile ' + data.gameId);
