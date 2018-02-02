@@ -16,6 +16,8 @@ export default class Pictionary {
     }
 
     constructor(gameId)  {
+        this.gameId = gameId;
+
         $('#start').hide();
         this.app = $('#app');
         this.initGame();
@@ -93,7 +95,7 @@ export default class Pictionary {
     goHome(widget) {
         widget.deleteWidget();
 
-        new Home(gameId);
+        new Home(this.gameId);
     }
 
 
