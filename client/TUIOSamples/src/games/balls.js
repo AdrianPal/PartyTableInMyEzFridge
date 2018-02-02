@@ -5,6 +5,7 @@
 import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContainer';
 import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
+import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
 
 
 //import SocketManager from "../../socket.manager";
@@ -20,6 +21,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
  let _isGameOver = false;
  let _ballsCount = 0;
  let _gameTime = 3000; //in milliseconds
+ let _winners = [];
 
  const BALLWIDTH = 75;
  const ballContainerWidth = 200;
@@ -39,6 +41,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
     addBallContainers(players);
     addTimeBars();
     spawnBalls();
+    spawnBonusBalls();
     setCountdown();
 	triggerTime();
 
@@ -205,6 +208,52 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
         }//if
     }, 100);     //setIntervall()   
  }//spawnBalls()
+
+ function spawnBonusBalls()
+ {
+    window.setInterval(function()
+    {
+        if(!_isGameOver)
+        {
+
+        
+            const width = $(window).width();
+            const height = $(window).height();
+            //const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
+            //const spawnY = Math.random() * ((height- BALLWIDTH) - 0) + 0;
+            const coords = getSpawnCoords();
+            const spawnX = coords.x;
+            const spawnY = coords.y;
+			const index = Math.floor(Math.random() * (_players.length));
+            const color = _players[index].color;
+			const tag = _players[index].tag;
+
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/joy.png', color, _players[index].name);
+			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
+
+            mahball.canRotate(false, false);
+            mahball.canMove(true, true);
+            mahball.canZoom(false, false);
+            mahball.canDelete(false, false);        
+			
+            mahball.setTagMove(tag);
+            mahball.addTo($('#ballsView').get(0));
+			_ballsCount++;
+
+                setTimeout( function()
+				{ 
+					//if(!mahball._isTouched)
+					//{
+						  mahball.destroy();
+						_ballsCount--;
+					//}
+                  
+                }  , 2300 );
+                //socket.emit("balls",{stringO: 'Sendin dem balls'});
+                //console.log(socket);
+        }//if
+    }, 1000);     //setIntervall()   
+ }
 
  function getSpawnCoords()
  {
