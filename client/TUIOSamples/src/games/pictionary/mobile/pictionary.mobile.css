@@ -102,7 +102,6 @@ html, body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1em;
 }
 
 #openPalette {

@@ -12,9 +12,6 @@ import launchBalls from '../games/balls';
 import {
     Twister
 } from '../games/twister/twister';
-import { 
-    Pictionary
-} from '../games/pictionary/pictionary';
 
 import Pictionary from '../games/pictionary/pictionary';
 
