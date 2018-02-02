@@ -1,12 +1,11 @@
 import User from '../../user/user'
+import Home from '../../home/home'
 import SocketManager from '../../../socket.manager';
 
+const config = require('../../../config');
 
 export default class Pictionary {
 
-    
-
-    
     static get getCurrentDirectory(){
         return 'src/games/pictionary/';
     }
@@ -55,13 +54,39 @@ export default class Pictionary {
         countdown.html(Pictionary.countDownTime);
         const that = this;
         that.initDrawingSocketBinding();
-        SocketManager.get().on('decreaseCountdown', function(value) {
+        SocketManager.get().on('decreaseCountdown', function(value, gameId) {
             if(that.context == null) {
                 that.initCanvas();
             }
             $('#pictionaryCanvas').show();
             $('#instructions').hide();
-            countdown.html(value);
+
+            if(value == 'EXPIRED'){
+                $('#pictionaryContainer').hide();
+                $('#lostWrapper').show().css('display', 'flex');
+                User.remove();
+                $('#continueButtonLose').on('click', function(){
+                    new Home(gameId);
+                });
+            } else {
+                countdown.html(value);
+            }
+        });
+
+        SocketManager.get().on('pictionaryEnd', function(posDrawer, winner, gameId) {
+            $.get(config.server + '/api/user/' + gameId + '/' + posDrawer)
+                .done(function (user) {
+                    console.log(user);
+                    $('#pictionaryContainer').hide();
+                    $('#winnerWrapper').show().css('display', 'flex');
+                    $('#winnerName').html(winner.name);
+                    $('#drawerName').html(user.name);
+                    User.remove();
+                    $('#continueButton').on('click', function(){
+                        new Home(gameId);
+                    });
+                });
+            
         });
     }
 

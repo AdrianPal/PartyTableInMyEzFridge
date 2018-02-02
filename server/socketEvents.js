@@ -3,6 +3,9 @@ exports = module.exports = function (io) {
 
     const prefixMobile = 'mobile';
     let users = [];
+    let tableId = null;
+
+    let pictionaryDrawer  = null;
 
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
@@ -15,6 +18,8 @@ exports = module.exports = function (io) {
             socket.join(game);
 
             users = [];
+
+            tableId = socket.id;
 
             gameId = game;
         });
@@ -88,6 +93,7 @@ exports = module.exports = function (io) {
 
             for(let userPos in users) {
                 if (userIndex == randomPlayer){
+                    pictionaryDrawer = users[userPos];
                     socket.to(users[userPos]).emit('mobile game pictionary', true, possibleWord[randomWord]);
                 } else {
                     socket.to(users[userPos]).emit('mobile game pictionary', false, null);
@@ -101,8 +107,24 @@ exports = module.exports = function (io) {
         });
 
         socket.on('decreaseCountdown', (value) => {
-            socket.broadcast.emit('decreaseCountdown', value);
-        })
+            socket.broadcast.emit('decreaseCountdown', value, gameId);
+        });
+
+        socket.on('proposeWord', (word, user) => {
+            socket.to(pictionaryDrawer).emit('proposal', word, user);
+        });
+
+        socket.on('responseProposal', (user, response) => {
+            socket.to(user._id).emit('responseProposal',response);
+        });
+
+        socket.on('endGame', (winner) => {
+            for(let userPos in users) {
+                if(users[userPos] == pictionaryDrawer){
+                    socket.to(tableId).emit('pictionaryEnd', userPos, winner, gameId);
+                }
+            }
+        });
 
         //------------------------------------BALLS--------------------------
 

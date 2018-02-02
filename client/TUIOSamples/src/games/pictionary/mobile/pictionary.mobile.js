@@ -43,14 +43,26 @@ export default class PictionaryMobile extends MobileHandler {
                 that.moveEventType = 'touchmove';
                 that.endEventType   = 'touchend';
                 $('#instructionsField').append('Try to guess the word below by drawing it in the box below ! Accept or decline your opponent\'s purposes');        
-
             } else {
                 $('#wordWrapper').hide();
                 $('#startPic').hide();
                 $('#instructionsField').append('Find the word drawn on the table and send your response with the field below !');
                 SocketManager.get().on('startPic', function(){
                     $('#responseWrapper').css('display','flex');
-                })
+                });
+
+
+                $('#sendResponse').on('click', function() {
+                    var currentResponse = $('#response').val();
+
+                    if(currentResponse !== ""){
+                        that.getUserForCurrentGameAndPos()
+                            .done(function (currentUser) {
+                                SocketManager.get().emit('proposeWord',currentResponse, currentUser);      
+                                $('#response').val('');          
+                        })
+                    }
+                });
 
             }
 
@@ -65,9 +77,10 @@ export default class PictionaryMobile extends MobileHandler {
             $('#pictionaryMobileContainer').show().css('display', 'flex');;
             SocketManager.get().emit('startPic');
             that.initCanvasEvent();
+            that.initSocketPurposals();
             $('#startPic').hide();
             $('#countdown').show();
-            $('#countdown').html("<span>90</span>")
+            $('#countdown').html("<span>90</span>");
             setInterval(function() {
                 var countdownValue = parseInt($('#countdown').text());
                 if(countdownValue == 0) {
@@ -80,6 +93,18 @@ export default class PictionaryMobile extends MobileHandler {
             }, 1000)
         });
     }   
+
+    initSocketPurposals(){
+        SocketManager.get().on('proposal', function(response, user) {
+            $('#proposalPerson').html(user.name);
+            $('#proposal').html(response);
+            $('#modalProposal').modal();
+
+            $('#validateProposal').on('click', function(){
+                SocketManager.get().emit('endGame', user);
+            });
+        })
+    }
 
 
     initCanvasEvent() {

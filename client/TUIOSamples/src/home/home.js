@@ -36,6 +36,8 @@ export default class Home {
 
         this.userView = null;
 
+        this.addGameListener();
+
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
 
@@ -48,6 +50,16 @@ export default class Home {
             this.createNewGame();
         }
     }
+
+    addGameListener() {
+        let that = this;
+
+        $('#pic').on('click', function() { new Pictionary() });
+        $('#lab').on('click', function() { launchLabyrinth(that.gameId); });
+        $('#bal').on('click', function() { launchBalls(that.gameId); });
+        $('#twi').on('click', function() { new Twister(that.gameId); });
+    }
+
 
     getUsersFromServerBeforeDisplayingBoard() {
         const that = this;
