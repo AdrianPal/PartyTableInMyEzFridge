@@ -15,7 +15,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
  //var socket = SocketManager.get();
 
  let _colors = [];
- let _tags = [];
+ let _tags = ['03', '6D', '6C', 'B3'];
  let _containers = [];
  let _players = [];
  let _isGameOver = false;
@@ -80,7 +80,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 
         /*const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
         _containers[0].addElementWidget(mahball);   */
-        _bonusHandler.onBonusTouched('tag0');        
+        _bonusHandler.onBonusTouched(_tags[0]);        
     })
 
     /*setTimeout(function()
@@ -359,7 +359,7 @@ function triggerTime()
         {
                 name:players[index].name,
                 color: players[index].color,
-                tag: 'tag'+index,
+                tag: _tags[index],
                 score:0
         }
     );

@@ -146,13 +146,17 @@ class BallContainer extends TUIOWidget {
   addBalls(amount)
   {
       this._ballsCount+= amount;
-      $('#' + this._playerid).text(this._ballsCount);
-      
+      $('#' + this._playerid).text(this._ballsCount);      
   }
 
   removeBalls(amount)
   {
     this._ballsCount-= amount;
+    if(this._ballsCount < 0)
+    {
+      this._ballsCount = 0;
+    }
+
     $('#' + this._playerid).text(this._ballsCount);
   }
 
