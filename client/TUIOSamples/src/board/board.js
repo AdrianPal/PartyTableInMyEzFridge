@@ -12,7 +12,9 @@ import launchBalls from '../games/balls';
 import {
     Twister
 } from '../games/twister/twister';
-import launchPictionary from '../games/pictionary';
+import { 
+    Pictionary
+} from '../games/pictionary/pictionary';
 
 import Anywhere from '../tools/anywhere';
 
@@ -29,6 +31,10 @@ export default class Board {
     }
 
     constructor(_users, gameId) {
+        console.log('----');
+        console.log('constructor of BOARD');
+        console.log('----');
+
         this.app = $('#app');
 
         this.gameId = gameId;
@@ -277,6 +283,7 @@ export default class Board {
                 // Display name
                 setTimeout(function () {
                     $('#gameName').slideDown(1000);
+                    $('#app').html('');
                 }, 750);
 
                 // Hide view
@@ -322,7 +329,7 @@ export default class Board {
 
         switch (id) {
             case 1:
-                return launchPictionary(this.gameId);
+                return new Pictionary(this.gameId);
 
             case 2:
                 return launchLabyrinth(this.gameId);

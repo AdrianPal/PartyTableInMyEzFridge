@@ -23,6 +23,10 @@ export default class Home {
     }
 
     constructor(_gameId, _copy) {
+        console.log('----');
+        console.log('Home constructor');
+        console.log('----');
+
         this.app = $('#app');
         this.totalWin = 0;
 
@@ -82,7 +86,7 @@ export default class Home {
         const that = this;
 
         this.app.load(Home.currentFolder + '/home.view.html', function () {
-            that.startGameListener();
+            that.startGameListener(true);
 
             $.get(config.server + '/api/game/new/' + that.gameId)
                 .done(function (d) {
@@ -92,7 +96,9 @@ export default class Home {
 
                     this.userView = new User(d.users, that.gameId);
 
-                    SocketManager.get().emit('update mobile game new id', { gameId: that.gameId });
+                    SocketManager.get().emit('update mobile game new id', {
+                        gameId: that.gameId
+                    });
 
                     that.toggleStartButtonAndCallBoard(true);
                 })
@@ -117,13 +123,13 @@ export default class Home {
             return;
         }
 
-        if (widget)
+        if (widget !== null)
             widget.deleteWidget();
 
         this.toggleStartButtonAndCallBoard();
     }
 
-    startGameListener() {
+    startGameListener(withoutTuioButton) {
         const that = this;
 
         $('#start').appendTo('body');
@@ -132,10 +138,12 @@ export default class Home {
 
         $('#start').addClass('doNotUse');
 
-        let start = new StartButton($('#start'), this);
-        start.addTo($('body').get(0));
+        if (!withoutTuioButton) {
+            let start = new StartButton($('#start'), this);
+            start.addTo($('body').get(0));
+        }
 
-        $('#start').on('click', function() {
+        $('#start').on('click', function () {
             that.startClicked(null);
         })
     }
@@ -197,9 +205,14 @@ export default class Home {
 
             that.addBoard();
         }, 1000);
+
+        setTimeout(function () {
+            $('#start').remove();
+        }, 2000);
     }
 
     addBoard() {
+        console.log('HOME: ADD BOARD');
         new Board(this.users, this.gameId);
     }
 
