@@ -9,6 +9,7 @@ import User from '../user/user';
 import Board from '../board/board';
 
 import StartButton from './start.button';
+import Pictionary from '../games/pictionary/pictionary';
 
 const config = require('../../config');
 
@@ -29,10 +30,11 @@ export default class Home {
 
         this.app = $('#app');
         this.totalWin = 0;
-
         this.gameId = null;
 
         this.userView = null;
+
+
 
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
@@ -46,7 +48,7 @@ export default class Home {
             this.createNewGame();
         }
     }
-
+    
     getUsersFromServerBeforeDisplayingBoard() {
         const that = this;
 

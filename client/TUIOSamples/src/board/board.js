@@ -12,9 +12,8 @@ import launchBalls from '../games/balls';
 import {
     Twister
 } from '../games/twister/twister';
-import { 
-    Pictionary
-} from '../games/pictionary/pictionary';
+
+import Pictionary from '../games/pictionary/pictionary';
 
 import Anywhere from '../tools/anywhere';
 
@@ -257,7 +256,8 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        this.letsPlayView(rand);
+        // this.letsPlayView(rand);
+        this.letsPlayView(1);
     }
 
     getGameNameFromId(id) {
