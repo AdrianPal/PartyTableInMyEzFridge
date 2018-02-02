@@ -40,12 +40,13 @@ class BonusBall extends ElementWidget {
     this._domElem.css('z-index', `${this.zIndex}`);
     this._domElem.css('left', `${x}px`);
     this._domElem.css('top', `${y}px`);
-    this._domElem.css('transform', `rotate(${initialRotation}deg)`);
+    let randomRot  = Math.floor(Math.random() * ((360 - (-360))   - (-360)) + (-360));
+    this._domElem.css('transform', `rotate(${randomRot}deg)`);
     this._domElem.css('transform-origin', `scale(${initialScale})`);
     this.hasDuplicate = false;
 
     //console.log("In Ball, the color is  " + color);
-    this._domElem.css('background-color', color);
+   // this._domElem.css('background-color', color);
 	
 	  this._isTouched = false;
     this._playerid = playerid;
