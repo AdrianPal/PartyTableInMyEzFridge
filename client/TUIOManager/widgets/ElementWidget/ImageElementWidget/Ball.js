@@ -120,6 +120,7 @@ class Ball extends ElementWidget {
   {
     //this._domElem.$.transition({scale:0}, 500);
     //this._domElem.transition({scale:0}, 500);
+    this._domElem.removeClass('ballTouched');
 	  this.destroyReal();
     
     this._domElem.animate(({width: '0px', height:'0px' }), 500);	 
