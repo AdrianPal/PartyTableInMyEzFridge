@@ -33,8 +33,9 @@ exports = module.exports = function (io) {
             console.log('----');
             console.log(users);
 
-            for (let i = 0; i < users.length; i++) {
-                socket.to(users[i]).emit('mobile unuse', null);
+            for(let pos in users) {
+                console.log('emiting :' + users[pos]);
+                socket.to(users[pos]).emit('mobile unuse', null);
             }
 
             console.log('----');

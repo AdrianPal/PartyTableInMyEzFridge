@@ -16,6 +16,8 @@ export default class Pictionary {
     }
 
     constructor(gameId)  {
+        this.gameId = gameId;
+
         $('#start').hide();
         this.app = $('#app');
         this.initGame();
