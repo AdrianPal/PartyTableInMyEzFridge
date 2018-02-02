@@ -7,8 +7,6 @@ exports = module.exports = function (io) {
 
     let pictionaryDrawer  = null;
 
-    let tableId = null;
-
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
