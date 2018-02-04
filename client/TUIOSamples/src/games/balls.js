@@ -11,7 +11,7 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
 //import SocketManager from "../../socket.manager";
 
 
- import showBoardView from "../board";
+// import showBoardView from "../board";
  //var socket = SocketManager.get();
 
  let _colors = [];
