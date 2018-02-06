@@ -82,7 +82,7 @@ const config = require('../../config');
         $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
-        addBallContainers(players);
+        addBallContainers();
         addTimeBars();
         spawnBalls();
         spawnBonusBalls();
@@ -119,15 +119,15 @@ const config = require('../../config');
     }, 150000000);*/
  }
 
- function addBallContainers(players)
+ function addBallContainers()
  {
-    for (let index = 0; index < players.length; index++) 
+    for (let index = 0; index < _players.length; index++) 
     {
         
         let x = 0;
         let y = 0;
         let rotation = 0;
-        if(index == 0)//top container
+        if(_players[index].position == 'top')//top container
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
              y = 1;
@@ -135,25 +135,25 @@ const config = require('../../config');
             
         }
 
-        else if(index == 1)//bottom container
+        else if(_players[index].position == 'bottom')//bottom container
         {
              x = $(window).width()/ 2 - ballContainerWidth/2;
              y = $(window).height() - ballContainerHeight;
         }
 
-        else if(index == 2) //left container
+        else if(_players[index].position == 'left') //left container
         {
              x = 1;
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = 90;
         }
-        else if(index == 3)//right container
+        else if(_players[index].position == 'right')//right container
         {
              x = $(window).width() - ballContainerWidth;
              y = $(window).height()/ 2 - ballContainerHeight/2;
              rotation = -90;
         }    
-        addBallContainer(x,y,ballContainerWidth,_players[index].color, players[index].name, rotation, index);    
+        addBallContainer(x,y,ballContainerWidth,_players[index].color, _players[index].name, rotation, index);    
     }
  }
 
@@ -184,7 +184,7 @@ const config = require('../../config');
      {
          $('#ballsView').append('<p><progress class="timeBar" id="'+_players[index].name +'bar" value="100" max="100"></progress></p>');
          $('.timeBar').width(ballContainerWidth);
-         if(index == 0)
+         if(_players[index].position == 'top')
          {
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x - ballContainerWidth +72);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y + 70);
@@ -192,20 +192,20 @@ const config = require('../../config');
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(90deg)');
          
         }
-         else if(index == 1)
+         else if(_players[index].position == 'bottom')
          {
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x + 130);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y+75);
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(-90deg)');
                        
          }
-         else if(index == 2)
+         else if(_players[index].position == 'left')
          {
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y + ballContainerWidth+3);           
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
              
          }
-         else if(index == 3)
+         else if(_players[index].position == 'right')
          {
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
