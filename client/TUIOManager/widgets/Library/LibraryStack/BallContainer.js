@@ -96,7 +96,7 @@ class BallContainer extends TUIOWidget {
     this._ballsCount = 0;
     this._playerid = stackTitle;
 	this._gameTime = gameTime
-	console.log("In constructor" + this._gameTime);
+	//console.log("In constructor" + this._gameTime);
 
     //Rotating the element
     this._domElem.css({
@@ -110,19 +110,30 @@ class BallContainer extends TUIOWidget {
 		
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
-	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
+	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
 	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'end"></h3>');
-	
-	
+  
+  /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
+  $('#' + this._playerid + 'bar').css('width', this._domElem.width());
+  $('#' + this._playerid + 'bar').css('margin-left', this._domElem.width()/2 + 30);
+  
+	*/
 	
   }
   
   
   updateTime(time)
   {
-    this._gameTime = time;
-    console.log(this._gameTime);
-    $('#'+this._playerid + 'time').text(this._gameTime/1000);
+    //this._gameTime = time;
+    this._gameTime -= time;
+   // $('#'+this._playerid + 'time').text(this._gameTime/1000);
+    const sub = time/this._gameTime;
+    const widthToDelete = $('#' + this._playerid + 'bar').width() * sub;
+    const newWidth = $('#' + this._playerid + 'bar').width() - widthToDelete;
+    //$('#' + this._playerid + 'bar').width(newWidth);
+
+    //$('#' + this._playerid + 'bar').css('transform', 'scaleY('+sub +')');
+    
   }
 
   addBall()
@@ -132,17 +143,67 @@ class BallContainer extends TUIOWidget {
     $('#' + this._playerid).text(this._ballsCount);
   }
 
+  addBalls(amount)
+  {
+      this._ballsCount+= amount;
+      $('#' + this._playerid).text(this._ballsCount);      
+  }
+
+  removeBalls(amount)
+  {
+    this._ballsCount-= amount;
+    if(this._ballsCount < 0)
+    {
+      this._ballsCount = 0;
+    }
+
+    $('#' + this._playerid).text(this._ballsCount);
+  }
+
   showOutcome(hasWon)
   {
       if(hasWon)
       {
         $('#' + this._playerid + 'end').text("You win !");
+        $('#' + this._playerid + 'end').addClass("outcome haswon");
+        
       }
       else
       {
         $('#' + this._playerid + 'end').text("You lose.");
+        $('#' + this._playerid + 'end').addClass("outcome haslost");        
       }
   }
+
+  areCoordsRight(x, y, ballwidth, containerWidth) 
+  {
+      if(x+ballwidth < this.x || x> this.x+ containerWidth) 
+       
+        {
+          return true;          
+        }
+        else if(y+ballwidth < this.y || y> this.y+containerWidth)
+        {
+          return false;
+        }
+        else
+        {
+          return false;
+        }
+
+        /*if((x+ballwidth < this.x && y+ballwidth < this.y) 
+          || (x+ballwidth < this.x && y> this.y+containerWidth)
+          || (x> this.x+ containerWidth && y+ballwidth < this.y)
+          || (x> this.x+ containerWidth && y> this.y+containerWidth))
+          {
+            return true;
+          }
+          else
+          {
+            return false;
+          }*/
+  }
+  
 
   /**
    * LibraryStack's domElem.
@@ -445,61 +506,65 @@ class BallContainer extends TUIOWidget {
    */
   addElementWidget(elementWidget) {
     let elementToAdd;
-    if (this.isAllowedElement(elementWidget)) {
-      elementToAdd = elementWidget;
-      elementToAdd._domElem.css('transform', 'rotate(360deg)');
-      const elemWidth = elementToAdd._domElem.width();
-      const elemHeight = elementToAdd._domElem.height();
-      this.elementInfoArray.push(
-        {
-          x: elementToAdd.x,
-          y: elementToAdd.y,
-          width: elemWidth,
-          height: elemHeight,
-          angle: elementToAdd._currentAngle,
-          scale: elementToAdd.scale,
-          zIndex: elementToAdd.zIndex,
-        },
-      );
-      elementToAdd._x = this._x;
-      elementToAdd._y = this._y;
-      this.zIndexElem += 1;
-      elementToAdd.zIndex = this.zIndexElem;
+    if(elementWidget._playerid == this._playerid)
+    {    
+		this._isInStack= true;
+      if (this.isAllowedElement(elementWidget)) {
+        elementToAdd = elementWidget;
+        elementToAdd._domElem.css('transform', 'rotate(360deg)');
+        const elemWidth = elementToAdd._domElem.width();
+        const elemHeight = elementToAdd._domElem.height();
+        this.elementInfoArray.push(
+          {
+            x: elementToAdd.x,
+            y: elementToAdd.y,
+            width: elemWidth,
+            height: elemHeight,
+            angle: elementToAdd._currentAngle,
+            scale: elementToAdd.scale,
+            zIndex: elementToAdd.zIndex,
+          },
+        );
+        elementToAdd._x = this._x;
+        elementToAdd._y = this._y;
+        this.zIndexElem += 1;
+        elementToAdd.zIndex = this.zIndexElem;
 
-      elementToAdd._isInStack = true;
-      elementToAdd.disable(true);
-      
-      let newWidth;
-      let newHeight;
-      
-      if (elemWidth > elemHeight) {
-        newWidth = this.width - 50;
-        newHeight = (elemHeight * newWidth) / elemWidth;
-      } else {
-        newHeight = this.width - 50;
-        newWidth = (elemWidth * newHeight) / elemHeight;
+        elementToAdd._isInStack = true;
+        elementToAdd.disable(true);
+        
+        let newWidth;
+        let newHeight;
+        
+        if (elemWidth > elemHeight) {
+          newWidth = this.width - 50;
+          newHeight = (elemHeight * newWidth) / elemWidth;
+        } else {
+          newHeight = this.width - 50;
+          newWidth = (elemWidth * newHeight) / elemHeight;
+        }
+
+        const newLeft = (this.width / 2) - (newWidth / 2);
+        const newTop = (this.height / 2) - (newHeight / 2);
+        elementToAdd._domElem.addClass('stack-element')
+                              .css('left', newLeft)
+                              .css('top', newTop)
+                              .css('overflow', 'hidden')
+                              .css('width', newWidth)
+                              .css('height', newHeight);
+        const angle = this._stackList.length * 10;
+        elementToAdd._currentAngle = angle;
+        elementToAdd.scale = 1;
+        elementToAdd._domElem.css('transform', `rotate(${angle}deg)`)
+                            .appendTo(this.stackDiv);
+
+        this._stackList.push(elementToAdd);
       }
 
-      const newLeft = (this.width / 2) - (newWidth / 2);
-      const newTop = (this.height / 2) - (newHeight / 2);
-      elementToAdd._domElem.addClass('stack-element')
-                            .css('left', newLeft)
-                            .css('top', newTop)
-                            .css('overflow', 'hidden')
-                            .css('width', newWidth)
-                            .css('height', newHeight);
-      const angle = this._stackList.length * 10;
-      elementToAdd._currentAngle = angle;
-      elementToAdd.scale = 1;
-      elementToAdd._domElem.css('transform', `rotate(${angle}deg)`)
-                           .appendTo(this.stackDiv);
+      elementToAdd._domElem.css('transform', 'scale(0.4)');
 
-      this._stackList.push(elementToAdd);
+      this.addBall();
     }
-
-    elementToAdd._domElem.css('transform', 'scale(0.4)');
-
-    this.addBall();
   }
 
   /**

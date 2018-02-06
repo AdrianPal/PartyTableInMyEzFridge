@@ -131,6 +131,7 @@ h1
 
 /*_____________________BALLS PART*____________________*/
 
+
 .ballsCount
 {
   text-align: center;
@@ -153,4 +154,37 @@ h1
 audio
 {
   display: none;
+}
+
+.timeBar
+{
+  /*width:400px;*/
+  height:50px;
+  position: absolute;
+  z-index: 20;
+  /*transform: rotate(270deg);*/
+}
+
+.outcome
+{
+  font-size:1.3rem;
+  color: white;
+  transform: scale(4);
+  z-index: 33;
+  margin-left:-200px;
+  width:40%;
+  padding-bottom: 10px;
+  padding-top:10px;
+  transition-duration: 0.3s;  
+}
+
+.haswon
+{
+  background-color: #1C57E1;
+  
+}
+
+.haslost
+{
+  background-color: #d33257;
 }

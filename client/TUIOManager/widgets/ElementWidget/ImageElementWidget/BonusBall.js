@@ -11,12 +11,12 @@ import TUIOManager from '../../../core/TUIOManager';
 
 
  /**
-  * Main class to manage ImageElementWidget.
+  * Main class to manage BonusBall.
   *
-  * @class Ball
+  * @class BonusBall
   * @extends ElementWidget
   */
-class Ball extends ElementWidget {
+class BonusBall extends ElementWidget {
   /**
   * Ball constructor.
   *
@@ -29,7 +29,7 @@ class Ball extends ElementWidget {
   * @param {number} initialScale - Initial scale. Set to 1 of no rescale
   * @param {string} src - Source of the image
   */
-  constructor(x, y, width, height, initialRotation, initialScale, src, color, playerid) {
+  constructor(x, y, width, height, initialRotation, initialScale, src, color, playerid, bonusHandler) {
     super(x, y, width, height, initialRotation, initialScale);
     this.src = src;
     this._domElem = $('<img class="ball">');
@@ -40,16 +40,17 @@ class Ball extends ElementWidget {
     this._domElem.css('z-index', `${this.zIndex}`);
     this._domElem.css('left', `${x}px`);
     this._domElem.css('top', `${y}px`);
-    this._domElem.css('transform', `rotate(${initialRotation}deg)`);
+    let randomRot  = Math.floor(Math.random() * ((360 - (-360))   - (-360)) + (-360));
+    this._domElem.css('transform', `rotate(${randomRot}deg)`);
     this._domElem.css('transform-origin', `scale(${initialScale})`);
     this.hasDuplicate = false;
 
     //console.log("In Ball, the color is  " + color);
-    this._domElem.css('background-color', color);
+   // this._domElem.css('background-color', color);
 	
 	  this._isTouched = false;
     this._playerid = playerid;
-    
+    this._bonusHandler = bonusHandler;
   
   } // constructor
   
@@ -74,11 +75,15 @@ class Ball extends ElementWidget {
    * @param {TUIOTag} tuioTag - A TUIOTag instance.
    */
   onTagCreation(tuioTag) {
-    if (!this._isInStack) {
+    /*if (!this._isInStack) {
       super.onTagCreation(tuioTag);
 	  this._isTouched = true;
 	  
-	}
+  }*/
+  console.log("TAG DETECTED "+ tuioTag.id);
+  this._bonusHandler.onBonusTouched(tuioTag.id);
+  this._domElem.remove();
+  this.deleteWidget();
   }
 
 
@@ -120,7 +125,6 @@ class Ball extends ElementWidget {
   {
     //this._domElem.$.transition({scale:0}, 500);
     //this._domElem.transition({scale:0}, 500);
-    this._domElem.removeClass('ballTouched');
 	  this.destroyReal();
     
     this._domElem.animate(({width: '0px', height:'0px' }), 500);	 
@@ -162,4 +166,4 @@ class Ball extends ElementWidget {
 
 } // class ImageElementWidget
 
-export default Ball;
+export default BonusBall;
