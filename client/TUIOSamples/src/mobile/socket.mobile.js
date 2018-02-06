@@ -31,10 +31,6 @@ exports = module.exports = function (io, gameId, pos) {
         alert('MOBILE');
     });
 
-    SocketManager.get().on(prefix + ' trigger test', (data) => {
-        alert('TEST TRIGGER ME: you can do what you want with me, ' + pos);
-    });
-
     SocketManager.get().on(prefix + ' game pictionary', (isChoosenMobile, word) => {
         new PictionaryMobile(gameId, pos, isChoosenMobile, word);
     })
