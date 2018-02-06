@@ -11,7 +11,7 @@ import TUIOManager from '../../../core/TUIOManager';
 
 
  /**
-  * Main class to manage ImageElementWidget.
+  * Main class to manage Ball.
   *
   * @class Ball
   * @extends ElementWidget

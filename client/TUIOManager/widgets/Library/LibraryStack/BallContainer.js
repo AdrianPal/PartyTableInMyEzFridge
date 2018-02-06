@@ -111,7 +111,7 @@ class BallContainer extends TUIOWidget {
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
 	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
-	this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'end"></h3>');
+	this._domElem.append('<img  id="'+this._playerid +'end"/>');
   
   /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
   $('#' + this._playerid + 'bar').css('width', this._domElem.width());
@@ -165,12 +165,16 @@ class BallContainer extends TUIOWidget {
       if(hasWon)
       {
         $('#' + this._playerid + 'end').text("You win !");
+        $('#' + this._playerid + 'end').attr("src", "/assets/win.png");
+        
         $('#' + this._playerid + 'end').addClass("outcome haswon");
         
       }
       else
       {
         $('#' + this._playerid + 'end').text("You lose.");
+        $('#' + this._playerid + 'end').attr("src", "/assets/lose.png");
+        
         $('#' + this._playerid + 'end').addClass("outcome haslost");        
       }
   }
