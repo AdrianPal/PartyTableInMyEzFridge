@@ -76,6 +76,7 @@ export default class User {
     }
 
     buildUser(e) {
+        $('#' + e.pos + 'User').addClass('userAdded');
         $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>').css('display', 'block');
         $('#' + e.pos + 'User .name').css('background-color', this.getAvatarNameBackground(e.color));
         $('#' + e.pos + 'User .name').show();
@@ -100,7 +101,8 @@ export default class User {
             c = '0x' + c.join('');
             return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.6)';
         }
-        throw new Error('Bad Hex');
+        
+        console.log('bad hexa');
     }
 
     removeView() {
@@ -109,6 +111,10 @@ export default class User {
 
     static remove() {
         $(User.userTag).remove();
+    }
+
+    static removeUnusedUsers() {
+        $('.user:not(.userAdded)').remove();
     }
 
     static updateCurrentPlayer(pos) {

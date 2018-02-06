@@ -220,6 +220,8 @@ export default class Home {
 
     addBoard() {
         console.log('HOME: ADD BOARD');
+        User.removeUnusedUsers();
+
         new Board(this.users, this.gameId);
     }
 
@@ -261,7 +263,6 @@ export default class Home {
     }
 
     allowStartButton() {
-        console.log('shopw!');
         $('#start').removeClass('doNotUse');
     }
 }
