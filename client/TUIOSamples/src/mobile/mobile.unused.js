@@ -23,8 +23,13 @@ export default class MobileUnused {
     }
 
     updateViewAndRetrieveUser() {
+        const that = this;
+
         $.get(config.server + '/api/user/' + this.gameId + '/' + this.pos)
             .done(function (d) {
+                console.log(d);
+                that.user = d;
+
                 // The user exists for the current pos and game
                 return that.updateView();
             })
