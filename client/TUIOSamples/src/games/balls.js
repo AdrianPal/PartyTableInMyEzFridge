@@ -6,7 +6,9 @@ import BallContainer from 'tuiomanager/widgets/Library/LibraryStack/BallContaine
 import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
 import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
+import User from "../user/user";
 
+const config = require('../../config');
 
 //import SocketManager from "../../socket.manager";
 
@@ -46,27 +48,55 @@ import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Bonu
  const ballContainerWidth = 200;
  const ballContainerHeight = 200;
 
- export default function launchBalls(players)
+ export default function launchBalls(gameId)
  {
-    
-    $('#boardView').remove();
-    $('#app').append('<div id="ballsView"> '+
-    '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
-    '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
-    '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
-    '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
-    
-    '</div>');
+    User.remove();
 
-    $('#ballsView').append('<button id="tt">TT</button>');
-    getPlayers(players);
-  
-    addBallContainers(players);
-    addTimeBars();
-    spawnBalls();
-    spawnBonusBalls();
-    setCountdown();
-	triggerTime();
+
+    //Just for tests
+    let players = [
+        {name:'Papalumbo', avatar:'1', score:0, x:0, y:0, played:false, color:'#088a00'},
+        {name:'RHRHRRH', avatar:'2', score:0, x:0, y:0, played:false, color:'#0050ef'},
+        {name:'Zagogogadget', avatar:'3', score:0, x:0, y:0, played:false, color:'#d80073'},
+        {name:'Kastoulian', avatar:'4', score:0, x:0, y:0, played:false, color:'#fa6800'}
+      ]
+
+      //getting the REAL players
+      $.get(config.server + '/api/user/' + gameId)
+      .done(function (d) {
+          
+        console.log(d);
+        players = d;
+
+        console.log("Launched balls");
+        $('#usersView').remove();
+        $('#app').empty();
+        $('#app').append('<div id="ballsView"> '+
+        '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        
+        '</div>');
+
+        $('#ballsView').append('<button id="tt">TT</button>');
+        getPlayers(players);
+    
+        addBallContainers(players);
+        addTimeBars();
+        spawnBalls();
+        spawnBonusBalls();
+        setCountdown();
+        triggerTime();
+
+      })
+      .fail(function (e) {
+          alert('Error: can\'t get players.');
+          console.log(e);
+      });
+
+
+    
 
    //test for adding balls count
    $('#tt').on('click', function()
@@ -359,12 +389,14 @@ function triggerTime()
         {
                 name:players[index].name,
                 color: players[index].color,
-                tag: _tags[index],
-                score:0
+                position:players[index].pos,
+                tag: _tags[index],//to get later through API
+                score:0 //to get later through API
         }
     );
-        //console.log(_players);
+        
     }
+    console.log(_players);
  }
 
  function displayGameOver()
