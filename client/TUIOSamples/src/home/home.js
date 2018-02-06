@@ -26,6 +26,7 @@ export default class Home {
     constructor(_gameId, _copy) {
         console.log('----');
         console.log('Home constructor');
+        console.log('GameId: '+ _gameId);
         console.log('----');
 
         this.app = $('#app');
@@ -33,8 +34,6 @@ export default class Home {
         this.gameId = null;
 
         this.userView = null;
-
-
 
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
@@ -73,6 +72,10 @@ export default class Home {
         $.post(config.server + '/api/game')
             .done(function (d) {
                 that.gameId = d.gameId;
+
+                console.log('----');
+                console.log('GameId: '+ that.gameId);
+                console.log('----');
 
                 SocketManager.get().emit('new game', that.gameId);
 

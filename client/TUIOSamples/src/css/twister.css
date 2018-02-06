@@ -1,3 +1,36 @@
+@-webkit-keyframes rotating
+/* Safari and Chrome */
+
+    {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
 #twisterContainer {
     display: flex;
     flex-direction: row;
@@ -27,20 +60,25 @@
     justify-content: space-between;
 }
 
-#instructions {
-    width: 25%;
+.instructions {
+    width: 20%;
     height: 100%;
     background: silver;
     box-shadow: 0 0 10px grey;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
-#instructions .pastille {
+#instructions-left {
+    transform: rotate(180deg);
+}
+
+.instructions .pastille {
     margin-bottom: 20%;
 }
 
-#instructions table {
+.instructions table {
     margin: auto;
 }
 
@@ -89,7 +127,7 @@
     color: green;
 }
 
-#total, #currentTeam {
+.total, .currentTeam {
     padding: 10px;
     background: grey;
     width: calc(100% + 30px);
@@ -99,14 +137,14 @@
     text-align: center;
 }
 
-#total i.fa.fa-trophy {
+.total i.fa.fa-trophy {
     font-size: 60px;
 }
 
-#win {
+.win {
     height: 100%;
     position: absolute;
-    width: 25%;
+    width: 100%;
     margin-left: -15px;
     background: rgba(0, 0, 0, 0.5);
     color: rgb(0, 216, 0);
@@ -130,7 +168,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 99;
+    z-index: 100;
 }
 
 #team .header {
@@ -138,13 +176,49 @@
     height: 30%;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
+    flex-direction: column;
+}
+
+#team #header-bottom {
+    transform: rotate(180deg);
 }
 
 #team .info {
     font-size: 25px;
     font-style: italic;
-    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+.player {
+    width: 170px;
+    height: 170px;
+    border: 8px solid black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 100%;
+    
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    -webkit-animation: rotating 8s linear infinite;
+    -moz-animation: rotating 8s linear infinite;
+    -ms-animation: rotating 8s linear infinite;
+    -o-animation: rotating 8s linear infinite;
+    animation: rotating 8s linear infinite;
+}
+
+
+.player .name {
+    padding: 10px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    text-align: center;
+    font-size: 17px;
+    text-transform: uppercase;
 }
 
 #teams {
@@ -180,7 +254,7 @@
     background: #6b6b6b;
 
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 
     font-size: 60px;
@@ -194,13 +268,26 @@
     font-weight: bold;
 }
 
-#turnView .clickAnywhere {
-    font-size: 35px;
-    margin-top: 100px;
+.clickAnywhere {
+    font-size: 30px;
     color: silver;
 }
 
-#countDown {
+#turnView .playersContainer {
+    display: flex;
+}
+
+#turnView .playersContainer .player {
+    width: 250px;
+    height: 250px;
+    margin-right: 50px;    
+}
+
+#turnView .playersContainer .player:last-child {
+    margin-right: 0;
+}
+
+.countDown {
     width: calc(100% + 30px);
     margin-left: -15px;
     background: #af2b2b;
@@ -208,9 +295,14 @@
     font-size: 16px;
 }
 
-#countDown > div {
+.countDown > div {
     overflow: hidden;
     background: #ff3e3e;
     text-align: right;
     padding: 0 10px;
+    height: 25px;
+}
+
+.small {
+    font-size: 30px;
 }

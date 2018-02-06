@@ -60,6 +60,41 @@ SocketManager.get().on('mobile game labyrinth', (d) => {
 
 Ici, l'idéal est que __MobileLabyrinth__ hérite de la classe [MobileHandler](../src/mobile/mobile.handler.js) pour récupérer ses attributs et fonctions, à la manière de [MobileLogin](../src/mobile/login/mobile.login.js).
 
+### S'assurer que la vue sur le smartphone soit toujours synchro
+
+Si l'utilisateur recharge la page sur son mobile, on veut qu'il revienne sur la bonne vue.
+
+Pour ce faire, il suffit de sauvegarder lors du transit par le serveur la socket associée à la vue courante sur le mobile, dans la variable `currentSocketMobileDisplay`. 
+Ainsi, lorsqu'un nouveau smartphone entre dans la partie, on va vérifier si la variable `currentSocketMobileDisplay` est différente de nulle. Si c'est le cas, on enverra la socket `currentSocketMobileDisplay`.
+
+Un exemple concernant le Twister est donné. Pour ce jeu, on affiche les règles sur le smartphone. Lorsque la table notifie le serveur de mettre à jour les vues mobiles, on sauvegarde la socket _"règles du twister"_ :
+
+```js
+socket.on(prefixMobile + ' twister rules', (data) => {
+  let emit = prefixMobile + ' game twister rules';
+
+  for(let pos in users) {
+    socket.to(users[pos]).emit(emit, null);
+  }
+
+  // On sauvegarde
+  currentSocketMobileDisplay = emit;
+});
+```
+
+Et lorsqu'un samrtphone se connecte au serveur, on effectue la vérification suivante :
+
+```js
+socket.on(prefixMobile + ' enter game', (data) => {
+  [...]
+
+  // Used if the user reload its mobile
+  if (currentSocketMobileDisplay !== null) {
+    socket.emit(currentSocketMobileDisplay);
+  }
+});
+```
+
 ## Communiquer avec un smartphone précis
 
 Pour communiquer avec un smartphone précis, c'est à dire avec une __position précise__ en fait (chaque smartphone représentant une position sur le jeu : top, bottom, left, right), un exemple est fourni sur la partie serveur.

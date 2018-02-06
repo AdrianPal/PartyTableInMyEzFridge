@@ -134,6 +134,9 @@ export default class Board {
         User.updateCurrentPlayer(this.currentPlayer.pos);
 
         this.diceForCurrentPlayer();
+
+        // TO REMOVE!!!
+        // this.launchRandomGame();
     }
 
     diceForCurrentPlayer() {
@@ -256,8 +259,8 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        // this.letsPlayView(rand);
-        this.letsPlayView(1);
+        this.letsPlayView(rand);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
@@ -284,19 +287,20 @@ export default class Board {
             type: "GET",
             url: Board.currentFolder + '/play.view.html',
             success: function (text) {
-                $('body').prepend(text).find('#playingView').hide().fadeIn(350);
+                $('body').prepend(text).find('.playingView').hide().fadeIn(350);
 
-                $('#gameName').hide().html(gameName + '!');
+                $('.gameName').hide().html(gameName + '!');
 
                 // Display name
                 setTimeout(function () {
-                    $('#gameName').slideDown(1000);
+                    $('.gameName').slideDown(1000);
                     $('#app').html('');
                 }, 750);
 
                 // Hide view
                 setTimeout(function () {
-                    that.launchRulesForGame(gameName, id);
+                    $('.playingView').delay(500).remove();
+                    that.launchGame(id);
                 }, 3500);
             }
         });
@@ -334,6 +338,12 @@ export default class Board {
         widget.deleteWidget();
 
         $('#rulesView').remove();
+
+        this.launchGame(id);
+    }
+
+    launchGame(id) {
+        console.log('Game Wanted: '+ id);
 
         switch (id) {
             case 1:
