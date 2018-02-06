@@ -85,7 +85,7 @@ export default class Board {
     addPlayers() {
         //Adding the players to the board
         for (let index = 0; index < this.users.length; index++) {
-            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '">')
+            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '" style="border-color: '+ this.users[index].color +'">')
         }
 
         // Setting dimensions of the players
@@ -95,7 +95,7 @@ export default class Board {
             .css('margin-left', '1%');
 
         let startX = $('#board').offset().left;
-        let startY = $('#board').offset().top + 10;
+        let startY = $('#board').offset().top + 3;
 
         let tileW = $('.boardTile:first').width();
 
@@ -108,7 +108,7 @@ export default class Board {
             $('#player_' + pos).css('left', tmp_startX);
             $('#player_' + pos).css('top', startY);
 
-            startY += ($('#player_' + pos).height() + 3);
+            startY += ($('#player_' + pos).height() + 10);
         }
 
         this.selectPlayer();

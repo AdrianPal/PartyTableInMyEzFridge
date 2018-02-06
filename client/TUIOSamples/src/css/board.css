@@ -32,6 +32,8 @@
 
 .playerBoardAvatar {
     position: absolute;
+    border-width: 3px;
+    border-style: solid;
 }
 
 @keyframes shake {
