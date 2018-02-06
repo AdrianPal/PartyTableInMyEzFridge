@@ -130,6 +130,8 @@ export default class Home {
 
         if (widget !== null)
             widget.deleteWidget();
+        else
+            $('#start_tuio').remove();
 
         this.toggleStartButtonAndCallBoard();
     }
