@@ -31,7 +31,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 30;
+        return 1;
     }
 
     constructor(_gameId) {
@@ -109,9 +109,13 @@ export class Twister extends Game {
         </div>`;
 
         $('body #app').append(content);
+		
+		const that = this;
 
-        let anywhere = new Anywhere(this, this.dismissTeamMessageAndStart);
-        anywhere.addTo($('body').get(0));
+        setTimeout(function() {
+			let anywhere = new Anywhere(that, that.dismissTeamMessageAndStart);
+			anywhere.addTo($('body').get(0));
+		}, 1500);		
     }
 
     dismissTeamMessageAndStart(widget) {
@@ -209,9 +213,13 @@ export class Twister extends Game {
                 </div>
                 <span class="clickAnywhere upsideDown">Click anywhere to come back to the board.</span>
             </div>`);
+			
+		const that = this;
 
-        let anywhere = new Anywhere(this, this.updatePointsAndGoBackToBoard);
-        anywhere.addTo($('body').get(0));
+        setTimeout(function() {
+			let anywhere = new Anywhere(that, that.updatePointsAndGoBackToBoard);
+			anywhere.addTo($('body').get(0));
+		}, 1500);
     }
 
     updatePointsAndGoBackToBoard(widget) {
@@ -321,8 +329,10 @@ export class Twister extends Game {
                     $('#team2 .player' + k + ' .name').css('background-color', that.getAvatarNameBackground(e.color));
                 });
 
-                let anywhere = new Anywhere(that, that.hideTeamAndSetTurn);
-                anywhere.addTo($('body').get(0));
+				setTimeout(function() {
+					let anywhere = new Anywhere(that, that.hideTeamAndSetTurn);
+					anywhere.addTo($('body').get(0));
+				}, 1500);
             }
         });
     }
