@@ -28,8 +28,14 @@ export default class Anywhere extends ElementWidget {
         super.onTouchCreation(tuioTouch);
 
         if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
-            alert('anywhere touched');
+            console.log('anywhere touched');
 			this.callBack.call(this.parent, this, this.optionalParams);
         }
+    }
+
+    deleteWidget() {
+        super.deleteWidget();
+
+        this._domElem.remove();
     }
 }
