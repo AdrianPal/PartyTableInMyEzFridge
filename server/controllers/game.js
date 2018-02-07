@@ -35,7 +35,7 @@ exports.newGameWithPlayersFromPrevious = function (req, res, next) {
         User.find({
                 gameId: req.params.gameId
             })
-            .select('name pos avatarPath color position points lap gameId')
+            .select('name pos avatarPath color position points lap gameId tangible')
             .exec((err, users) => {
                 if (err) {
                     return next(err);
@@ -72,7 +72,7 @@ exports.refreshGame = function (req, res, next) {
     User.find({
             gameId: req.body.gameId
         })
-        .select('name pos avatarPath color position points lap')
+        .select('name pos avatarPath color position points lap tangible')
         .exec((err, users) => {
             if (err) {
                 return next(err);

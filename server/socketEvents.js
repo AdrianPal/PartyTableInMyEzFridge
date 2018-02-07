@@ -61,6 +61,9 @@ exports = module.exports = function (io) {
             if (currentSocketMobileDisplay !== null) {
                 socket.emit(currentSocketMobileDisplay);
             }
+
+            socket.broadcast.emit('hide QRCode', { pos: data.pos });
+            console.log('EMITTING HIDE QRCODE');
         });
 
         socket.on(prefixMobile + ' trigger', (data) => {

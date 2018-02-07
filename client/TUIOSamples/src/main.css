@@ -130,7 +130,15 @@ h1
 }
 
 .upsideDown {
-  transform: rotate(180deg);
+  transform: rotate(180deg) !important;
+}
+
+.turn-left {
+  transform: rotate(90deg) !important;
+}
+
+.turn-right {
+  transform: rotate(-90deg) !important;
 }
 
 /*_____________________BALLS PART*____________________*/

@@ -50,6 +50,8 @@ export default class MobileLogin extends MobileHandler {
         const that = this;
 
         $('#gameId').val(that.gameId);
+
+        $('#name').focus();
         
         $('#newUser').on('click', function (e) {
             e.preventDefault();

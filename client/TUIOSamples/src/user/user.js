@@ -3,6 +3,7 @@
  */
 
 import SocketManager from '../../socket.manager';
+import QrcodeHelper from './qrcode.helper';
 
 const config = require('../../config');
 
@@ -69,13 +70,21 @@ export default class User {
     }
 
     buildQRCode(pos) {
+        if ($('#qrcode_' + pos).length !== 0) {
+            $('#qrcode_' + pos).show();
+            return;
+        }
+
         let link = 'http://' + config.ip + ':' + config.port + '/?view=mobile&pos=' + pos + '&gameId=' + this.gameId;
 
-        $('#' + pos + 'User').find('.avatar').append('<a href="' + link + '" target="_blank"><div class="qrcodeUser" id="qrcode_' + pos + '"></div></a>');
-        new QRCode('qrcode_' + pos, link);
+        $('#' + pos + 'User').find('.avatar').append('<a class="qrCodeLink" id="qrcode_' + pos + '" href="' + link + '" target="_blank" ><div id="qrcode_' + pos + '_tag" class="qrcodeUser"></div></a>');
+        new QRCode('qrcode_' + pos + '_tag', link);
     }
 
     buildUser(e) {
+        console.log('--- user:');
+        console.log(e);
+        console.log('---');
         $('#' + e.pos + 'User').addClass('userAdded');
         $('#' + e.pos + 'User .name').html('<b>' + e.name + '</b>').css('display', 'block');
         $('#' + e.pos + 'User .name').css('background-color', this.getAvatarNameBackground(e.color));
@@ -89,6 +98,105 @@ export default class User {
         });
 
         $('#qrcode_' + e.pos).hide();
+
+        const that = this;
+        
+        setTimeout(function() {
+            that.addQrCodeLink(e);
+            that.addTangibleDisplay(e);
+        }, 500);
+    }
+
+    toggleQRcodeForMobile(pos) {
+        const $q = $('#qrcode_' + pos)
+ 
+        if ($q.is(':visible'))
+            $q.hide();
+        else
+            this.buildQRCode(pos);
+    }
+
+    addQrCodeLink(user) {
+        if ($('#qrCodeHelper_' + user.pos).length !== 0) // Already exists
+            return;
+
+        let $u = $('#' + user.pos + 'User');
+
+        let top;
+        let left;
+        let classForQR = '';
+
+        const padding = 100;
+
+        switch (user.pos) {
+            case 'top':
+                top = $u.offset().top + ($u.width() - 70) / 2;
+                left = $u.offset().left + $u.width() + padding / 3;
+                classForQR += 'upsideDown';
+                break;
+
+            case 'left':
+                top = $u.offset().top - padding;
+                left = $u.offset().left + ($u.width() - 70) / 2;;
+                classForQR += 'turn-left';
+                break;
+
+            case 'right':
+                top = $u.offset().top + $u.width() + padding / 3;
+                left = $u.offset().left + ($u.width() - 70) / 2;;
+                classForQR += 'turn-right';
+                break;
+
+            default:
+                top = $u.offset().top + ($u.width() - 70) / 2;
+                left = $u.offset().left - padding;
+                break;
+        }
+
+        let qrhelper = new QrcodeHelper(this, left, top, classForQR, user.pos, user.color);
+        qrhelper.addTo($('#usersView').get(0));
+    }
+    
+    addTangibleDisplay(user) {
+        if ($('#tangibleDisplay_' + user.pos).length !== 0) // Already exists
+            return;
+
+        let $u = $('#' + user.pos + 'User');
+
+        let top;
+        let left;
+        let classForQR = '';
+
+        const padding = 100;
+
+        switch (user.pos) {
+            case 'top':
+                top = $u.offset().top + ($u.width() - 70) / 2;
+                left = $u.offset().left - 70 - padding / 3;
+                classForQR += 'upsideDown';
+                break;
+
+            case 'left':
+                top = $u.offset().top + $u.width() + padding / 3;
+                left = $u.offset().left + ($u.width() - 70) / 2;;
+                classForQR += 'turn-left';
+                break;
+
+            case 'right':
+                top = $u.offset().top - padding;
+                left = $u.offset().left + ($u.width() - 70) / 2;;
+                classForQR += 'turn-right';
+                break;
+
+            default:
+                top = $u.offset().top + ($u.width() - 70) / 2;
+                left = $u.offset().left + $u.width() + padding / 3;
+                break;
+        }
+
+        $('#usersView').append(`
+            <div class="tangibleDisplay `+ classForQR +`" id="tangibleDisplay_` + user.pos + `" style="border-color: ` + user.color +`; color: ` + user.color +`; top: `+ top +`px; left: `+ left +`px;">`+ user.tangible +`</div>
+        `);
     }
 
     getAvatarNameBackground(hex) {
@@ -101,7 +209,7 @@ export default class User {
             c = '0x' + c.join('');
             return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.6)';
         }
-        
+
         console.log('bad hexa');
     }
 
