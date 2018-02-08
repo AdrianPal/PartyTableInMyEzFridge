@@ -2,19 +2,14 @@
  * @author: Adrian PALUMBO  
  */
 
-import Pastille from '../games/twister/pastille';
 import SocketManager from '../../socket.manager';
 import User from '../user/user';
 
 // import launchBalls from '../games/balls';
-import {
-    Twister
-} from '../games/twister/twister';
-import launchLabyrinth from '../games/labyrinth';
-import launchPictionary from '../games/pictionary';
-
-import Pictionary from '../games/pictionary/pictionary'
 import Board from '../board/board';
+
+import StartButton from './start.button';
+import Pictionary from '../games/pictionary/pictionary';
 
 const config = require('../../config');
 
@@ -29,9 +24,13 @@ export default class Home {
     }
 
     constructor(_gameId, _copy) {
+        console.log('----');
+        console.log('Home constructor');
+        console.log('GameId: '+ _gameId);
+        console.log('----');
+
         this.app = $('#app');
         this.totalWin = 0;
-
         this.gameId = null;
 
         this.userView = null;
@@ -48,7 +47,7 @@ export default class Home {
             this.createNewGame();
         }
     }
-
+    
     getUsersFromServerBeforeDisplayingBoard() {
         const that = this;
 
@@ -74,6 +73,10 @@ export default class Home {
             .done(function (d) {
                 that.gameId = d.gameId;
 
+                console.log('----');
+                console.log('GameId: '+ that.gameId);
+                console.log('----');
+
                 SocketManager.get().emit('new game', that.gameId);
 
                 that.initGame();
@@ -88,7 +91,7 @@ export default class Home {
         const that = this;
 
         this.app.load(Home.currentFolder + '/home.view.html', function () {
-            that.startGameListener();
+            that.startGameListener(true);
 
             $.get(config.server + '/api/game/new/' + that.gameId)
                 .done(function (d) {
@@ -97,6 +100,10 @@ export default class Home {
                     that.gameId = d.gameId;
 
                     this.userView = new User(d.users, that.gameId);
+
+                    SocketManager.get().emit('update mobile game new id', {
+                        gameId: that.gameId
+                    });
 
                     that.toggleStartButtonAndCallBoard(true);
                 })
@@ -111,13 +118,25 @@ export default class Home {
         this.app.load(Home.currentFolder + '/home.view.html', function () {
             that.addElements();
 
-            that.addGameListener();
-
             that.startGameListener();
         });
     }
 
-    startGameListener() {
+    startClicked(widget) {
+        if (!this.users || this.users.length < Home.minimumRequiredUsers) {
+            alert('You must have at least ' + Home.minimumRequiredUsers + ' players.');
+            return;
+        }
+
+        if (widget !== null)
+            widget.deleteWidget();
+        else
+            $('#start_tuio').remove();
+
+        this.toggleStartButtonAndCallBoard();
+    }
+
+    startGameListener(withoutTuioButton) {
         const that = this;
 
         $('#start').appendTo('body');
@@ -126,14 +145,14 @@ export default class Home {
 
         $('#start').addClass('doNotUse');
 
-        $('#start').on('click', function () {
-            if (!that.users || that.users.length < Home.minimumRequiredUsers) {
-                alert('You must have at least ' + Home.minimumRequiredUsers + ' players.');
-                return;
-            }
+        if (!withoutTuioButton) {
+            let start = new StartButton($('#start'), this);
+            start.addTo($('body').get(0));
+        }
 
-            that.toggleStartButtonAndCallBoard();
-        });
+        $('#start').on('click', function () {
+            that.startClicked(null);
+        })
     }
 
     toggleStartButtonAndCallBoard(cancelAnimateFirstPart) {
@@ -193,19 +212,17 @@ export default class Home {
 
             that.addBoard();
         }, 1000);
+
+        setTimeout(function () {
+            $('#start').remove();
+        }, 2000);
     }
 
     addBoard() {
+        console.log('HOME: ADD BOARD');
+        User.removeUnusedUsers();
+
         new Board(this.users, this.gameId);
-    }
-
-    addGameListener() {
-        let that = this;
-
-        $('#pic').on('click', function() { new Pictionary() });
-        $('#lab').on('click', function() { launchLabyrinth(that.gameId); });
-        $('#bal').on('click', function() { launchBalls(that.gameId); });
-        $('#twi').on('click', function() { new Twister(that.gameId); });
     }
 
     addElements() {
@@ -246,7 +263,6 @@ export default class Home {
     }
 
     allowStartButton() {
-        console.log('shopw!');
         $('#start').removeClass('doNotUse');
     }
 }

@@ -129,7 +129,20 @@ h1
   color: silver;
 }
 
+.upsideDown {
+  transform: rotate(180deg) !important;
+}
+
+.turn-left {
+  transform: rotate(90deg) !important;
+}
+
+.turn-right {
+  transform: rotate(-90deg) !important;
+}
+
 /*_____________________BALLS PART*____________________*/
+
 
 .ballsCount
 {
@@ -153,4 +166,34 @@ h1
 audio
 {
   display: none;
+}
+
+.timeBar
+{
+  /*width:400px;*/
+  height:50px;
+  position: absolute;
+  z-index: 20;
+  /*transform: rotate(270deg);*/
+}
+
+.outcome
+{
+  font-size:1.3rem;
+  color: white;
+  z-index: 33;
+  margin-top: -300px;
+  margin-left:-400px;
+  transform: scale(0.5);
+  transition-duration: 0.7s;  
+}
+
+.haswon
+{
+  
+  
+}
+
+.haslost
+{
 }

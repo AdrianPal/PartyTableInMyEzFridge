@@ -1,18 +1,20 @@
 /**
  * @author: Adrian PALUMBO  
  */
-import showBoardView from '../../board';
 import {
     setTimeout
 } from 'timers';
 import Pastille from './pastille';
-import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget'
 import User from '../../user/user';
 import Home from '../../home/home';
 import {
     Game
 } from '../game';
 import Anywhere from '../../tools/anywhere';
+
+import SocketManager from '../../../socket.manager';
+
+const config = require('../../../config');
 
 export class Twister extends Game {
 
@@ -29,11 +31,16 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 30;
+        return 10;
+    }
+    static get fingersNumber() {
+        return 8;
     }
 
     constructor(_gameId) {
         super(_gameId);
+
+        SocketManager.get().emit('mobile twister rules');
 
         User.remove();
 
@@ -71,17 +78,51 @@ export class Twister extends Game {
             this.currentPlayers = this.teamTwo;
         }
 
-        let players = this.getPlayersName(this.currentPlayers);
+        this.newGame();
 
-        $('body').append(`
-            <div id="turnView">
-                <h1>` + players + `</h1>
-                <span>this is your turn!</span>
-                <span class="clickAnywhere">Click anywhere to start the game.</span>
-            </div>`);
+        this.addGameElements();
 
-        let anywhere = new Anywhere(this, this.dismissTeamMessageAndStart);
-        anywhere.addTo($('body').get(0));
+        let content = `
+        <div id="turnView">
+            <div class="center">
+                <div class="clickAnywhere">Click anywhere to start the game.</div>
+                <div class="clickAnywhere">You can read the rules at anytime on your phone.</div>
+            </div>
+
+            <span>It's your turn!</span>
+            
+            <div class="playersContainer">`;
+
+        for (let i = 0; i < this.currentPlayers.length; i++) {
+            let u = this.currentPlayers[i];
+            content += `
+                <div class="player" style="display: flex; background-image: url('` + config.server + '/' + u.avatarPath + `'); border-color: ` + u.color + `;">
+                    <div class="name" style="background-color: ` + this.getAvatarNameBackground(u.color) + `"><b>` + u.name + `</b></div>
+                </div>
+            `;
+        }
+
+        content += `
+            </div>
+
+            <span class="upsideDown">It's your turn!</span>
+
+            <div class="upsideDown center">
+                <div class="clickAnywhere">Click anywhere to start the game.</div>
+                <div class="clickAnywhere">You can read the rules at anytime on your phone.</div>
+            </div>
+
+                
+        </div>`;
+
+        $('body #app').append(content);
+
+        const that = this;
+
+        setTimeout(function () {
+            let anywhere = new Anywhere(that, that.dismissTeamMessageAndStart);
+            anywhere.addTo($('body').get(0));
+        }, 1500);
     }
 
     dismissTeamMessageAndStart(widget) {
@@ -91,23 +132,23 @@ export class Twister extends Game {
 
         let players = this.getPlayersName(this.currentPlayers);
 
-        $('#currentTeam').html(players);
+        $('.currentTeam').html(players);
 
         this.setProgressBar(Twister.gameDuration, Twister.gameDuration, this.createProgressBar());
     }
 
     createProgressBar() {
-        $('#instructions').prepend('<div id="countDown"><div class="bar"></div></div>');
-        return $('#countDown');
+        $('.instructions').prepend('<div class="countDown"><div class="bar"></div></div>');
+        return $('.countDown');
     }
 
     setProgressBar(timeleft, timetotal, $element) {
-        let progressBarWidth = timeleft * $element.width() / timetotal;
+        let progressBarWidth = timeleft / timetotal * 100;
         const that = this;
 
         $element.find('div').animate({
-            width: progressBarWidth
-        }, 500).html(Math.floor(timeleft / 60) + ":" + timeleft % 60);
+            width: progressBarWidth + '%'
+        }, 500);
 
         if (timeleft > 0) {
             setTimeout(function () {
@@ -126,10 +167,6 @@ export class Twister extends Game {
 
             this.totalWin = 0;
 
-            this.newGame();
-
-            this.addGameElements();
-
             this.setTurn(2);
         } else {
             this.teamTwo = this.currentPlayers;
@@ -140,30 +177,59 @@ export class Twister extends Game {
 
     endThisGame() {
         let players;
-        let winPoints, losePoint;
+        let winPoints, losePoints;
+        let content = '';
 
         if (this.teamOne.points > this.teamTwo.points) {
-            players = this.getPlayersName(this.teamOne);
+            players = this.teamOne;
             winPoints = this.teamOne.points;
-            losePoint = this.teamTwo.points;
+            losePoints = this.teamTwo.points;
         } else {
-            players = this.getPlayersName(this.teamTwo);
+            players = this.teamTwo;
             winPoints = this.teamTwo.points;
-            losePoint = this.teamOne.points;
+            losePoints = this.teamOne.points;
         }
 
-        $('body').append(`
+        for (let i = 0; i < players.length; i++) {
+            let u = players[i];
+
+            content += `
+                <div class="player" style="display: flex; border-width: 10px; background-image: url('` + config.server + '/' + u.avatarPath + `'); border-color: ` + u.color + `;">
+                    <div class="name" style="background-color: ` + this.getAvatarNameBackground(u.color) + `"><b>` + u.name + `</b></div>
+                </div>
+            `;
+        }
+
+        $('body #app').append(`
             <div id="turnView">
-                <h1>` + players + `</h1>
-                <span>won with ` + winPoints + ` against ` + losePoint + `!</span>
                 <span class="clickAnywhere">Click anywhere to come back to the board.</span>
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
+                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                </div>
+                
+                <div class="playersContainer">` + content + `</div>
+                
+                <div class="upsideDown" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
+                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                </div>
+                <span class="clickAnywhere upsideDown">Click anywhere to come back to the board.</span>
             </div>`);
 
-        let anywhere = new Anywhere(this, this.updatePointsAndGoBackToBoard);
-        anywhere.addTo($('body').get(0));
+        const that = this;
+
+        setTimeout(function () {
+            let anywhere = new Anywhere(that, that.updatePointsAndGoBackToBoard);
+            anywhere.addTo($('body').get(0));
+        }, 1500);
     }
 
-    updatePointsAndGoBackToBoard() {
+    updatePointsAndGoBackToBoard(widget) {
+        widget.deleteWidget();
+
+        console.log('TWISTER -> HOME');
+
         return new Home(this.gameId);
     }
 
@@ -187,6 +253,27 @@ export class Twister extends Game {
                 alert("Can't get the players -- twister.");
                 console.log(e);
             })
+    }
+
+    hideTeamAndSetTurn(widget) {
+        widget.deleteWidget();
+
+        $('#team').remove();
+
+        this.setTurn(1);
+    }
+
+    getAvatarNameBackground(hex) {
+        var c;
+        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+            c = hex.substring(1).split('');
+            if (c.length == 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c = '0x' + c.join('');
+            return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.6)';
+        }
+        throw new Error('Bad Hex');
     }
 
     buildTeam() {
@@ -219,18 +306,36 @@ export class Twister extends Game {
 
                 let i = 1;
                 that.teamOne.forEach(function (e) {
-                    $('#team1 .player' + (i++)).html(e.name);
+                    let k = i++;
+
+                    $('#team1 .player' + k).css({
+                        'backgroundImage': 'url(' + config.server + '/' + e.avatarPath + ')',
+                        'borderColor': e.color,
+                        'display': 'flex'
+                    });
+
+                    $('#team1 .player' + k + ' .name').html('<b>' + e.name + '</b>');
+                    $('#team1 .player' + k + ' .name').css('background-color', that.getAvatarNameBackground(e.color));
                 });
 
                 i = 1;
                 that.teamTwo.forEach(function (e) {
-                    $('#team2 .player' + (i++)).html(e.name);
+                    let k = i++;
+
+                    $('#team2 .player' + k).css({
+                        'backgroundImage': 'url(' + config.server + '/' + e.avatarPath + ')',
+                        'borderColor': e.color,
+                        'display': 'flex'
+                    }).show(500);
+
+                    $('#team2 .player' + k + ' .name').html('<b>' + e.name + '</b>');
+                    $('#team2 .player' + k + ' .name').css('background-color', that.getAvatarNameBackground(e.color));
                 });
 
                 setTimeout(function () {
-                    $('#team').remove();
-                    that.setTurn(1);
-                }, 8000);
+                    let anywhere = new Anywhere(that, that.hideTeamAndSetTurn);
+                    anywhere.addTo($('body').get(0));
+                }, 1500);
             }
         });
     }
@@ -247,11 +352,17 @@ export class Twister extends Game {
 
         this.getPastilles();
 
+        console.log('GET PASTILLEs');
+
         this.getInstructions();
+
+        console.log('INSTRUCTIONS');
 
         this.getTotal();
 
-        this.addListeners();
+        console.log('TOTAL');
+
+        console.log('----');
     }
 
     newGame() {
@@ -259,10 +370,33 @@ export class Twister extends Game {
         this.pastillesTouched = [];
         const colors = Twister.colors;
 
+        let nbrePastilles = 0;
+
+        let maxPastilles = Twister.colors.length * Twister.colors.length;
+
+        if (this.currentPlayers !== null)
+            maxPastilles = Twister.fingersNumber * this.currentPlayers.length;
+
         for (let i = 0; i < colors.length; i++) {
+            // console.log('--- rand:');
+            let p = Twister.randBetween(0, maxPastilles / (Twister.colors.length / 2));
+            // console.log('Between: 0, '+maxPastilles / (Twister.colors.length - 1)+' ===> '+p);
+            // console.log('---');            
+            
+            if (nbrePastilles + p > maxPastilles) {
+                nbrePastilles = maxPastilles;
+                p = maxPastilles - nbrePastilles;
+            } else {
+                nbrePastilles += p;
+            }
+
+            if (i === Twister.colors.length-1 && nbrePastilles === 0) { // Last color
+                p = nbrePastilles = maxPastilles;
+            }
+
             this.pastilles[colors[i]] = {
-                // toDo: Twister.randBetween(0, colors.length + 1),
-                toDo: Twister.randBetween(0, 2),
+                toDo: p,
+                // toDo: Twister.randBetween(0, 2),
                 done: 0
             };
         }
@@ -295,7 +429,7 @@ export class Twister extends Game {
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
 
-            $('.pastille.toRemove').hide();
+            $('.pastille.toRemove').remove();
             $('#loading').hide();
         }, 750);
     }
@@ -303,7 +437,7 @@ export class Twister extends Game {
     getInstructions(doNotCreateTable) {
         const colors = Twister.colors;
 
-        let content = '<div id="currentTeam"></div><table>';
+        let content = '<div class="currentTeam"></div><table>';
 
         if (doNotCreateTable) {
             content = '';
@@ -313,7 +447,7 @@ export class Twister extends Game {
             const nbre = this.pastilles[colors[i]].toDo;
 
             content += `
-                <tr id="` + colors[i] + `Instructions">
+                <tr class="` + colors[i] + `Instructions">
                     <td><div class="pastille ` + colors[i] + `"></div></td>
                     <td>&nbsp;<span class="nbreOfPastilleDone ` + ((nbre === 0) ? 'green' : '') + `">x <span class="nbre">` + nbre + `</span> <span class="check">` + ((nbre === 0) ? '<i class="fa fa-check"></i>' : '') + `</span></span></td>
                 </tr>`;
@@ -322,25 +456,25 @@ export class Twister extends Game {
         if (!doNotCreateTable) {
             content += '</table>';
 
-            $('#instructions').html(content);
+            $('.instructions').html(content);
         } else {
-            $('#instructions table').html(content);
+            $('.instructions table').html(content);
         }
 
         // Will be updated
-        $('#total').remove();
+        $('.total').remove();
         // Need to hide it
-        $('#instructions #win').remove();
+        $('.instructions .win').remove();
     }
 
     getTotal() {
-        $('#instructions').append(`<div id="total"><i class="fa fa-trophy"></i> <span class="totalNumber">` + this.totalWin + `</span></div>`);
+        $('.instructions').append(`<div class="total"><i class="fa fa-trophy"></i> <span class="totalNumber">` + this.totalWin + `</span></div>`);
     }
 
     updateTotal() {
         ++this.totalWin;
 
-        $('#instructions').append('<div id="win"><i class="fa fa-check"></i></div>');
+        $('.instructions').append('<div class="win"><i class="fa fa-check"></i></div>');
 
         let that = this;
 
@@ -377,30 +511,10 @@ export class Twister extends Game {
         }
     }
 
-    addListeners() {
-        let that = this;
-
-        $('#pastilles .pastille')
-            .on('mousedown', function () {
-                const color = $(this).data('color');
-
-                that.pastilles[color].done += 1;
-
-                that.checkForTotal(color);
-            })
-            .on('mouseup', function () {
-                // const color = $(this).data('color');
-
-                // that.pastilles[color].done -= 1;
-
-                // that.checkForTotal(color);
-            });
-    }
-
     checkForTotal(color) {
         if (this.pastilles[color].done >= this.pastilles[color].toDo) {
-            $('#' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
-            $('#' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');
+            $('.' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
+            $('.' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');
 
             let allDone = true;
             const colors = Twister.colors;
@@ -413,8 +527,8 @@ export class Twister extends Game {
             if (allDone)
                 this.updateTotal();
         } else {
-            $('#' + color + 'Instructions .nbreOfPastilleDone').removeClass('green');
-            $('#' + color + 'Instructions .nbreOfPastilleDone .check').html('');
+            $('.' + color + 'Instructions .nbreOfPastilleDone').removeClass('green');
+            $('.' + color + 'Instructions .nbreOfPastilleDone .check').html('');
         }
 
     }

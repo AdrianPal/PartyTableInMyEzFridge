@@ -8,14 +8,12 @@ import SocketManager from '../../socket.manager';
 
 const config = require('../../config');
 
-export default class MobileUnused {
+export default class MobileUnused extends MobileHandler {
 
     constructor(gameId, pos, user) {
-        this.user = user;
-        this.gameId = gameId;
-        this.pos = pos;
+        super(gameId, pos);
 
-        console.log(this.user);
+        this.user = user;
 
         if (this.user !== undefined && this.user !== null) {
             this.updateView();
@@ -25,10 +23,15 @@ export default class MobileUnused {
     }
 
     updateViewAndRetrieveUser() {
+        const that = this;
+
         $.get(config.server + '/api/user/' + this.gameId + '/' + this.pos)
             .done(function (d) {
+                console.log(d);
+                that.user = d;
+
                 // The user exists for the current pos and game
-                return that.loadUnusedView()
+                return that.updateView();
             })
             .fail(function (e) {
                 // New user for game and pos
@@ -39,17 +42,29 @@ export default class MobileUnused {
     updateView() {
         const that = this;
 
-        $('#app').html(`
-            <div class="page-header">
-                <h1 class="center">Hello, <b>` + that.user.name + `</b>!</h1>
-            </div>
+        let title = `Hello, <b>` + that.user.name + `</b>!`;
 
-            <div class="row">
-                <div class="col-xs-12 center">
-                    Your phone is currently <b>not used</b> by the game.<br>
-                    But don't worry, some games will use it soon! :-)
+        let content = `Your phone is currently <b>not used</b> by the game.<br>
+        But don't worry, some games will use it soon! :-)`;
+
+        console.log(this.pageTitle().length);
+
+        if (this.pageTitle().length !== 0) { // Page title+content are existing
+            this.updateTitle(title);
+
+            this.updateContent(content);
+        } else { // Need to recreate the title+content
+            $('#app').html(`
+                <div class="page-header" id="` + MobileHandler.pageTitle + `">
+                    <h1 class="center">` + title + `</h1>
                 </div>
-            </div>
-        `);
+
+                <div class="row">
+                    <div class="col-xs-12 center" id="` + MobileHandler.pageContent + `">
+                        ` + content + `
+                    </div>
+                </div>
+            `);
+        }
     }
 }

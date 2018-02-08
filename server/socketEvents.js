@@ -3,6 +3,11 @@ exports = module.exports = function (io) {
 
     const prefixMobile = 'mobile';
     let users = [];
+    let tableId = null;
+
+    let pictionaryDrawer  = null;
+
+    let currentSocketMobileDisplay = null;
 
     let tableId = null;
 
@@ -18,9 +23,34 @@ exports = module.exports = function (io) {
 
             users = [];
 
+            tableId = socket.id;
+
             gameId = game;
 
             tableId = socket.id;
+        });
+
+        socket.on('update mobile game new id', (data) => {
+            socket.broadcast.emit('mobile update new game id', { gameId: data.gameId });
+        });
+
+        socket.on(prefixMobile + ' twister rules', (data) => {
+            let emit = prefixMobile + ' game twister rules';
+
+            for(let pos in users) {
+                socket.to(users[pos]).emit(emit, null);
+            }
+
+            currentSocketMobileDisplay = emit;
+        });
+
+        socket.on(prefixMobile + ' unuse', (data) => {
+            
+            for(let pos in users) {
+                socket.to(users[pos]).emit('mobile unuse', null);
+            }
+
+            currentSocketMobileDisplay = null;
         });
 
         // On conversation entry for mobile
@@ -30,6 +60,14 @@ exports = module.exports = function (io) {
             gameId = data.gameId;
 
             users[data.pos] = socket.id;
+
+            // Used if the user reload its mobile
+            if (currentSocketMobileDisplay !== null) {
+                socket.emit(currentSocketMobileDisplay);
+            }
+
+            socket.broadcast.emit('hide QRCode', { pos: data.pos });
+            console.log('EMITTING HIDE QRCODE');
         });
 
         socket.on(prefixMobile + ' trigger', (data) => {
@@ -105,6 +143,7 @@ exports = module.exports = function (io) {
 
             for(let userPos in users) {
                 if (userIndex == randomPlayer){
+                    pictionaryDrawer = users[userPos];
                     socket.to(users[userPos]).emit('mobile game pictionary', true, possibleWord[randomWord]);
                 } else {
                     socket.to(users[userPos]).emit('mobile game pictionary', false, null);
@@ -118,8 +157,24 @@ exports = module.exports = function (io) {
         });
 
         socket.on('decreaseCountdown', (value) => {
-            socket.broadcast.emit('decreaseCountdown', value);
-        })
+            socket.broadcast.emit('decreaseCountdown', value, gameId);
+        });
+
+        socket.on('proposeWord', (word, user) => {
+            socket.to(pictionaryDrawer).emit('proposal', word, user);
+        });
+
+        socket.on('responseProposal', (user, response) => {
+            socket.to(user._id).emit('responseProposal',response);
+        });
+
+        socket.on('endGame', (winner) => {
+            for(let userPos in users) {
+                if(users[userPos] == pictionaryDrawer){
+                    socket.to(tableId).emit('pictionaryEnd', userPos, winner, gameId);
+                }
+            }
+        });
 
         //------------------------------------BALLS--------------------------
 
