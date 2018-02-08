@@ -302,7 +302,19 @@ export default class Board {
         let numberOfGames = 4;
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
+        
+        // DEMO SCRIPT
+        if (!Number.isInteger(parseInt(localStorage.getItem('game')))) {
+            rand = 1;
+        } else {
+            rand = parseInt(localStorage.getItem('game')) % numberOfGames + 1;
+        }
 
+        console.log('---playing to: '+ rand);
+
+        localStorage.setItem('game', rand);
+        // ------------
+        
         this.letsPlayView(rand);
         // this.letsPlayView(4);
     }
