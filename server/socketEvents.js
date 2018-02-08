@@ -142,7 +142,6 @@ exports = module.exports = function (io) {
     
 
             var userIndex = 0;
-
             for(let userPos in users) {
                 if (userIndex == randomPlayer){
                     pictionaryDrawer = users[userPos];
