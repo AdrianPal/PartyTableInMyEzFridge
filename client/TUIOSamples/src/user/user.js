@@ -234,6 +234,10 @@ export default class User {
         $('.user:not(.userAdded)').remove();
     }
 
+    static removeCurrentPlayer() {
+        $('.currentPlayer').removeClass('currentPlayer');
+    }
+
     static updateCurrentPlayer(pos) {
         $('.currentPlayer').removeClass('currentPlayer');
         $('#' + pos + 'User').addClass('currentPlayer');
