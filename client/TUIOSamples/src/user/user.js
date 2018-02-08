@@ -67,6 +67,8 @@ export default class User {
             else
                 that.buildUser(value);
         });
+
+        User.removeUnusedUsers();
     }
 
     buildQRCode(pos) {

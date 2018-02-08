@@ -31,10 +31,10 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 10;
+        return 1;
     }
     static get fingersNumber() {
-        return 8;
+        return 9;
     }
 
     constructor(_gameId) {
@@ -198,6 +198,15 @@ export class Twister extends Game {
                     <div class="name" style="background-color: ` + this.getAvatarNameBackground(u.color) + `"><b>` + u.name + `</b></div>
                 </div>
             `;
+
+            $.ajax({
+                url: config.server + '/api/user/points',
+                type: 'PUT',
+                data: {
+                    userId: u._id,
+                    points: 5
+                }
+            });
         }
 
         $('body #app').append(`
@@ -402,6 +411,20 @@ export class Twister extends Game {
         }
     }
 
+    getTangiblesOfCurrentTeam() {
+        if (this.currentPlayers === null)
+            return [];
+        
+        let tangibles = [];
+
+        for (let i = 0; i < this.currentPlayers.length; i++) {
+            tangibles.push(this.currentPlayers[i].tangible);
+        }
+
+        return tangibles;
+        
+    }
+
     getPastilles() {
         const colors = Twister.colors;
 
@@ -423,9 +446,10 @@ export class Twister extends Game {
 
         setTimeout(function () {
             $('.pastille.toRemove').each(function () {
-                const color = $(this).data('color');
-                const l = new Pastille($(this).position().left, $(this).position().top, color, that);
-                l.setTagMove(4);
+                const color = $(this).data('color'),
+                    posi = $(this).position();
+
+                const l = new Pastille(posi.left, posi.top, color, that, that.getTangiblesOfCurrentTeam());
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
 
