@@ -33,7 +33,7 @@ export default class QrcodeHelper extends ElementWidget {
         SocketManager.get().on('hide QRCode', (data) => {
             if (data.pos === that.pos) {
                 that.updateActive(false);
-                that.parent.toggleQRcodeForMobile(that.pos);
+                that.parent.toggleQRcodeForMobile(that.pos, true);
             }
         });
     }

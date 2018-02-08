@@ -194,3 +194,23 @@ exports.updatePositionAndLapForUser = function (req, res, next) {
         });
     }).catch(err => next(err));
 };
+
+exports.addPointsToUser = function (req, res, next) {
+    User.findById(req.body.userId, (err, userToChange) => {
+        if (err) {
+            return next(err);
+        }
+
+        userToChange.points += parseInt(req.body.points);
+
+        userToChange.save((err, user) => {
+            if (err) {
+                return next(err);
+            }
+
+            return res.status(200).json({
+                user
+            });
+        });
+    }).catch(err => next(err));
+};

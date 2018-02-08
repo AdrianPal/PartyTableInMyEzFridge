@@ -27,8 +27,14 @@ export default class Dice extends ImageElementWidget {
         }
     }
 
-    getRandomDiceFace() {
+    getRandomDiceFace(script = false) {
+        // DEMO SCRIPT
+        if (script)
+            return 6;
+        // -------------
+
         return Math.floor(Math.random() * 6) + 1;
+        // return Math.floor(Math.random() * 20) + 19;
     }
 
     randomDiceForSeconds(sec) {
@@ -46,7 +52,11 @@ export default class Dice extends ImageElementWidget {
     }
 
     setFinalDice() {
-        const diceVal = this.getRandomDiceFace();
+        // DEMO SCRIPT
+        const diceVal = this.getRandomDiceFace(true);
+        // -------
+        
+        // const diceVal = this.getRandomDiceFace();
 
         this._domElem.removeClass('diceClicked');
         clearInterval(this.diceInterval);

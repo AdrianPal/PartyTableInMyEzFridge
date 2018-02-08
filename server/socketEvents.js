@@ -21,6 +21,8 @@ exports = module.exports = function (io) {
 
             users = [];
 
+            currentSocketMobileDisplay = null;
+
             tableId = socket.id;
 
             gameId = game;

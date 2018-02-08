@@ -135,6 +135,7 @@
     color: white;
     font-size: 50px;
     text-align: center;
+    word-wrap: break-word;
 }
 
 .total i.fa.fa-trophy {

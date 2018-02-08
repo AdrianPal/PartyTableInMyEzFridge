@@ -31,10 +31,10 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 10;
+        return 35;
     }
     static get fingersNumber() {
-        return 8;
+        return 9;
     }
 
     constructor(_gameId) {
@@ -179,11 +179,17 @@ export class Twister extends Game {
         let players;
         let winPoints, losePoints;
         let content = '';
+        let equal = false;
 
         if (this.teamOne.points > this.teamTwo.points) {
             players = this.teamOne;
             winPoints = this.teamOne.points;
             losePoints = this.teamTwo.points;
+        } else if (this.teamOne.points === this.teamTwo.points) { // Equal
+            equal = true;
+            winPoints = this.teamOne.points;
+            losePoints = this.teamTwo.points;
+            players = this.teamOne.concat(this.teamTwo);
         } else {
             players = this.teamTwo;
             winPoints = this.teamTwo.points;
@@ -198,24 +204,47 @@ export class Twister extends Game {
                     <div class="name" style="background-color: ` + this.getAvatarNameBackground(u.color) + `"><b>` + u.name + `</b></div>
                 </div>
             `;
+
+            $.ajax({
+                url: config.server + '/api/user/points',
+                type: 'PUT',
+                data: {
+                    userId: u._id,
+                    points: 5
+                }
+            });
+        }
+
+        let smileyText;
+
+        if (equal) {
+            smileyText = `
+                <i class="fa fa-meh" style="font-size: 100px; color: gold;"></i>
+                <span class="small">equality, with ` + winPoints + ` ; nobody wins</span>
+            `;
+        } else {
+            smileyText = `
+                <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
+                <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+            `;
         }
 
         $('body #app').append(`
             <div id="turnView">
                 <span class="clickAnywhere">Click anywhere to come back to the board.</span>
+
                 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
-                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                    ` + smileyText + `
                 </div>
-                
+                        
                 <div class="playersContainer">` + content + `</div>
                 
                 <div class="upsideDown" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
-                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                    ` + smileyText + `
                 </div>
                 <span class="clickAnywhere upsideDown">Click anywhere to come back to the board.</span>
-            </div>`);
+            </div>
+        `);
 
         const that = this;
 
@@ -402,6 +431,20 @@ export class Twister extends Game {
         }
     }
 
+    getTangiblesOfCurrentTeam() {
+        if (this.currentPlayers === null)
+            return [];
+        
+        let tangibles = [];
+
+        for (let i = 0; i < this.currentPlayers.length; i++) {
+            tangibles.push(this.currentPlayers[i].tangible);
+        }
+
+        return tangibles;
+        
+    }
+
     getPastilles() {
         const colors = Twister.colors;
 
@@ -423,9 +466,10 @@ export class Twister extends Game {
 
         setTimeout(function () {
             $('.pastille.toRemove').each(function () {
-                const color = $(this).data('color');
-                const l = new Pastille($(this).position().left, $(this).position().top, color, that);
-                l.setTagMove(4);
+                const color = $(this).data('color'),
+                    posi = $(this).position();
+
+                const l = new Pastille(posi.left, posi.top, color, that, that.getTangiblesOfCurrentTeam());
                 l.addTo($('#rowOf' + color + 'Color').get(0));
             });
 
