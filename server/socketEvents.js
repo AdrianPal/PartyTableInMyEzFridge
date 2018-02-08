@@ -7,6 +7,8 @@ exports = module.exports = function (io) {
 
     let pictionaryDrawer  = null;
 
+    let currentSocketMobileDisplay = null;
+
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -19,6 +21,8 @@ exports = module.exports = function (io) {
 
             users = [];
 
+            currentSocketMobileDisplay = null;
+
             tableId = socket.id;
 
             gameId = game;
@@ -28,17 +32,23 @@ exports = module.exports = function (io) {
             socket.broadcast.emit('mobile update new game id', { gameId: data.gameId });
         });
 
-        socket.on('mobile unuse', (data) => {
-            
-            console.log('----');
-            console.log(users);
+        socket.on(prefixMobile + ' twister rules', (data) => {
+            let emit = prefixMobile + ' game twister rules';
 
             for(let pos in users) {
-                console.log('emiting :' + users[pos]);
+                socket.to(users[pos]).emit(emit, null);
+            }
+
+            currentSocketMobileDisplay = emit;
+        });
+
+        socket.on(prefixMobile + ' unuse', (data) => {
+            
+            for(let pos in users) {
                 socket.to(users[pos]).emit('mobile unuse', null);
             }
 
-            console.log('----');
+            currentSocketMobileDisplay = null;
         });
 
         // On conversation entry for mobile
@@ -48,6 +58,14 @@ exports = module.exports = function (io) {
             gameId = data.gameId;
 
             users[data.pos] = socket.id;
+
+            // Used if the user reload its mobile
+            if (currentSocketMobileDisplay !== null) {
+                socket.emit(currentSocketMobileDisplay);
+            }
+
+            socket.broadcast.emit('hide QRCode', { pos: data.pos });
+            console.log('EMITTING HIDE QRCODE');
         });
 
         socket.on(prefixMobile + ' trigger', (data) => {

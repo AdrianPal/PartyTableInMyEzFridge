@@ -49,6 +49,9 @@ export default class Board {
         this.unuseMobile();
 
         this.createNewGame();
+
+        // TODO: to remove
+        // this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -85,7 +88,7 @@ export default class Board {
     addPlayers() {
         //Adding the players to the board
         for (let index = 0; index < this.users.length; index++) {
-            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '">')
+            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '" style="border-color: ' + this.users[index].color + '">')
         }
 
         // Setting dimensions of the players
@@ -95,7 +98,7 @@ export default class Board {
             .css('margin-left', '1%');
 
         let startX = $('#board').offset().left;
-        let startY = $('#board').offset().top + 10;
+        let startY = $('#board').offset().top + 3;
 
         let tileW = $('.boardTile:first').width();
 
@@ -108,7 +111,7 @@ export default class Board {
             $('#player_' + pos).css('left', tmp_startX);
             $('#player_' + pos).css('top', startY);
 
-            startY += ($('#player_' + pos).height() + 3);
+            startY += ($('#player_' + pos).height() + 10);
         }
 
         this.selectPlayer();
@@ -134,6 +137,9 @@ export default class Board {
         User.updateCurrentPlayer(this.currentPlayer.pos);
 
         this.diceForCurrentPlayer();
+
+        // TO REMOVE!!!
+        // this.launchRandomGame();
     }
 
     diceForCurrentPlayer() {
@@ -169,8 +175,24 @@ export default class Board {
         this.dice.addTo($('#app').get(0));
     }
 
-    currentPlayerWon() {
+    getPlayerWhoWon() {
+        let point = -1,
+            user = null;
+
+        for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].points > point) {
+                point = this.users[i].points;
+                user = this.users[i];
+            }
+        }
+
+        return user;
+    }
+
+    onePlayerEnded() {
         const that = this;
+
+        let playerWon = this.getPlayerWhoWon();
 
         that.dice.deleteWidget();
 
@@ -179,7 +201,9 @@ export default class Board {
             url: Board.currentFolder + '/curtain.view.html',
             success: function (text) {
                 $('body').prepend(text).find('#curtainView').hide().fadeIn(350);
-                $('#' + that.currentPlayer.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
+                $('#' + playerWon.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
+
+                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' point(s)!</div>');
 
                 setTimeout(function () {
                     $('#winnerIs').css('visibility', 'visible');
@@ -189,6 +213,7 @@ export default class Board {
 
                     console.log($newGameBtn.width());
 
+                    // BOTTOM
                     let newGame = new PlayButton(
                         $newGameBtn.offset().left,
                         $newGameBtn.offset().top,
@@ -207,6 +232,28 @@ export default class Board {
                         that);
                     newGamePlayers.addTo($('body').get(0));
 
+
+                    // TOP
+                    let newGameTop = new PlayButton(
+                        $newGamePlayersBtn.offset().left,
+                        20,
+                        $newGameBtn.outerWidth(),
+                        $newGameBtn.outerHeight(),
+                        "new",
+                        that,
+                        'upsideDown');
+                    newGameTop.addTo($('body').get(0));
+
+                    let newGamePlayersTop = new PlayButton(
+                        $newGameBtn.offset().left,
+                        20,
+                        $newGamePlayersBtn.outerWidth(),
+                        $newGamePlayersBtn.outerHeight(),
+                        "newWithPlayers",
+                        that,
+                        'upsideDown');
+                    newGamePlayersTop.addTo($('body').get(0));
+
                     $('#checkBoxCurtain').prop('checked', false);
                 }, 4000);
             }
@@ -219,7 +266,7 @@ export default class Board {
         const updatedPosition = this.currentPlayer.position + diceVal;
 
         if (updatedPosition >= Board.numberOfTiles) { // Won!
-            return this.currentPlayerWon();
+            return this.onePlayerEnded();
         }
 
         $.ajax({
@@ -256,8 +303,8 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        // this.letsPlayView(rand);
-        this.letsPlayView(1);
+        this.letsPlayView(rand);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
@@ -284,19 +331,20 @@ export default class Board {
             type: "GET",
             url: Board.currentFolder + '/play.view.html',
             success: function (text) {
-                $('body').prepend(text).find('#playingView').hide().fadeIn(350);
+                $('body').prepend(text).find('.playingView').hide().fadeIn(350);
 
-                $('#gameName').hide().html(gameName + '!');
+                $('.gameName').hide().html(gameName + '!');
 
                 // Display name
                 setTimeout(function () {
-                    $('#gameName').slideDown(1000);
+                    $('.gameName').slideDown(1000);
                     $('#app').html('');
                 }, 750);
 
                 // Hide view
                 setTimeout(function () {
-                    that.launchRulesForGame(gameName, id);
+                    $('.playingView').delay(500).remove();
+                    that.launchGame(id);
                 }, 3500);
             }
         });
@@ -334,6 +382,12 @@ export default class Board {
         widget.deleteWidget();
 
         $('#rulesView').remove();
+
+        this.launchGame(id);
+    }
+
+    launchGame(id) {
+        console.log('Game Wanted: ' + id);
 
         switch (id) {
             case 1:

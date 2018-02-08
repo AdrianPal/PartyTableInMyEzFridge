@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   position: { type: Number },
   points: { type: Number },
   lap: { type: Number },
+  tangible: { type: String },
   gameId: {
     type: Schema.Types.ObjectId,
     ref: 'Game'

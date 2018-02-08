@@ -3,20 +3,20 @@ import TUIOManager from 'tuiomanager/core/TUIOManager';
 
 
 export default class PlayButton extends ElementWidget {
-    constructor(x, y, width, height, type, parent) {
+    constructor(x, y, width, height, type, parent, optionalClass = '') {
         super(x, y, width, height, 0, 1);
 
         this.parent = parent;
         this.type = type;
 
         this._domElem = $('<div>');
-        this._domElem.attr('class', 'playButton '+ this.type);
+        this._domElem.attr('class', 'playButton ' + this.type + ' ' + optionalClass);
         this._domElem.attr('data-color', this.color);
 
         this._domElem.css('width', `${this.width+1}px`);
         this._domElem.css('height', `${this.height+1}px`);
         this._domElem.css('position', 'absolute');
-        this._domElem.css('z-index', `${this.zIndex}`);
+        this._domElem.css('z-index', `1`);
         this._domElem.css('left', `${x}px`);
         this._domElem.css('top', `${y}px`);
 

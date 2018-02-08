@@ -9,6 +9,15 @@ export default class Anywhere extends ElementWidget {
         this.callBack = _callBack;
         this.parent = _parent;
         this.optionalParams = _optionalParams;
+		
+		this._domElem = $('<div>');
+        this._domElem.css({
+            position: 'absolute',
+            top: this._y,
+            left: this._x,
+			width: this._width,
+			height: this._height
+        });
 
         this.canMove(false, false);
         this.canRotate(false, false);
@@ -16,7 +25,17 @@ export default class Anywhere extends ElementWidget {
     }
 
     onTouchCreation(tuioTouch) {
-        console.log('ANYWHERE TOUCHED!');
-        this.callBack.call(this.parent, this, this.optionalParams);
+        super.onTouchCreation(tuioTouch);
+
+        if (this.isTouched(tuioTouch.x, tuioTouch.y)) {
+            console.log('anywhere touched');
+			this.callBack.call(this.parent, this, this.optionalParams);
+        }
+    }
+
+    deleteWidget() {
+        super.deleteWidget();
+
+        this._domElem.remove();
     }
 }

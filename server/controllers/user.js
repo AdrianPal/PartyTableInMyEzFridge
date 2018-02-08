@@ -29,6 +29,10 @@ exports.newUserForGame = function (req, res, next) {
         return res.status(400).json({
             message: 'Please enter your name.'
         });
+    } else if (req.body.tangible === null || req.body.tangible === undefined || req.body.tangible.trim() === "") {
+        return res.status(400).json({
+            message: 'Please enter a tangible.'
+        });
     }
 
     let path = null,
@@ -79,6 +83,7 @@ exports.newUserForGame = function (req, res, next) {
                 conversationId: req.params.conversationId,
                 name: req.body.name,
                 pos: req.params.pos,
+                tangible: req.body.tangible,
                 color: getRandomColorFromCurrentUsedColors(uColors),
                 gameId: gameId,
                 position: 0,
@@ -127,7 +132,7 @@ exports.allUsersForGame = function (req, res, next) {
     User.find({
             gameId: gameId
         })
-        .select('name pos avatarPath color position points lap')
+        .select('name pos avatarPath color position points lap tangible')
         .exec((err, users) => {
             if (err) {
                 return next(err);
@@ -153,7 +158,7 @@ exports.userForGameAndPosition = function (req, res, next) {
             gameId: gameId,
             pos: req.params.pos
         })
-        .select('name pos avatarPath color position points lap')
+        .select('name pos avatarPath color position points lap tangible')
         .exec((err, user) => {
             if (err) {
                 return next(err);
@@ -177,6 +182,26 @@ exports.updatePositionAndLapForUser = function (req, res, next) {
 
         userToChange.position = req.body.position;
         userToChange.lap = req.body.lap;
+
+        userToChange.save((err, user) => {
+            if (err) {
+                return next(err);
+            }
+
+            return res.status(200).json({
+                user
+            });
+        });
+    }).catch(err => next(err));
+};
+
+exports.addPointsToUser = function (req, res, next) {
+    User.findById(req.body.userId, (err, userToChange) => {
+        if (err) {
+            return next(err);
+        }
+
+        userToChange.points += parseInt(req.body.points);
 
         userToChange.save((err, user) => {
             if (err) {
