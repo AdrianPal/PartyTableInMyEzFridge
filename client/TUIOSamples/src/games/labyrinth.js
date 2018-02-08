@@ -460,6 +460,8 @@ export default function launchLabyrinth(gameIdParam) {
     $('#app').remove();
     $('#start').remove();
 
+    User.removeCurrentPlayer();
+
     gameId = gameIdParam;
 
     // setTimeout(function()
