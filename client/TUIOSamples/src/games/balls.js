@@ -65,7 +65,7 @@ const config = require('../../config');
       //getting the REAL players
       $.get(config.server + '/api/user/' + gameId)
       .done(function (d) {
-          
+        console.log("PLayers : ");
         console.log(d);
         players = d;
 
@@ -349,6 +349,7 @@ const config = require('../../config');
         _isGameOver = true;
         displayGameOver();
         showWinner();
+        updateScores();
         backToBoard();
     }  , _gameTime ); 
 }
@@ -388,11 +389,12 @@ function triggerTime()
     {
         _players.push(
         {
-                name:players[index].name,
-                color: players[index].color,
-                position:players[index].pos,
-                tag: _tags[index],//to get later through API
-                score:0 //to get later through API
+            id:players[index]._id,
+            name:players[index].name,
+            color: players[index].color,
+            position:players[index].pos,
+            tag: _tags[index],//to get later through API
+            score:0 //to get later through API
         }
     );
         
@@ -431,7 +433,21 @@ function triggerTime()
             _players[index].stack.showOutcome(false);
         }    
     }
+
+    updateScores(winner);
     //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
+ }
+
+ function updateScores(winnerIndex)
+ {
+    $.ajax({
+        url: config.server + '/api/user/points',
+        type: 'PUT',
+        data: {
+            userId: _players[winnerIndex].id,
+            points: 5
+        }
+    });     
  }
 
 
