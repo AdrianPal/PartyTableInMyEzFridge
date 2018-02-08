@@ -36,6 +36,9 @@ module.exports = function (app, io) {
 
   // Update user position & lap
   userRoutes.put('/', UserController.updatePositionAndLapForUser);
+
+  // Update user position & lap
+  userRoutes.put('/points', UserController.addPointsToUser);
   
   // Get all users for a game
   userRoutes.get('/:gameId', UserController.allUsersForGame);

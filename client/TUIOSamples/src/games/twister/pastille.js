@@ -3,11 +3,13 @@ import TUIOManager from 'tuiomanager/core/TUIOManager';
 
 
 export default class Pastille extends ElementWidget {
-    constructor(x, y, color, parent) {
+    constructor(x, y, color, parent, tangibles = []) {
         super(x, y, 100, 100, 0, 1);
 
         this.parent = parent;
         this.color = color;
+
+        this.tangibles = tangibles;
 
         this._domElem = $('<div>');
         this._domElem.attr('class', 'not-visible pastille ' + this.color);
@@ -38,10 +40,10 @@ export default class Pastille extends ElementWidget {
             console.log('----');
             console.log('tag');
             console.log(tuioTag);
-            console.log(tuioTag.id, this.idTagMove);
+            console.log(tuioTag.id, this.tangibles);
             console.log('----');
 
-            if (tuioTag.id === this.idTagMove) {
+            if (this.tangibles.includes(''+tuioTag.id)) {
                 console.log('----');
                 console.log('tag');
                 console.log('----');

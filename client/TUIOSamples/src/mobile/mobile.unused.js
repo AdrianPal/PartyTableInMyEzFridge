@@ -44,8 +44,24 @@ export default class MobileUnused extends MobileHandler {
 
         let title = `Hello, <b>` + that.user.name + `</b>!`;
 
-        let content = `Your phone is currently <b>not used</b> by the game.<br>
-        But don't worry, some games will use it soon! :-)`;
+        let content = `
+        <link rel="stylesheet" href="/src/css/mobile/unused.css">
+
+        <div class="alert alert-danger alert-dismissible" style="text-align: justify;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Please, <strong><u>do not turn off</u></strong> your phone. Your phone uses WebSocket to handle some game events, so keep it on.
+            <br>
+            You can also disable the automatic turn off feature of your phone in Settings.
+        </div>
+        
+        <div class="alert alert-info" id="mobileQrCodeHelper">
+            <div class="qrcodeHelper" style="background: `+ that.user.color +`;"><i class="fa fa-mobile-alt"></i></div> At any time, if you closed your phone, you can go back to this page by touching on the table the mobile button and scanning the QRcode.
+        </div>
+
+        Your phone is currently <b>not used</b> by the game.
+        <br><br>
+        But don't worry, some games will use it soon! :-)
+        `;
 
         console.log(this.pageTitle().length);
 
@@ -59,10 +75,8 @@ export default class MobileUnused extends MobileHandler {
                     <h1 class="center">` + title + `</h1>
                 </div>
 
-                <div class="row">
-                    <div class="col-xs-12 center" id="` + MobileHandler.pageContent + `">
-                        ` + content + `
-                    </div>
+                <div class="col-xs-12 center" id="` + MobileHandler.pageContent + `">
+                    ` + content + `
                 </div>
             `);
         }

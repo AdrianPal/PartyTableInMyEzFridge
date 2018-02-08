@@ -49,6 +49,9 @@ export default class Board {
         this.unuseMobile();
 
         this.createNewGame();
+
+        // TODO: to remove
+        // this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -85,7 +88,7 @@ export default class Board {
     addPlayers() {
         //Adding the players to the board
         for (let index = 0; index < this.users.length; index++) {
-            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '" style="border-color: '+ this.users[index].color +'">')
+            $('#boardContainer').append('<img width="50" class="playerBoardAvatar" id="player_' + this.users[index].pos + '" src="' + config.server + '/' + this.users[index].avatarPath + '" style="border-color: ' + this.users[index].color + '">')
         }
 
         // Setting dimensions of the players
@@ -172,8 +175,24 @@ export default class Board {
         this.dice.addTo($('#app').get(0));
     }
 
-    currentPlayerWon() {
+    getPlayerWhoWon() {
+        let point = -1,
+            user = null;
+
+        for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].points > point) {
+                point = this.users[i].points;
+                user = this.users[i];
+            }
+        }
+
+        return user;
+    }
+
+    onePlayerEnded() {
         const that = this;
+
+        let playerWon = this.getPlayerWhoWon();
 
         that.dice.deleteWidget();
 
@@ -182,7 +201,9 @@ export default class Board {
             url: Board.currentFolder + '/curtain.view.html',
             success: function (text) {
                 $('body').prepend(text).find('#curtainView').hide().fadeIn(350);
-                $('#' + that.currentPlayer.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
+                $('#' + playerWon.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
+
+                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' point(s)!</div>');
 
                 setTimeout(function () {
                     $('#winnerIs').css('visibility', 'visible');
@@ -192,6 +213,7 @@ export default class Board {
 
                     console.log($newGameBtn.width());
 
+                    // BOTTOM
                     let newGame = new PlayButton(
                         $newGameBtn.offset().left,
                         $newGameBtn.offset().top,
@@ -210,6 +232,28 @@ export default class Board {
                         that);
                     newGamePlayers.addTo($('body').get(0));
 
+
+                    // TOP
+                    let newGameTop = new PlayButton(
+                        $newGamePlayersBtn.offset().left,
+                        20,
+                        $newGameBtn.outerWidth(),
+                        $newGameBtn.outerHeight(),
+                        "new",
+                        that,
+                        'upsideDown');
+                    newGameTop.addTo($('body').get(0));
+
+                    let newGamePlayersTop = new PlayButton(
+                        $newGameBtn.offset().left,
+                        20,
+                        $newGamePlayersBtn.outerWidth(),
+                        $newGamePlayersBtn.outerHeight(),
+                        "newWithPlayers",
+                        that,
+                        'upsideDown');
+                    newGamePlayersTop.addTo($('body').get(0));
+
                     $('#checkBoxCurtain').prop('checked', false);
                 }, 4000);
             }
@@ -222,7 +266,7 @@ export default class Board {
         const updatedPosition = this.currentPlayer.position + diceVal;
 
         if (updatedPosition >= Board.numberOfTiles) { // Won!
-            return this.currentPlayerWon();
+            return this.onePlayerEnded();
         }
 
         $.ajax({
@@ -258,7 +302,19 @@ export default class Board {
         let numberOfGames = 4;
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
+        
+        // DEMO SCRIPT
+        if (!Number.isInteger(parseInt(localStorage.getItem('game')))) {
+            rand = 1;
+        } else {
+            rand = parseInt(localStorage.getItem('game')) % numberOfGames + 1;
+        }
 
+        console.log('---playing to: '+ rand);
+
+        localStorage.setItem('game', rand);
+        // ------------
+        
         this.letsPlayView(rand);
         // this.letsPlayView(4);
     }
@@ -343,7 +399,7 @@ export default class Board {
     }
 
     launchGame(id) {
-        console.log('Game Wanted: '+ id);
+        console.log('Game Wanted: ' + id);
 
         switch (id) {
             case 1:
