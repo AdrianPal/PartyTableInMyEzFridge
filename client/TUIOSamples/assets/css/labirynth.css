@@ -51,16 +51,44 @@
 
 /***** BUTTON *****/
 #maze .btn-maze {
-    border-radius: 2.5em;
-    width: 6em;
-    background-color: darkgreen;
+    border-radius: 1em;
+    width: 8em;
+    height: 7em;
+    background-color: rgb(0, 109, 240);
     color: white;
     justify-content: center;
+    align-items: center;
     display: flex;
     flex-direction: column;
     flex: 1;
     border: 2px solid;
 }
+
+#maze .btn-maze svg{
+    font-size: 3em;
+}
+
+#maze .btn-maze-long {
+    border-radius: 1em;
+    width: 10em;
+    height: 6em;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 2px solid;
+}
+
+#maze #send{
+    background-color: darkgreen;
+}
+
+#maze #send svg{
+    font-size: 3em;
+}
+
 
 #maze .row-bottom {
     display: flex;
@@ -76,7 +104,6 @@
 
 #maze #contentErase {
     align-self: flex-end;
-
 }
 
 #maze #contentErase .btn {
@@ -91,15 +118,20 @@ body {
 }
 
 #isReady {
-    border-radius: 2.5em;
-    width: 6em;
+    border-radius: 7.5em;
+    width: 15em;
+    height: 15em;
     background-color: darkgreen;
     color: white;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
     flex: 1;
-    border: 2px solid;
+    font-size: 1em;
+
+}
+
+#isReadyDiv{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #mazeContainer {
@@ -110,5 +142,41 @@ body {
 #resultContainer {
     display: flex;
     flex-direction: column;
+}
+#infos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+
+/****** TEXT ******/
+
+.waiting {
+    font-size: 220%;
+    color: darkgrey;
+}
+
+.Defeat{
+    color: white;
+    font-size: 250%;
+}
+
+.Victory{
+    color: white;
+    font-size: 250%;
+}
+
+.color-green{
+    color: darkgreen;
+}
+
+.color-red{
+    color: darkred;
+}
+.infos{
+   color: darkgrey;
+    font-size: 120%;
 }
 

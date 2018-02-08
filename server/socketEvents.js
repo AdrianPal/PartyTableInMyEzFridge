@@ -94,7 +94,6 @@ exports = module.exports = function (io) {
         });
 
         socket.on('arrayToResolve', (array, user) => {
-            console.log("ARRAY TO RESOLVE", user.user)
             socket.to(tableId).emit('arrayToResolve', array, user);
         });
 
