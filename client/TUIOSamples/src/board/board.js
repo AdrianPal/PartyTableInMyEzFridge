@@ -51,7 +51,7 @@ export default class Board {
         this.createNewGame();
 
         // TODO: to remove
-        this.launchRandomGame();
+        // this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -303,8 +303,8 @@ export default class Board {
 
         let rand = Math.floor(Math.random() * numberOfGames) + 1;
 
-        // this.letsPlayView(rand);
-        this.letsPlayView(4);
+        this.letsPlayView(rand);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
