@@ -31,7 +31,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 30;
+        return 35;
     }
     static get fingersNumber() {
         return 9;
@@ -179,11 +179,17 @@ export class Twister extends Game {
         let players;
         let winPoints, losePoints;
         let content = '';
+        let equal = false;
 
         if (this.teamOne.points > this.teamTwo.points) {
             players = this.teamOne;
             winPoints = this.teamOne.points;
             losePoints = this.teamTwo.points;
+        } else if (this.teamOne.points === this.teamTwo.points) { // Equal
+            equal = true;
+            winPoints = this.teamOne.points;
+            losePoints = this.teamTwo.points;
+            players = this.teamOne.concat(this.teamTwo);
         } else {
             players = this.teamTwo;
             winPoints = this.teamTwo.points;
@@ -209,22 +215,36 @@ export class Twister extends Game {
             });
         }
 
+        let smileyText;
+
+        if (equal) {
+            smileyText = `
+                <i class="fa fa-meh" style="font-size: 100px; color: gold;"></i>
+                <span class="small">equality, with ` + winPoints + ` ; nobody wins</span>
+            `;
+        } else {
+            smileyText = `
+                <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
+                <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+            `;
+        }
+
         $('body #app').append(`
             <div id="turnView">
                 <span class="clickAnywhere">Click anywhere to come back to the board.</span>
+
                 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
-                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                    ` + smileyText + `
                 </div>
-                
+                        
                 <div class="playersContainer">` + content + `</div>
                 
                 <div class="upsideDown" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <i class="fa fa-trophy" style="font-size: 100px; color: gold;"></i>
-                    <span class="small">with ` + winPoints + ` against ` + losePoints + `</span>
+                    ` + smileyText + `
                 </div>
                 <span class="clickAnywhere upsideDown">Click anywhere to come back to the board.</span>
-            </div>`);
+            </div>
+        `);
 
         const that = this;
 
