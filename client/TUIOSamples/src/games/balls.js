@@ -349,7 +349,6 @@ const config = require('../../config');
         _isGameOver = true;
         displayGameOver();
         showWinner();
-        updateScores();
         backToBoard();
     }  , _gameTime ); 
 }
@@ -433,18 +432,29 @@ function triggerTime()
             _players[index].stack.showOutcome(false);
         }    
     }
+    console.log("In showWinner()");
+    console.log("_players = "+ _players);
+    console.log("winner = " +winner);
+    console.log("_players[winner] = ");
+    console.log(_players[winner]);
 
     updateScores(winner);
     //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
- function updateScores(winnerIndex)
+ function updateScores(winner)
  {
+    
+    console.log("In updateScores()");
+    console.log("_players = "+ _players);
+    console.log("winner = " +winner);
+    console.log("_players[winner] = ");
+    console.log(_players[winner]);   
     $.ajax({
         url: config.server + '/api/user/points',
         type: 'PUT',
         data: {
-            userId: _players[winnerIndex].id,
+            userId: _players[winner].id,
             points: 5
         }
     });     
