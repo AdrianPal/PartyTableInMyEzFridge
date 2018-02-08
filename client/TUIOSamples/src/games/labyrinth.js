@@ -4,13 +4,15 @@
  */
 import SocketManager from "../../socket.manager";
 import User from "../user/user";
-import PictionaryMobile from "./pictionary/mobile/pictionary.mobile";
 import * as config from "../../config";
+import getUrlParameter from '../../tools';
 
 var socket = SocketManager.get();
 var usersArray = [];
 var gameId = 0;
 var arrayForResolving = [];
+var pos = '';
+var currentUser = {};
 
 
 var launched = false;
@@ -125,35 +127,49 @@ function convertDir(dir) {
 }
 
 
-function solveInstructions(array, userId) {
+
+function solveInstructions(array, user) {
     let start = gid('generateMaze').kid(1).kid(1);
     let end = gid('generateMaze').lastChild.previousSibling
         .lastChild.previousSibling;
 
     let currentPos = start;
-    currentPos.cls('v');
     let res = '';
-    console.log('array : ', array);
+    let path = new Array();
+    path.push(start);
+
     for (let i = 0; i < array.length; i++) {
         let dir = array[i];
 
         if (currentPos.className.match('end')) {
-            socket.emit("result", 'Victory', userId);
-            res = 'victory';
+            res = 'Victory';
             break;
         }
         else if (currentPos.className.match(dir)) {
             currentPos = currentPos.neighbors[convertDir(dir)];
-            currentPos.cls('v');
+            path.push(currentPos);
         }
         else {
-            socket.emit("result", "Defeat", userId);
-            res = 'defeat';
+            res = 'Defeat';
             break;
         }
     }
+    for (let i = 0; i<path.length; i++) {
+
+        var paint = function() {
+            return function() {
+                console.log('paint');
+                path[i].style = "background : " + user.color;
+            }
+        };
+
+        setTimeout(paint(), 500*i);
+    }
+
     if (res === '') {
-        socket.emit("result", "Defeat", userId);
+        socket.emit("result", "Defeat", {user: user});
+    } else {
+        socket.emit("result", res, {user: user});
     }
 
 
@@ -172,13 +188,18 @@ function isReady() {
 }
 
 function resolveGame() {
-    socket.on("arrayToResolve", (array, userId) => {
-        arrayForResolving.push({array: array, pos: userId});
-        console.log('resolve: ',usersArray);
+    socket.on("arrayToResolve", (array, user) => {
+        arrayForResolving.push({array: array.array, user: user.user});
         if (arrayForResolving.length === usersArray.length) {
             document.getElementById('generateMaze').classList.remove("blured");
+            document.getElementById('countdown').remove();
             for (let i = 0; i < arrayForResolving.length; i++) {
-                solveInstructions(arrayForResolving[i].array, userId);
+                var resolve = function() {
+                    return function() {
+                        solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user);
+                    }
+                };
+                setTimeout(resolve(), arrayForResolving[i].array.length * 500 * i);
             }
         }
     });
@@ -191,8 +212,8 @@ function initMobile() {
     socket.on('startLabyrinth', () => {
         let res = '';
 
+
         socket.on('result', (result) => {
-            $('#modal').modal();
             $('#maze').append(
                 '<div class="modal fade" id="modal" role="dialog">' +
                 '<div class="modal-dialog">' +
@@ -210,6 +231,7 @@ function initMobile() {
                 '      </div>' +
                 '    </div>' +
                 '</div>')
+            $('#modal').modal();
         });
 
         $('body').append('' +
@@ -236,7 +258,7 @@ function initMobile() {
         let array = [];
 
         $('#send').on('click', function () {
-            socket.emit('arrayToResolve', {array: array});
+            socket.emit('arrayToResolve', {array: array},{user: currentUser});
             for (let i = 0; i < array.length; i++) {
                 $('#array svg').last().remove();
             }
@@ -246,22 +268,86 @@ function initMobile() {
         });
 
         $('#up').click(function () {
-            array.push('n');
+            switch (currentUser.pos){
+                case "bottom":
+                    array.push('n');
+                    break;
+                case "right":
+                    array.push('w');
+                    break;
+                case "top":
+                    array.push('s');
+                    break;
+                case "left":
+                    array.push('e');
+                    break;
+                default:
+                    array.push('n');
+                    break;
+            }
             drawElem('<i class="fa fa-chevron-up" aria-hidden="true">');
         });
 
         $('#down').click(function () {
-            array.push('s');
+            switch (currentUser.pos){
+                case "bottom":
+                    array.push('s');
+                    break;
+                case "right":
+                    array.push('e');
+                    break;
+                case "top":
+                    array.push('n');
+                    break;
+                case "left":
+                    array.push('w');
+                    break;
+                default:
+                    array.push('s');
+                    break;
+            }
             drawElem('<i class="fa fa-chevron-down" aria-hidden="true">');
 
         });
         $('#left').click(function () {
-            array.push('w');
+            switch (currentUser.pos){
+                case "bottom":
+                    array.push('w');
+                    break;
+                case "right":
+                    array.push('s');
+                    break;
+                case "top":
+                    array.push('e');
+                    break;
+                case "left":
+                    array.push('n');
+                    break;
+                default:
+                    array.push('w');
+                    break;
+            }
             drawElem('<i class="fa fa-chevron-left" aria-hidden="true">');
 
         });
         $('#right').click(function () {
-            array.push('e');
+            switch (currentUser.pos){
+                case "bottom":
+                    array.push('e');
+                    break;
+                case "right":
+                    array.push('n');
+                    break;
+                case "top":
+                    array.push('w');
+                    break;
+                case "left":
+                    array.push('s');
+                    break;
+                default:
+                    array.push('e');
+                    break;
+            }
             drawElem('<i class="fa fa-chevron-right" aria-hidden="true">');
 
         });
@@ -271,7 +357,7 @@ function initMobile() {
             $('#array svg').last().remove();
         });
 
-        socket.on('timeUp',() => {
+        socket.on('timeUp', () => {
             socket.emit('arrayToResolve', {array: array});
             for (let i = 0; i < array.length; i++) {
                 $('#array svg').last().remove();
@@ -297,11 +383,9 @@ function initTable() {
 
     socket.on('isReady', (userId) => {
         usersArrayReady.push(userId);
-        console.log(usersArray, usersArrayReady)
         if (usersArrayReady.length === usersArray.length) {
 
             socket.emit('startLabyrinth');
-            socket.emit("result", '');
 
             make_maze();
             var makeMaze = document.getElementById("startingInformation");
@@ -319,7 +403,7 @@ function initTable() {
                 $('#countdown').countdown(newDateTimer, function (event) {
                     $(this).html(event.strftime('%M:%S'));
                 }).on('finish.countdown', function (event) {
-                        socket.emit('timeUp');
+                    socket.emit('timeUp');
                 });
                 var genMaze = document.getElementById("generateMaze");
                 genMaze.className += " blured";
@@ -344,10 +428,20 @@ function getPlayers() {
 function initGame() {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && !launched) {
         launched = true;
-        initMobile();
+        pos = getUrlParameter('pos');
+        $.get(config.server + '/api/user/' + gameId + '/' + pos).done(
+            res => {
+                currentUser = res;
+                initMobile();
+                console.log(currentUser);
+            }
+    )
+
     } else if (!launched) {
         getPlayers().done(res => {
                 usersArray = res;
+                console.log("users Array ", usersArray);
+
                 initTable();
                 socket.emit('mobile launch labyrinth');
             }

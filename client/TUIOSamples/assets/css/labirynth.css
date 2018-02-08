@@ -40,9 +40,7 @@ visibility: hidden !important;
     border-right: 2px dashed;
 }
 
-#maze td.v {
-    background: 2px skyblue;
-}
+
 
 #maze .start{
     background-color: #00C853 !important;

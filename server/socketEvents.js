@@ -9,8 +9,6 @@ exports = module.exports = function (io) {
 
     let currentSocketMobileDisplay = null;
 
-    let tableId = null;
-
     io.on('connection', (socket) => {
         console.log('****** USER CONNECTED ******');
 
@@ -93,12 +91,14 @@ exports = module.exports = function (io) {
             socket.to(tableId).emit('mazeConnection',JSON.parse(JSON.stringify(users)));
         });
 
-        socket.on('arrayToResolve', (array) => {
-            socket.to(tableId).emit('arrayToResolve', array, socket.id);
+        socket.on('arrayToResolve', (array, user) => {
+            console.log("ARRAY TO RESOLVE", user.user)
+            socket.to(tableId).emit('arrayToResolve', array, user);
         });
 
-        socket.on('result', (result,userId) => {
-            socket.to(userId).emit('result', result);
+        socket.on('result', (result,user) => {
+            console.log("USER", user);
+            socket.to(users[user.user.pos]).emit('result', result);
         });
 
         socket.on('isReady',() => {
