@@ -7,6 +7,7 @@ import User from "../user/user";
 import * as config from "../../config";
 import getUrlParameter from '../../tools';
 
+
 var socket = SocketManager.get();
 var usersArray = [];
 var gameId = 0;
@@ -197,6 +198,10 @@ function resolveGame() {
                 var resolve = function() {
                     return function() {
                         solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user);
+                        // document.getElementById('resultContainer').innerHTML = "" +
+                        //     "<img src=" + arrayForResolving[i].user.avatarPath +"/>" +
+                        //     "<p id='pColorUser'>"+arrayForResolving[i].user.name+"</p>";
+                        // document.getElementById('pColorUser').style.color = arrayForResolving[i].user.color;
                     }
                 };
                 setTimeout(resolve(), arrayForResolving[i].array.length * 500 * i);
@@ -375,7 +380,8 @@ function initTable() {
         '<div id="maze">' +
         '<div>' +
         '   <h2 id="startingInformation">Attrapez vos téléphones</h2>' +
-        '</div> ' +
+        '</div id="mazeContainer"> ' +
+        '   <div id="resultContainer"></div>'+
         '   <table id="generateMaze" class="test"/>' +
         '</div>');
 
@@ -451,7 +457,6 @@ function initGame() {
 }
 
 export default function launchLabyrinth(gameIdParam) {
-    User.remove();
     $('#app').remove();
     $('#start').remove();
 
