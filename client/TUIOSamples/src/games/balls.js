@@ -7,6 +7,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
 import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
 import User from "../user/user";
+import Home from '../home/home'
 
 const config = require('../../config');
 
@@ -22,11 +23,11 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 30000; //in milliseconds
- let _ballsLifespan = 2500;
+ let _gameTime = 3000; //in milliseconds
+ let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
-
+ let _gameID = '';
  let _bonusHandler = {
      onBonusTouched: function(tag){
          console.log("Bonus Touched w/ tag "+ tag);
@@ -51,7 +52,7 @@ const config = require('../../config');
  export default function launchBalls(gameId)
  {
     User.remove();
-
+    _gameID = gameId;
 
     //Just for tests
     let players = [
@@ -69,8 +70,8 @@ const config = require('../../config');
         players = d;
 
         console.log("Launched balls");
-        $('#usersView').remove();
-        $('#app').empty();
+        User.remove();
+
         $('#app').append('<div id="ballsView"> '+
         '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
@@ -210,7 +211,6 @@ const config = require('../../config');
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(180deg)');
-            
          }
          
      }
@@ -349,6 +349,7 @@ const config = require('../../config');
         _isGameOver = true;
         displayGameOver();
         showWinner();
+        backToBoard();
     }  , _gameTime ); 
 }
 
@@ -430,10 +431,15 @@ function triggerTime()
             _players[index].stack.showOutcome(false);
         }    
     }
-
-
-
     //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
+
+ function backToBoard()
+ {
+     setTimeout(() => {
+        console.log("Back to menu");
+        new Home(_gameID);
+     }, 4000);     
+ }
  
