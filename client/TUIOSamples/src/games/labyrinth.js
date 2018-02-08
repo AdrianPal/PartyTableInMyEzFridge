@@ -14,6 +14,8 @@ var gameId = 0;
 var arrayForResolving = [];
 var pos = '';
 var currentUser = {};
+var resultArray = new Array();
+
 
 
 var launched = false;
@@ -134,7 +136,6 @@ function solveInstructions(array, user) {
         .lastChild.previousSibling;
 
     let currentPos = start;
-    let res = '';
     let path = new Array();
     path.push(start);
 
@@ -142,7 +143,6 @@ function solveInstructions(array, user) {
         let dir = array[i];
 
         if (currentPos.className.match('end')) {
-            res = 'Victory';
             break;
         }
         else if (currentPos.className.match(dir)) {
@@ -150,29 +150,28 @@ function solveInstructions(array, user) {
             path.push(currentPos);
         }
         else {
-            res = 'Defeat';
             break;
         }
     }
+
     for (let i = 0; i < path.length; i++) {
 
         var paint = function () {
             return function () {
                 path[i].style = "background : " + user.color;
-                //TODO run a sound
+                $('#step')[0].play();
             }
         };
 
         setTimeout(paint(), 500 * i);
     }
 
-    if (res === '') {
-        socket.emit("result", "Defeat", {user: user});
-    } else {
-        socket.emit("result", res, {user: user});
+    resultArray.push({path: path, user: user});
+
+    if(resultArray.length === usersArray.length) {
+        console.log('winners');
+        triggerWinners();
     }
-
-
 }
 
 function isReady() {
@@ -191,20 +190,46 @@ function isReady() {
 
 }
 
+function triggerWinners(){
+    let greater = 0;
+    for (let e of resultArray) {
+        console.log('element', e);
+        if (e.path.length > greater) {
+            greater = e.path.length;
+        }
+    }
+
+    for (let winner of resultArray) {
+        if (winner.path.length === greater) {
+            socket.emit("result", "Victory", {user: winner.user});
+            console.log(greater);
+        } else {
+            socket.emit("result", "Defeat", {user: winner.user});
+        }
+    }
+}
+
 function resolveGame() {
     socket.on("arrayToResolve", (array, user) => {
         arrayForResolving.push({array: array.array, user: user.user});
         if (arrayForResolving.length === usersArray.length) {
             document.getElementById('generateMaze').classList.remove("blured");
             document.getElementById('countdown').remove();
+
+
             for (let i = 0; i < arrayForResolving.length; i++) {
                 var resolve = function () {
                     return function () {
-                        solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user);
+                       solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user);
+
                     }
                 };
                 setTimeout(resolve(), arrayForResolving[i].array.length * 1000 * i);
+
             }
+
+
+
         }
     });
 }
@@ -220,13 +245,14 @@ function initMobile() {
         socket.on('result', (result) => {
             document.getElementById('maze').innerHTML = '<p class="' + result + '">' + result + '</p>';
             let colorBackground = (result==='Victory') ? 'darkgreen' : 'darkred';
-            var audio = (result==='Victory') ? new Audio('../../assets/bonusgain.mp3') : new Audio('../../assets/gameover.mp3');
+            (result==='Victory') ? $('#taDa')[0].play() : $('#boo')[0].play();
 
-            audio.play();
             document.getElementById('maze').style.background = colorBackground;
         });
 
         $('body').append('' +
+            '<audio  id = "boo"> <source src="../../assets/sound/boo.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+            '<audio  id = "taDa"> <source src="../../assets/sound/taDa.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
             '<div id="maze">' +
             '<div id="infos" ></div>' +
             '<p id="array"></p>' +
@@ -370,12 +396,15 @@ function initMobile() {
 function initTable() {
     $('body').append('' +
         '<div id="maze">' +
+        '<audio  id = "start"> <source src="../../assets/sound/start.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "step"> <source src="../../assets/sound/step.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<div>' +
         '   <h2 id="startingInformation">Take your phones !</h2>' +
         '</div id="mazeContainer"> ' +
         '   <div id="resultContainer"></div>' +
         '   <table id="generateMaze" class="test"/>' +
         '</div>');
+
 
     var usersArrayReady = [];
 
@@ -385,13 +414,17 @@ function initTable() {
 
             socket.emit('startLabyrinth');
 
+            $('#startingInformation').remove();
+
             make_maze();
+
+            $('#start')[0].play();
 
             $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
 
             var oldDate = new Date();
-            var newDate = new Date(oldDate.getTime() + 10000);
-            var newDateTimer = new Date(oldDate.getTime() + 100000);
+            var newDate = new Date(oldDate.getTime() + 20000);
+            var newDateTimer = new Date(oldDate.getTime() + 200000);
 
             $('#countdown').countdown(newDate, function (event) {
                 $(this).html(event.strftime('%M:%S'));
