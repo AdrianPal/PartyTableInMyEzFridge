@@ -180,3 +180,22 @@ body {
     font-size: 120%;
 }
 
+
+/******* BAR *********/
+#progressBar {
+    width: 90%;
+    margin: 10px auto;
+    height: 22px;
+    background-color: darkgrey;
+}
+
+#progressBar div {
+    height: 100%;
+    text-align: right;
+    padding: 0 10px;
+    line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+    width: 0;
+    background-color: rgb(0, 109, 240) ;
+    box-sizing: border-box;
+}
+

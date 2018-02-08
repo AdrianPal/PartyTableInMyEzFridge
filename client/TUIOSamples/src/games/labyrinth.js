@@ -169,7 +169,6 @@ function solveInstructions(array, user) {
     resultArray.push({path: path, user: user});
 
     if(resultArray.length === usersArray.length) {
-        console.log('winners');
         triggerWinners();
     }
 }
@@ -199,14 +198,20 @@ function triggerWinners(){
         }
     }
 
+    let winners = [];
+
     for (let winner of resultArray) {
         if (winner.path.length === greater) {
+            winners.push(winner.user);
             socket.emit("result", "Victory", {user: winner.user});
             console.log(greater);
         } else {
             socket.emit("result", "Defeat", {user: winner.user});
         }
     }
+
+    //TODO display cup next to the winner(s)
+
 }
 
 function resolveGame() {
@@ -420,25 +425,62 @@ function initTable() {
 
             $('#start')[0].play();
 
-            $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
+            // $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
+            $('#maze').append('<h3 id="titleDisappear"></h3> ' +
+                '<div id="progressBar">\n' +
+                '  <div class="bar"></div>\n' +
+                '</div>');
 
             var oldDate = new Date();
             var newDate = new Date(oldDate.getTime() + 20000);
             var newDateTimer = new Date(oldDate.getTime() + 200000);
 
-            $('#countdown').countdown(newDate, function (event) {
-                $(this).html(event.strftime('%M:%S'));
-            }).on('finish.countdown', function (event) {
-                $('#titleDisappear').html('<h3>You have</h3>');
-                $('#countdown').countdown(newDateTimer, function (event) {
-                    $(this).html(event.strftime('%M:%S'));
-                }).on('finish.countdown', function (event) {
-                    socket.emit('timeUp');
-                });
-                var genMaze = document.getElementById("generateMaze");
-                genMaze.className += " blured";
 
-            });
+            function progress2(timeleft, timetotal, $element) {
+                var progressBarWidth = timeleft * $element.width() / timetotal;
+                $element.find('div').animate({ width: progressBarWidth }, 500);
+                if(timeleft > 0) {
+                    setTimeout(function () {
+                        progress(timeleft - 1, timetotal, $element);
+                    }, 1000);
+                }else{
+                    console.log('time');
+                    socket.emit('timeUp');
+                }
+
+            };
+
+            function progress(timeleft, timetotal, $element) {
+                var progressBarWidth = timeleft * $element.width() / timetotal;
+                $element.find('div').animate({ width: progressBarWidth }, 500);
+                if(timeleft > 0 ) {
+                    setTimeout(function () {
+                        progress(timeleft - 1, timetotal, $element);
+                    }, 1000);
+                }else{
+                    var genMaze = document.getElementById("generateMaze");
+                    genMaze.className += " blured";
+                    progress2(60, 60, $('#progressBar'));
+                }
+            };
+
+            progress(15, 15, $('#progressBar'));
+
+
+
+            // $('#countdown').countdown(newDate, function (event) {
+            //     $(this).html(event.strftime('%M:%S'));
+            // }).on('finish.countdown', function (event) {
+            //     $('#titleDisappear').html('<h3>You have</h3>');
+            //     $('#countdown').countdown(newDateTimer, function (event) {
+            //         $(this).html(event.strftime('%M:%S'));
+            //     }).on('finish.countdown', function (event) {
+            //         socket.emit('timeUp');
+            //     });
+            //     var genMaze = document.getElementById("generateMaze");
+            //     genMaze.className += " blured";
+            //
+            // });
         }
     });
 
