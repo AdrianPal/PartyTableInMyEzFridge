@@ -29,6 +29,7 @@ export default class Dice extends ImageElementWidget {
 
     getRandomDiceFace() {
         return Math.floor(Math.random() * 6) + 1;
+        // return Math.floor(Math.random() * 20) + 19;
     }
 
     randomDiceForSeconds(sec) {

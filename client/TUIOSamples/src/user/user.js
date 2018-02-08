@@ -21,6 +21,10 @@ export default class User {
         this.container = null;
         this.body = $('body');
 
+        console.log('---user:');
+        console.log(elements);
+        console.log('---');
+
         this.elements = elements;
         this.gameId = gameId;
 
@@ -59,6 +63,10 @@ export default class User {
     constructElements() {
         const that = this;
 
+        console.log('---');
+        console.log('creating users');
+        console.log('---');
+
         $.each(that.elements, function (index, value) {
             let pos = value.pos;
 
@@ -67,8 +75,6 @@ export default class User {
             else
                 that.buildUser(value);
         });
-
-        User.removeUnusedUsers();
     }
 
     buildQRCode(pos) {
@@ -84,7 +90,7 @@ export default class User {
     }
 
     buildUser(e) {
-        console.log('--- user:');
+        console.log('--- build user:');
         console.log(e);
         console.log('---');
         $('#' + e.pos + 'User').addClass('userAdded');
@@ -102,8 +108,8 @@ export default class User {
         $('#qrcode_' + e.pos).hide();
 
         const that = this;
-        
-        setTimeout(function() {
+
+        setTimeout(function () {
             that.addQrCodeLink(e);
             that.addTangibleDisplay(e);
         }, 500);
@@ -111,7 +117,7 @@ export default class User {
 
     toggleQRcodeForMobile(pos) {
         const $q = $('#qrcode_' + pos)
- 
+
         if ($q.is(':visible'))
             $q.hide();
         else
@@ -158,7 +164,7 @@ export default class User {
         let qrhelper = new QrcodeHelper(this, left, top, classForQR, user.pos, user.color);
         qrhelper.addTo($('#usersView').get(0));
     }
-    
+
     addTangibleDisplay(user) {
         if ($('#tangibleDisplay_' + user.pos).length !== 0) // Already exists
             return;
@@ -197,7 +203,7 @@ export default class User {
         }
 
         $('#usersView').append(`
-            <div class="tangibleDisplay `+ classForQR +`" id="tangibleDisplay_` + user.pos + `" style="border-color: ` + user.color +`; color: ` + user.color +`; top: `+ top +`px; left: `+ left +`px;">`+ user.tangible +`</div>
+            <div class="tangibleDisplay ` + classForQR + `" id="tangibleDisplay_` + user.pos + `" style="border-color: ` + user.color + `; color: ` + user.color + `; top: ` + top + `px; left: ` + left + `px;">` + user.tangible + `</div>
         `);
     }
 
@@ -220,6 +226,7 @@ export default class User {
     }
 
     static remove() {
+        console.log('--- USER remove ---');
         $(User.userTag).remove();
     }
 
