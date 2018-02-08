@@ -49,14 +49,9 @@ export default class Board {
         this.unuseMobile();
 
         this.createNewGame();
-<<<<<<< HEAD
-        
-        this.launchRandomGame();
-=======
 
         // TODO: to remove
-        // this.launchRandomGame();
->>>>>>> 295b84eaa05710eea1f495ba906f7ba14ccab9ca
+        //this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -317,16 +312,11 @@ export default class Board {
 
         console.log('---playing to: '+ rand);
 
-<<<<<<< HEAD
-        //this.letsPlayView(rand);
-         this.letsPlayView(1);
-=======
         localStorage.setItem('game', rand);
         // ------------
         
         this.letsPlayView(rand);
         // this.letsPlayView(4);
->>>>>>> 295b84eaa05710eea1f495ba906f7ba14ccab9ca
     }
 
     getGameNameFromId(id) {
