@@ -175,7 +175,7 @@ function solveInstructions(array, user) {
 }
 
 function isReady() {
-    $('body').append('' +
+    $('#app').append('' +
         '<div id="isReadyDiv" class="btn btn-maze">' +
         '  <i id="isReady" class="fa fa-play-circle"></i>' +
         '</div');
@@ -221,7 +221,7 @@ function triggerWinners(){
         }
     }
 
-    $('body').append('<div id="app"></div>');
+    $('#app').append('<div id="app"></div>');
     new Home(gameId);
 
     //TODO display cup next to the winner(s)
@@ -265,10 +265,10 @@ function initMobile() {
 
             document.getElementById('maze').style.background = colorBackground;
 
-            $('body').append('<div id="app"></div>');
+            $('#app').append('<div id="app"></div>');
         });
         
-        $('body').append('' +
+        $('#app').append('' +
             '<audio  id = "boo"> <source src="../../assets/sound/boo.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
             '<audio  id = "taDa"> <source src="../../assets/sound/taDa.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
             '<div id="maze">' +
@@ -412,7 +412,7 @@ function initMobile() {
 }
 
 function initTable() {
-    $('body').append('' +
+    $('#app').append('' +
         '<div id="maze">' +
         '<audio  id = "start"> <source src="../../assets/sound/start.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "step"> <source src="../../assets/sound/step.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
@@ -536,7 +536,7 @@ function initGame() {
 }
 
 export default function launchLabyrinth(gameIdParam) {
-    $('#app').remove();
+    $('#app').empty();
     $('#start').remove();
 
     User.removeCurrentPlayer();
