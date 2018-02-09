@@ -1,8 +1,8 @@
 module.exports = {
     // API Server
-    server: 'http://10.212.97.185:4000',
+    server: 'http://localhost:4000',
     // Current IP
-    ip: '10.212.97.185',
+    ip: 'localhost',
     // Current Port
     port: 3000,
 };

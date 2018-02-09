@@ -31,10 +31,15 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 35;
+        return 30;
     }
     static get fingersNumber() {
         return 9;
+        // return 1;
+    }
+
+    static get defaultVolume() {
+        return '0.1';
     }
 
     constructor(_gameId) {
@@ -125,16 +130,39 @@ export class Twister extends Game {
         }, 1500);
     }
 
+    playMusicSound() {
+        let s = '';
+        
+        if (this.currentPlayers === this.teamOne) {
+            s = '1';
+        } else {
+            s = '2';
+        }
+            
+        $('#musicSound' + s).prop('volume', '0.1');
+        $('#musicSound' + s).get(0).play();
+    }
+
     dismissTeamMessageAndStart(widget) {
         widget.deleteWidget();
 
-        $('#turnView').remove();
+        this.playMusicSound();
 
-        let players = this.getPlayersName(this.currentPlayers);
+        $('#loading').show();
 
-        $('.currentTeam').html(players);
+        const that = this;
 
-        this.setProgressBar(Twister.gameDuration, Twister.gameDuration, this.createProgressBar());
+        setTimeout(function () {
+            $('#loading').hide();
+
+            $('#turnView').remove();
+
+            let players = that.getPlayersName(that.currentPlayers);
+
+            $('.currentTeam').html(players);
+
+            that.setProgressBar(Twister.gameDuration, Twister.gameDuration, that.createProgressBar());
+        }, 3750);
     }
 
     createProgressBar() {
@@ -154,9 +182,27 @@ export class Twister extends Game {
             setTimeout(function () {
                 that.setProgressBar(timeleft - 1, timetotal, $element);
             }, 1000);
+
+            if (timeleft == 2) {
+                this.decreaseMusicVolume();
+            }
         } else {
             this.endOfCurrentTurn();
         }
+    }
+
+    decreaseMusicVolume() {
+        let s = '';
+        
+        if (this.currentPlayers === this.teamOne) {
+            s = '1';
+        } else {
+            s = '2';
+        }
+            
+        $('#musicSound' + s).animate({
+            volume: 0
+        }, 1750);
     }
 
     endOfCurrentTurn() {
@@ -194,6 +240,11 @@ export class Twister extends Game {
             players = this.teamTwo;
             winPoints = this.teamTwo.points;
             losePoints = this.teamOne.points;
+        }
+
+        if (!equal) {
+            $('#clapSound').prop('volume', '0.3');
+            $('#clapSound').get(0).play();
         }
 
         for (let i = 0; i < players.length; i++) {
@@ -411,7 +462,7 @@ export class Twister extends Game {
             let p = Twister.randBetween(0, maxPastilles / (Twister.colors.length / 2));
             // console.log('Between: 0, '+maxPastilles / (Twister.colors.length - 1)+' ===> '+p);
             // console.log('---');            
-            
+
             if (nbrePastilles + p > maxPastilles) {
                 nbrePastilles = maxPastilles;
                 p = maxPastilles - nbrePastilles;
@@ -419,7 +470,7 @@ export class Twister extends Game {
                 nbrePastilles += p;
             }
 
-            if (i === Twister.colors.length-1 && nbrePastilles === 0) { // Last color
+            if (i === Twister.colors.length - 1 && nbrePastilles === 0) { // Last color
                 p = nbrePastilles = maxPastilles;
             }
 
@@ -434,7 +485,7 @@ export class Twister extends Game {
     getTangiblesOfCurrentTeam() {
         if (this.currentPlayers === null)
             return [];
-        
+
         let tangibles = [];
 
         for (let i = 0; i < this.currentPlayers.length; i++) {
@@ -442,7 +493,7 @@ export class Twister extends Game {
         }
 
         return tangibles;
-        
+
     }
 
     getPastilles() {
@@ -515,8 +566,19 @@ export class Twister extends Game {
         $('.instructions').append(`<div class="total"><i class="fa fa-trophy"></i> <span class="totalNumber">` + this.totalWin + `</span></div>`);
     }
 
+    playYeahSound() {
+        $('#musicSound').prop('volume', Twister.defaultVolume / 2);
+        $('#yeahSound').get(0).play();
+
+        setTimeout(function () {
+            $('#musicSound').prop('volume', Twister.defaultVolume);
+        }, 1000);
+    }
+
     updateTotal() {
         ++this.totalWin;
+
+        this.playYeahSound();
 
         $('.instructions').append('<div class="win"><i class="fa fa-check"></i></div>');
 

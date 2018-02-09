@@ -49,6 +49,11 @@
     background-color: darkred;
 }
 
+#startingInformation svg {
+    font-size: 5em;
+    color: rgb(0,109,240);
+}
+
 /***** BUTTON *****/
 #maze .btn-maze {
     border-radius: 1em;
@@ -148,6 +153,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    text-align: center;
 }
 
 

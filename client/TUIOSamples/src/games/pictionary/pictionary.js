@@ -61,6 +61,7 @@ export default class Pictionary {
                 that.initCanvas();
             }
             $('#pictionaryCanvas').show();
+            $('#header').hide();
             $('#countdown').show();
             $('#instructions').hide();
 
@@ -80,10 +81,21 @@ export default class Pictionary {
             }
         });
 
+        SocketManager.get().on('proposal', function (response, user, drawerName)  {
+            $('#proposalPerson').html(user.name);
+            $('#proposal').html(response);
+            $('#drawer').html("Drawer,");
+            $('#modalProposal').modal();
+        });
+
+        SocketManager.get().on('decline', function() {
+            $('#modalProposal').modal('hide');
+        })
+
         SocketManager.get().on('pictionaryEnd', function (posDrawer, winner, gameId)  {
             $.get(config.server + '/api/user/' + gameId + '/' + posDrawer)
                 .done(function (user) {
-                    console.log(user);
+                    $('#modalProposal').modal('hide');
                     $('#pictionaryContainer').hide();
                     $('#winnerWrapper').show().css('display', 'flex');
                     $('#winnerName').html(winner.name);

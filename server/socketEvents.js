@@ -162,11 +162,16 @@ exports = module.exports = function (io) {
 
         socket.on('proposeWord', (word, user) => {
             socket.to(pictionaryDrawer).emit('proposal', word, user);
+            socket.to(tableId).emit('proposal', word, user);
         });
 
         socket.on('responseProposal', (user, response) => {
             socket.to(user._id).emit('responseProposal',response);
         });
+
+        socket.on('decline', () => {
+            socket.to(tableId).emit('decline');
+        })
 
         socket.on('endGame', (winner) => {
             for(let userPos in users) {
