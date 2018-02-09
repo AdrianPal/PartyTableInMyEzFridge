@@ -43,6 +43,7 @@ class BonusBall extends ElementWidget {
     let randomRot  = Math.floor(Math.random() * ((360 - (-360))   - (-360)) + (-360));
     this._domElem.css('transform', `rotate(${randomRot}deg)`);
     this._domElem.css('transform-origin', `scale(${initialScale})`);
+    this._domElem.css('transform', 'scale(2)');
     this.hasDuplicate = false;
 
     //console.log("In Ball, the color is  " + color);
