@@ -45,10 +45,15 @@ exports = module.exports = function (io) {
         });
 
         socket.on(prefixMobile + ' unuse', (data) => {
+
+            console.log('----');
+            console.log('MOBILE UNUSE');
             
             for(let pos in users) {
+                console.log('emitting: '+ pos);
                 socket.to(users[pos]).emit('mobile unuse', null);
             }
+            console.log('----');
 
             currentSocketMobileDisplay = null;
         });

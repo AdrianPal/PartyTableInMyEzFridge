@@ -40,6 +40,8 @@ export default class MobileUnused extends MobileHandler {
     }
 
     updateView() {
+        // alert('UNUSE VIEW');
+
         const that = this;
 
         let title = `Hello, <b>` + that.user.name + `</b>!`;
