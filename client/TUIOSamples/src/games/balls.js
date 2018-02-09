@@ -35,11 +35,11 @@ const config = require('../../config');
             $('#bonusgainsound')[0].play();
              
              if(_players[index].tag == tag){                 
-                _players[index].stack.addBalls(10);
+                _players[index].stack.addBalls(3);
              }
              else
              {
-                 _players[index].stack.removeBalls(5);
+                 _players[index].stack.removeBalls(2);
              }
          }
      }
