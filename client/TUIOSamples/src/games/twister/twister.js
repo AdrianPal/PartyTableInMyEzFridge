@@ -31,11 +31,11 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 5;
+        return 30;
     }
     static get fingersNumber() {
-        // return 9;
-        return 1;
+        return 9;
+        // return 1;
     }
 
     static get defaultVolume() {
