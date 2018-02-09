@@ -215,12 +215,13 @@ function triggerWinners(){
                 }
             });
 
-            new Home(gameId);
 
         } else {
             socket.emit("result", "Defeat", {user: winner.user});
         }
     }
+
+    new Home(gameId);
 
     //TODO display cup next to the winner(s)
 
