@@ -1,4 +1,4 @@
-#maze{
+#maze {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,16 +6,17 @@
     flex: 1 1 auto;
     height: 100%;
 }
+
 #maze table {
     border-collapse: collapse;
 }
 
 #maze .blured {
-    filter: blur(30px) !important;
+    filter: blur(35px) !important;
 }
 
-#maze .hide{
-visibility: hidden !important;
+#maze .hide {
+    visibility: hidden !important;
 }
 
 #maze td {
@@ -40,49 +41,167 @@ visibility: hidden !important;
     border-right: 2px dashed;
 }
 
-#maze td.v {
-    background: 2px skyblue;
-}
-
-#maze .start{
+#maze .start {
     background-color: #00C853 !important;
 }
 
-#maze .end{
+#maze .end {
     background-color: darkred;
 }
 
+#startingInformation svg {
+    font-size: 5em;
+    color: rgb(0,109,240);
+}
 
 /***** BUTTON *****/
 #maze .btn-maze {
-   border-radius: 2.5em;
-    width: 6em;
-    background-color: darkgreen;
+    border-radius: 1em;
+    width: 8em;
+    height: 7em;
+    background-color: rgb(0, 109, 240);
     color: white;
     justify-content: center;
+    align-items: center;
     display: flex;
     flex-direction: column;
     flex: 1;
     border: 2px solid;
 }
 
-#maze .row-bottom{
+#maze .btn-maze svg{
+    font-size: 3em;
+}
+
+#maze .btn-maze-long {
+    border-radius: 1em;
+    width: 10em;
+    height: 6em;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 2px solid;
+}
+
+#maze #send{
+    background-color: darkgreen;
+}
+
+#maze #send svg{
+    font-size: 3em;
+}
+
+
+#maze .row-bottom {
     display: flex;
     flex-direction: row;
     justify-content: center;
 
 }
 
-#maze #array i{
+#maze #array i {
     font-size: 1.5em;
 
 }
 
-#maze #contentErase{
+#maze #contentErase {
     align-self: flex-end;
-
 }
 
-#maze #contentErase .btn{
+#maze #contentErase .btn {
     background-color: darkgrey !important;
 }
+
+body {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+#isReady {
+    border-radius: 7.5em;
+    width: 15em;
+    height: 15em;
+    background-color: darkgreen;
+    color: white;
+    flex: 1;
+    font-size: 1em;
+
+}
+
+#isReadyDiv{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#mazeContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#resultContainer {
+    display: flex;
+    flex-direction: column;
+}
+#infos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    text-align: center;
+}
+
+
+/****** TEXT ******/
+
+.waiting {
+    font-size: 220%;
+    color: darkgrey;
+}
+
+.Defeat{
+    color: white;
+    font-size: 250%;
+}
+
+.Victory{
+    color: white;
+    font-size: 250%;
+}
+
+.color-green{
+    color: darkgreen;
+}
+
+.color-red{
+    color: darkred;
+}
+.infos{
+   color: darkgrey;
+    font-size: 120%;
+}
+
+
+/******* BAR *********/
+#progressBar {
+    width: 90%;
+    margin: 10px auto;
+    height: 22px;
+    background-color: darkgrey;
+}
+
+#progressBar div {
+    height: 100%;
+    text-align: right;
+    padding: 0 10px;
+    line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+    width: 0;
+    background-color: rgb(0, 109, 240) ;
+    box-sizing: border-box;
+}
+

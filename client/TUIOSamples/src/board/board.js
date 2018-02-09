@@ -49,7 +49,7 @@ export default class Board {
         this.unuseMobile();
 
         this.createNewGame();
-
+        //this.launchRandomGame()
         // TODO: to remove
         // this.launchRandomGame();
     }

@@ -1,19 +1,60 @@
+@-webkit-keyframes rotating
+/* Safari and Chrome */
+
+    {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.rotating {
+    -webkit-animation: rotating 15s linear infinite, opacity 2s linear infinite;
+    -moz-animation: rotating 15s linear infinite, opacity 2s linear infinite;
+    -ms-animation: rotating 15s linear infinite, opacity 2s linear infinite;
+    -o-animation: rotating 15s linear infinite, opacity 2s linear infinite;
+    animation: rotating 15s linear infinite, opacity 2s linear infinite;
+}
+
 #pictionaryContainer{
     display: flex;
     justify-content: center;
     flex-direction: column;
-
+    align-items: center;
     height: 100%;
 } 
-#countdown {
-    margin-left: 5em;
-}
-
 #header {
     display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: center;
+}
+
+#title {
+    font-size: 4em !important;
 }
 
 #instructions {
@@ -90,4 +131,36 @@
 
 #lost {
     margin-top: 1em;
+}
+
+#countdown {
+    display: none;
+    width: 50%;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-bottom: 2em;
+}
+
+#progress {
+    width: 100%;
+    background-color: #eee;
+    height: 1em;
+}
+
+#current-progress {
+    height: 1em;
+    background-color: rgb(0, 109, 240);
+    width: 100%;
+    background-color: #4CAF50;
+    text-align: center; /* To center it horizontally (if you want) */
+    line-height: 1em; /* To center it vertically */
+    color: white; 
+}
+
+#countdown-expired {
+    display: none;
+    font-size: 4em;
+    color: #D50000;
+    font-weight: bold;
+ 
 }

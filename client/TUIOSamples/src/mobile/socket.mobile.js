@@ -3,6 +3,7 @@ import PictureMobile from '../games/pictionary/mobile/pictionary.mobile'
 import PictionaryMobile from "../games/pictionary/mobile/pictionary.mobile";
 import MobileUnused from "./mobile.unused";
 import TwisterRules from "./rules/twister/twister.rules";
+import launchLabyrinth from "../games/labyrinth";
 
 const config = require('../../config');
 
@@ -38,6 +39,10 @@ exports = module.exports = function (io, gameId, pos) {
 
     SocketManager.get().on(prefix + ' game twister rules', (data) => {
         new TwisterRules(gameId, pos);
+    })
+
+    SocketManager.get().on(prefix + ' launch labyrinth', (data) => {
+        launchLabyrinth(gameId);
     })
 
 
