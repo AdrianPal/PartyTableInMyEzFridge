@@ -7,6 +7,7 @@ import Ball from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/Ball';
 import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/ImageElementWidget';
 import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
 import User from "../user/user";
+import Home from '../home/home'
 
 const config = require('../../config');
 
@@ -23,10 +24,10 @@ const config = require('../../config');
  let _isGameOver = false;
  let _ballsCount = 0;
  let _gameTime = 30000; //in milliseconds
- let _ballsLifespan = 2500;
+ let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
-
+ let _gameID = '';
  let _bonusHandler = {
      onBonusTouched: function(tag){
          console.log("Bonus Touched w/ tag "+ tag);
@@ -51,7 +52,7 @@ const config = require('../../config');
  export default function launchBalls(gameId)
  {
     User.remove();
-
+    _gameID = gameId;
 
     //Just for tests
     let players = [
@@ -64,13 +65,13 @@ const config = require('../../config');
       //getting the REAL players
       $.get(config.server + '/api/user/' + gameId)
       .done(function (d) {
-          
+        console.log("PLayers : ");
         console.log(d);
         players = d;
 
         console.log("Launched balls");
-        $('#usersView').remove();
-        $('#app').empty();
+        User.remove();
+
         $('#app').append('<div id="ballsView"> '+
         '<audio  id = "picksound"> <source src="../../assets/sound/picksound.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
@@ -210,7 +211,6 @@ const config = require('../../config');
             $('#' + _players[index].name + 'bar').css('left', _players[index].stack.x);
             $('#' + _players[index].name + 'bar').css('top', _players[index].stack.y-55);           
             $('#' + _players[index].name + 'bar').css('transform', 'rotate(180deg)');
-            
          }
          
      }
@@ -267,9 +267,7 @@ const config = require('../../config');
     window.setInterval(function()
     {
         if(!_isGameOver)
-        {
-
-        
+        {        
             const width = $(window).width();
             const height = $(window).height();
             //const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
@@ -280,8 +278,8 @@ const config = require('../../config');
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
 			const tag = _players[index].tag;
-
-            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/joy.png', color, _players[index].name, _bonusHandler);
+            console.log("THE TAG" + tag);
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);
@@ -349,6 +347,7 @@ const config = require('../../config');
         _isGameOver = true;
         displayGameOver();
         showWinner();
+        backToBoard();
     }  , _gameTime ); 
 }
 
@@ -387,11 +386,12 @@ function triggerTime()
     {
         _players.push(
         {
-                name:players[index].name,
-                color: players[index].color,
-                position:players[index].pos,
-                tag: _tags[index],//to get later through API
-                score:0 //to get later through API
+            id:players[index]._id,
+            name:players[index].name,
+            color: players[index].color,
+            position:players[index].pos,
+            tag: players[index].tangible,//to get later through API
+            score:0 //to get later through API
         }
     );
         
@@ -430,10 +430,40 @@ function triggerTime()
             _players[index].stack.showOutcome(false);
         }    
     }
+    console.log("In showWinner()");
+    console.log("_players = "+ _players);
+    console.log("winner = " +winner);
+    console.log("_players[winner] = ");
+    console.log(_players[winner]);
 
-
-
+    updateScores(winner);
     //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
+ function updateScores(winner)
+ {
+    
+    console.log("In updateScores()");
+    console.log("_players = "+ _players);
+    console.log("winner = " +winner);
+    console.log("_players[winner] = ");
+    console.log(_players[winner]);   
+    $.ajax({
+        url: config.server + '/api/user/points',
+        type: 'PUT',
+        data: {
+            userId: _players[winner].id,
+            points: 5
+        }
+    });     
+ }
+
+
+ function backToBoard()
+ {
+     setTimeout(() => {
+        console.log("Back to menu");
+        new Home(_gameID);
+     }, 4000);     
+ }
  
