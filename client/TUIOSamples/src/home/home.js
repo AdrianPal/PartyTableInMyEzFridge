@@ -128,11 +128,14 @@ export default class Home {
 
     startClicked(widget) {
         if (!this.users || this.users.length < Home.minimumRequiredUsers) {
-            $('#start').prepend(`<div class="center twoPlayersMin">2 players min</div>`);
+            if ($('.twoPlayersMin').length === 0) {
+                $('#start').prepend(`<div class="center twoPlayersMin">2 players min</div>`);
 
-            setTimeout(function() {
-                $('.twoPlayersMin').remove()
-            }, 2500);
+                setTimeout(function() {
+                    $('.twoPlayersMin').remove()
+                }, 2500);
+            }
+
             return;
         }
 

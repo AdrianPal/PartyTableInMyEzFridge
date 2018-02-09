@@ -316,6 +316,7 @@ export default class Board {
         // ------------
         
         this.letsPlayView(rand);
+        // !
         // this.letsPlayView(4);
     }
 
