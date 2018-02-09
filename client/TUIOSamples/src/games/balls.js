@@ -23,7 +23,7 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 30000; //in milliseconds
+ let _gameTime = 3000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
@@ -52,6 +52,7 @@ const config = require('../../config');
  export default function launchBalls(gameId)
  {
     User.remove();
+    initialize();
     _gameID = gameId;
 
     //Just for tests
@@ -118,6 +119,21 @@ const config = require('../../config');
     {
         showBoardView(players);
     }, 150000000);*/
+ }
+
+ function initialize()
+ {
+     _colors = [];
+     _tags = ['03', '6D', '6C', 'B3'];
+     _containers = [];
+     _players = [];
+     _isGameOver = false;
+     _ballsCount = 0;
+     _gameTime = 30000; //in milliseconds
+     _ballsLifespan = 3500;
+     _bonusFrequency = 5000;
+     _winners = [];
+     _gameID = '';
  }
 
  function addBallContainers()
@@ -462,6 +478,7 @@ function triggerTime()
  function backToBoard()
  {
      setTimeout(() => {
+         $('#ballsView').remove();
         console.log("Back to menu");
         new Home(_gameID);
      }, 4000);     
