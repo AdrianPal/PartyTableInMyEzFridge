@@ -267,9 +267,7 @@ const config = require('../../config');
     window.setInterval(function()
     {
         if(!_isGameOver)
-        {
-
-        
+        {        
             const width = $(window).width();
             const height = $(window).height();
             //const spawnX = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
@@ -281,7 +279,7 @@ const config = require('../../config');
             const color = _players[index].color;
 			const tag = _players[index].tag;
 
-            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/joy.png', color, _players[index].name, _bonusHandler);
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);
