@@ -49,7 +49,7 @@ export default class Board {
         this.unuseMobile();
 
         this.createNewGame();
-        this.launchRandomGame()
+        //this.launchRandomGame()
         // TODO: to remove
         // this.launchRandomGame();
     }
@@ -315,8 +315,8 @@ export default class Board {
         localStorage.setItem('game', rand);
         // ------------
         
-        //this.letsPlayView(rand);
-        this.letsPlayView(1);
+        this.letsPlayView(rand);
+        //this.letsPlayView(1);
     }
 
     getGameNameFromId(id) {
