@@ -2,7 +2,7 @@ import User from '../../user/user'
 import Home from '../../home/home'
 import SocketManager from '../../../socket.manager';
 import Anywhere from '../../tools/anywhere';
-
+import PictionaryMobile from './mobile/pictionary.mobile';
 const config = require('../../../config');
 
 export default class Pictionary {
@@ -54,14 +54,14 @@ export default class Pictionary {
     }
     initCountdown() {
         var countdown = $('#countdown');
-        countdown.html(Pictionary.countDownTime);
-        const that = this;
+        const that = this; 
         that.initDrawingSocketBinding();
         SocketManager.get().on('decreaseCountdown', function (value, gameId) {
             if (that.context == null) {
                 that.initCanvas();
             }
             $('#pictionaryCanvas').show();
+            $('#countdown').show();
             $('#instructions').hide();
 
             if (value == 'EXPIRED') {
@@ -71,7 +71,12 @@ export default class Pictionary {
                 let anywhere = new Anywhere(that, that.goHome);
                 anywhere.addTo($('body').get(0));
             } else {
-                countdown.html(value);
+                var countdownValue = value;
+                var currentProgress = countdownValue / PictionaryMobile.initialCountDownValue * 100;
+                $('#current-progress').animate({
+                    width: currentProgress + '%'
+                }, 500);
+                $('#current-progress').html(countdownValue);
             }
         });
 

@@ -26,6 +26,8 @@ exports = module.exports = function (io) {
             tableId = socket.id;
 
             gameId = game;
+
+            tableId = socket.id;
         });
 
         socket.on('update mobile game new id', (data) => {
@@ -88,17 +90,31 @@ exports = module.exports = function (io) {
 
         /****************************************** MAZE **********************************************/
         socket.on('mazeConnection', () => {
-            socket.emit('mazeConnection');
+            socket.to(tableId).emit('mazeConnection',JSON.parse(JSON.stringify(users)));
         });
 
-        socket.on('arrayToResolve', (array) => {
-            socket.broadcast.emit('arrayToResolve', array);
+        socket.on('arrayToResolve', (array, user) => {
+            socket.to(tableId).emit('arrayToResolve', array, user);
         });
 
-        socket.on('result', (result) => {
-            socket.broadcast.emit('result', result);  
-        })
-        
+        socket.on('result', (result,user) => {
+            console.log("USER", user);
+            socket.to(users[user.user.pos]).emit('result', result);
+        });
+
+        socket.on('isReady',() => {
+           socket.to(tableId).emit('isReady',socket.id);
+        });
+
+        socket.on('startLabyrinth',() => {
+            socket.broadcast.emit('startLabyrinth');
+        });
+        socket.on('mobile launch labyrinth',() => {
+            socket.broadcast.emit('mobile launch labyrinth');
+        });
+        socket.on('timeUp', () => {
+           socket.broadcast.emit('timeUp');
+        });
 
         /****************************************** PICTIONARY **********************************************/
         socket.on('isDrawing', (east, north, drag, color, drawSize) => {
@@ -125,7 +141,6 @@ exports = module.exports = function (io) {
     
 
             var userIndex = 0;
-
             for(let userPos in users) {
                 if (userIndex == randomPlayer){
                     pictionaryDrawer = users[userPos];

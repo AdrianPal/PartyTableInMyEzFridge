@@ -67,3 +67,9 @@
 .hideStart {
     display: none;
 }
+
+.twoPlayersMin {
+    font-size: 27px;
+    color: red;
+    font-weight: bold;
+}

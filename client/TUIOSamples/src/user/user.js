@@ -115,10 +115,10 @@ export default class User {
         }, 500);
     }
 
-    toggleQRcodeForMobile(pos) {
-        const $q = $('#qrcode_' + pos)
+    toggleQRcodeForMobile(pos, forceHide = false) {
+        const $q = $('#qrcode_' + pos);
 
-        if ($q.is(':visible'))
+        if (forceHide || $q.is(':visible'))
             $q.hide();
         else
             this.buildQRCode(pos);
@@ -232,6 +232,10 @@ export default class User {
 
     static removeUnusedUsers() {
         $('.user:not(.userAdded)').remove();
+    }
+
+    static removeCurrentPlayer() {
+        $('.currentPlayer').removeClass('currentPlayer');
     }
 
     static updateCurrentPlayer(pos) {
