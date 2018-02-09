@@ -324,7 +324,8 @@ export default class Board {
 
     getGameNameFromId(id) {
         switch (id) {
-            case 1:
+            // Remove PICTIONARY
+            case 11:
                 return "Pictionary";
 
             case 2:
@@ -405,7 +406,8 @@ export default class Board {
         console.log('Game Wanted: ' + id);
 
         switch (id) {
-            case 1:
+            // Remove PICTIONARY
+            case 11:
                 return new Pictionary(this.gameId);
 
             case 2:
