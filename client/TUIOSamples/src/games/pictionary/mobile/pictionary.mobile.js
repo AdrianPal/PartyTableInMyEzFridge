@@ -4,14 +4,21 @@ import SocketManager from '../../../../socket.manager'
 
 export default class PictionaryMobile extends MobileHandler {
 
-
+    /**
+     * TODO: finir progress bar
+     * changer l'arrivée dans un nouveau pictionnary (faire tourner le titre)
+     * finaliser le mobile css
+     * tester avec 4 mobiles
+     * calibrer si possible le mobile canvas
+     * Non orienter le plus possible
+     */
 
     static get currentFolder() {
         return '/src/games/pictionary/mobile';
     }
 
     static get initialCountDownValue() {
-        return 5;
+        return 90;
     }
 
     constructor(gameId, pos, isChoosenMobile, word)  {
@@ -130,6 +137,10 @@ export default class PictionaryMobile extends MobileHandler {
             $('#validateProposal').on('click', function () {
                 SocketManager.get().emit('endGame', user);
             });
+
+            $('#refuseProposal').on('click',function() {
+                SocketManager.get().emit('decline');
+            })
         })
     }
 
