@@ -169,7 +169,8 @@ function solveInstructions(array, user) {
     resultArray.push({path: path, user: user});
 
     if(resultArray.length === usersArray.length) {
-        triggerWinners();
+        triggerWinners()
+
     }
 }
 
@@ -204,7 +205,16 @@ function triggerWinners(){
         if (winner.path.length === greater) {
             winners.push(winner.user);
             socket.emit("result", "Victory", {user: winner.user});
-            console.log(greater);
+
+            $.ajax({
+                url: config.server + '/api/user/points',
+                type: 'PUT',
+                data: {
+                    userId: winner.user._id,
+                    points: 5
+                }
+            });
+
         } else {
             socket.emit("result", "Defeat", {user: winner.user});
         }
@@ -216,10 +226,11 @@ function triggerWinners(){
 
 function resolveGame() {
     socket.on("arrayToResolve", (array, user) => {
+
         arrayForResolving.push({array: array.array, user: user.user});
         if (arrayForResolving.length === usersArray.length) {
             document.getElementById('generateMaze').classList.remove("blured");
-            document.getElementById('countdown').remove();
+            document.getElementById('progressBar').remove();
 
 
             for (let i = 0; i < arrayForResolving.length; i++) {
@@ -404,7 +415,7 @@ function initTable() {
         '<audio  id = "start"> <source src="../../assets/sound/start.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "step"> <source src="../../assets/sound/step.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<div>' +
-        '   <h2 id="startingInformation">Take your phones !</h2>' +
+        '   <h2 id="startingInformation"><i class="fa fa-mobile-alt fa-spin"></i></h2>' +
         '</div id="mazeContainer"> ' +
         '   <div id="resultContainer"></div>' +
         '   <table id="generateMaze" class="test"/>' +
@@ -419,6 +430,9 @@ function initTable() {
 
             socket.emit('startLabyrinth');
 
+            resolveGame();
+
+
             $('#startingInformation').remove();
 
             make_maze();
@@ -427,8 +441,8 @@ function initTable() {
 
             // $('#maze').append('<h3 id="titleDisappear">Disappear in : </h3> <h3 id="countdown"></h3>');
             $('#maze').append('<h3 id="titleDisappear"></h3> ' +
-                '<div id="progressBar">\n' +
-                '  <div class="bar"></div>\n' +
+                '<div id="progressBar">' +
+                '  <div class="bar"></div>' +
                 '</div>');
 
             var oldDate = new Date();
@@ -441,10 +455,9 @@ function initTable() {
                 $element.find('div').animate({ width: progressBarWidth }, 500);
                 if(timeleft > 0) {
                     setTimeout(function () {
-                        progress(timeleft - 1, timetotal, $element);
+                        progress2(timeleft - 1, timetotal, $element);
                     }, 1000);
                 }else{
-                    console.log('time');
                     socket.emit('timeUp');
                 }
 
@@ -459,7 +472,8 @@ function initTable() {
                     }, 1000);
                 }else{
                     var genMaze = document.getElementById("generateMaze");
-                    genMaze.className += " blured";
+                    if(usersArray.length !== resultArray.length)
+                        genMaze.className += " blured";
                     progress2(60, 60, $('#progressBar'));
                 }
             };
@@ -485,7 +499,6 @@ function initTable() {
     });
 
 
-    resolveGame();
 
 
 }
