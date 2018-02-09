@@ -125,8 +125,13 @@ export default class User {
     }
 
     addQrCodeLink(user) {
-        if ($('#qrCodeHelper_' + user.pos).length !== 0) // Already exists
+        if ($('#qrCodeHelper_' + user.pos).length !== 0) { // Already exists
+            if ($('#qrCodeHelper_' + user.pos).hasClass('active')) {
+                $('#qrcode_'+ user.pos).show();
+            }
+            
             return;
+        }
 
         let $u = $('#' + user.pos + 'User');
 
