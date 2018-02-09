@@ -39,6 +39,11 @@ $(window).ready(() => {
     SocketMobile(io, gameId, pos);
   } else {
     let copyGameId = getUrlParameter('players');
+
+    // DEMO SCRIPT
+    localStorage.setItem('game', null);
+    // -----------
+
     new Home(copyGameId, true);
   }
 });

@@ -38,10 +38,6 @@ export default class Home {
         if (_gameId !== undefined && _gameId !== null) {
             this.gameId = _gameId;
 
-            // DEMO SCRIPT
-            localStorage.setItem('game', null);
-            // -----------
-
             if (_copy) { // NEW game from previous config
                 this.initGameWithPlayersFromPreviousGame();
             } else { // Just display the board
