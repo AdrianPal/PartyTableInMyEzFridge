@@ -115,7 +115,7 @@
     background-color: darkgrey !important;
 }
 
-body {
+#app {
     display: flex;
     flex: 1 1 auto;
     align-items: center;

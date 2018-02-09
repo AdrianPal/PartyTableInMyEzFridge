@@ -221,8 +221,11 @@ function triggerWinners(){
         }
     }
 
-    $('#app').append('<div id="app"></div>');
-    new Home(gameId);
+    $('app').click(function (){
+        $('#app').append('<div id="app"></div>');
+        new Home(gameId);
+    });
+
 
     //TODO display cup next to the winner(s)
 
