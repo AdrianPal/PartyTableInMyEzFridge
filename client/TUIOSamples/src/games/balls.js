@@ -23,7 +23,7 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 3000; //in milliseconds
+ let _gameTime = 4000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
@@ -81,7 +81,7 @@ const config = require('../../config');
         
         '</div>');
 
-        $('#ballsView').append('<button id="tt">TT</button>');
+        //$('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
         addBallContainers();
