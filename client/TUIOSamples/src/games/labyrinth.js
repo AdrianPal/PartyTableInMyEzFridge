@@ -221,6 +221,7 @@ function triggerWinners(){
         }
     }
 
+    $('body').append('<div id="app"></div>');
     new Home(gameId);
 
     //TODO display cup next to the winner(s)
@@ -263,8 +264,10 @@ function initMobile() {
             (result==='Victory') ? $('#taDa')[0].play() : $('#boo')[0].play();
 
             document.getElementById('maze').style.background = colorBackground;
-        });
 
+            $('body').append('<div id="app"></div>');
+        });
+        
         $('body').append('' +
             '<audio  id = "boo"> <source src="../../assets/sound/boo.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
             '<audio  id = "taDa"> <source src="../../assets/sound/taDa.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
