@@ -527,7 +527,8 @@ function getPlayers() {
 }
 
 function initGame() {
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && !launched) {
+    let mobile = getUrlParameter('view');
+    if ((mobile==="mobile") && !launched) {
         launched = true;
         pos = getUrlParameter('pos');
         $.get(config.server + '/api/user/' + gameId + '/' + pos).done(
