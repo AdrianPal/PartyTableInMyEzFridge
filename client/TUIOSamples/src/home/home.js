@@ -262,6 +262,8 @@ export default class Home {
         SocketManager.get().on('refresh game', function (d) {
             that.users = d.game;
 
+            $('#wowSoundUser').get(0).play();
+
             if (that.users.length >= Home.minimumRequiredUsers)
                 that.allowStartButton();
 

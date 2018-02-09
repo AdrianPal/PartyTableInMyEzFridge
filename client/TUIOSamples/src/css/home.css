@@ -73,3 +73,7 @@
     color: red;
     font-weight: bold;
 }
+
+#wowSoundUser {
+    display: none;
+}

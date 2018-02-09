@@ -32,6 +32,7 @@ export class Twister extends Game {
     }
     static get gameDuration() {
         return 30;
+        // return 1;
     }
     static get fingersNumber() {
         return 9;
