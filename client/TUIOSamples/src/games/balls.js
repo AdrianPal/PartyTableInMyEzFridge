@@ -23,7 +23,7 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 3000; //in milliseconds
+ let _gameTime = 30000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
@@ -278,7 +278,7 @@ const config = require('../../config');
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
 			const tag = _players[index].tag;
-
+            console.log("THE TAG" + tag);
             const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
@@ -390,7 +390,7 @@ function triggerTime()
             name:players[index].name,
             color: players[index].color,
             position:players[index].pos,
-            tag: _tags[index],//to get later through API
+            tag: players[index].tangible,//to get later through API
             score:0 //to get later through API
         }
     );
