@@ -6,6 +6,7 @@ import SocketManager from "../../socket.manager";
 import User from "../user/user";
 import * as config from "../../config";
 import getUrlParameter from '../../tools';
+import Home from "../home/home";
 
 
 var socket = SocketManager.get();
@@ -155,7 +156,6 @@ function solveInstructions(array, user) {
     }
 
     for (let i = 0; i < path.length; i++) {
-
         var paint = function () {
             return function () {
                 path[i].style = "background : " + user.color;
@@ -215,10 +215,13 @@ function triggerWinners(){
                 }
             });
 
+
         } else {
             socket.emit("result", "Defeat", {user: winner.user});
         }
     }
+
+    new Home(gameId);
 
     //TODO display cup next to the winner(s)
 
@@ -240,12 +243,8 @@ function resolveGame() {
 
                     }
                 };
-                setTimeout(resolve(), arrayForResolving[i].array.length * 1000 * i);
-
+                setTimeout(resolve(), arrayForResolving[i].array.length * 600);
             }
-
-
-
         }
     });
 }
