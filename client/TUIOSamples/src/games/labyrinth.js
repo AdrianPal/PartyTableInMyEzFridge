@@ -458,7 +458,8 @@ function initTable() {
                         progress2(timeleft - 1, timetotal, $element);
                     }, 1000);
                 }else{
-                    socket.emit('timeUp');
+                    if(usersArray.length !== resultArray.length)
+                        socket.emit('timeUp');
                 }
 
             };
