@@ -170,8 +170,7 @@ function solveInstructions(array, user) {
     });
 
     if (resultArray.length === usersArray.length) {
-        triggerWinners()
-
+        triggerWinners();
     }
 }
 
@@ -228,7 +227,7 @@ function triggerWinners() {
 
     setTimeout(function() {
         new Home(gameId);
-    }, 2000);
+    }, 20000);
 }
 
 
