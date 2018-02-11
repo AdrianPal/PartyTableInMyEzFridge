@@ -98,7 +98,7 @@ class BallContainer extends TUIOWidget {
     this._ballsLost = 0;
     this._playerid = stackTitle;
 	this._gameTime = gameTime
-	//console.log("In constructor" + this._gameTime);
+
 
     //Rotating the element
     this._domElem.css({
@@ -113,7 +113,12 @@ class BallContainer extends TUIOWidget {
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
 	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
-	//this._domElem.append('<img  id="'+this._playerid +'end"/>');
+	this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
+  $('#'+this._playerid+'malus').css('margin-left', '130%');
+  $('#'+this._playerid+'malus').css('font-size', '3rem');
+  console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
+  
+  //$('#'+this._playerid+'malus').hide();
   
   /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
   $('#' + this._playerid + 'bar').css('width', this._domElem.width());
@@ -158,13 +163,28 @@ class BallContainer extends TUIOWidget {
   removeBalls(amount)
   {
     this._ballsCount-= amount;
-    this._ballsLost += amount;
     if(this._ballsCount < 0)
     {
       this._ballsCount = 0;
     }
+    else
+    {
+      this._ballsLost += amount;
+      
+      $('#'+this._playerid+'malus').show();
+      $('#'+this._playerid+'malus').text('- '+ this._ballsLost);
+
+      let self = this;
+      setTimeout(function(){
+        console.log("SUpposed to hide");
+        $('#'+self._playerid+'malus').hide();
+            
+        }, 1500)
+    }
+    
 
     $('#' + this._playerid).text(this._ballsCount);
+    
   }
 
   showOutcome(hasWon)
