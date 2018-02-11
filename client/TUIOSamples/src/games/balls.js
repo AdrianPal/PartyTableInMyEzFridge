@@ -23,7 +23,7 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 40000; //in milliseconds
+ let _gameTime = 5000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
@@ -81,7 +81,7 @@ const config = require('../../config');
         
         '</div>');
 
-        //$('#ballsView').append('<button id="tt">TT</button>');
+        $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
         addBallContainers();
@@ -101,9 +101,9 @@ const config = require('../../config');
     
 
    //test for adding balls count
-   $('#tt').on('click', function()
+   $('body').on('click','#tt', function()
     {
-        //console.log("hey hey");
+        console.log("hey hey");
         /*for (let index = 0; index < _containers.length; index++) 
         {
             const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _players[Math.floor(Math.random() * (_players.length))].color);
@@ -112,7 +112,7 @@ const config = require('../../config');
 
         /*const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
         _containers[0].addElementWidget(mahball);   */
-        _bonusHandler.onBonusTouched(_tags[0]);        
+        _bonusHandler.onBonusTouched(_players[0].tag);        
     })
 
     /*setTimeout(function()
@@ -129,7 +129,7 @@ const config = require('../../config');
      _players = [];
      _isGameOver = false;
      _ballsCount = 0;
-     _gameTime = 30000; //in milliseconds
+     _gameTime = 3000; //in milliseconds
      _ballsLifespan = 3500;
      _bonusFrequency = 5000;
      _winners = [];
@@ -481,6 +481,6 @@ function triggerTime()
          $('#ballsView').remove();
         console.log("Back to menu");
         new Home(_gameID);
-     }, 4000);     
+     }, 40000000);     
  }
  

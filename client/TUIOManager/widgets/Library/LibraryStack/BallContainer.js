@@ -93,7 +93,9 @@ class BallContainer extends TUIOWidget {
     this.scale = 1;
     // this.allTheStacks.push(this);
 
-    this._ballsCount = 0;
+    this._ballsCount = 5;
+    this._bonusCount = 0;
+    this._ballsLost = 0;
     this._playerid = stackTitle;
 	this._gameTime = gameTime
 	//console.log("In constructor" + this._gameTime);
@@ -111,7 +113,7 @@ class BallContainer extends TUIOWidget {
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
 	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
-	this._domElem.append('<img  id="'+this._playerid +'end"/>');
+	//this._domElem.append('<img  id="'+this._playerid +'end"/>');
   
   /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
   $('#' + this._playerid + 'bar').css('width', this._domElem.width());
@@ -146,12 +148,17 @@ class BallContainer extends TUIOWidget {
   addBalls(amount)
   {
       this._ballsCount+= amount;
-      $('#' + this._playerid).text(this._ballsCount);      
+      $('#' + this._playerid).text(this._ballsCount);   
+      if(amount>1)
+      {
+        this._bonusCount++;
+      }   
   }
 
   removeBalls(amount)
   {
     this._ballsCount-= amount;
+    this._ballsLost += amount;
     if(this._ballsCount < 0)
     {
       this._ballsCount = 0;
@@ -162,6 +169,12 @@ class BallContainer extends TUIOWidget {
 
   showOutcome(hasWon)
   {
+    this._domElem.append('<p class="stats">Balls captured : '+ this._ballsCount+'</p><br/>');
+    this._domElem.append('<p class="stats">Balls lost : '+ this._ballsLost+'</p>');
+    this._domElem.append('<p class="stats">Bonuses captured : '+ this._bonusCount+'</p>');
+    
+	  this._domElem.append('<img  id="'+this._playerid +'end"/>');
+    
       if(hasWon)
       {
         $('#' + this._playerid + 'end').text("You win !");
@@ -177,6 +190,8 @@ class BallContainer extends TUIOWidget {
         
         $('#' + this._playerid + 'end').addClass("outcome haslost");        
       }
+
+     
   }
 
   areCoordsRight(x, y, ballwidth, containerWidth) 
