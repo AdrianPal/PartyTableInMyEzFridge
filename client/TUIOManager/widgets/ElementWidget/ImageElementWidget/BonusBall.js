@@ -70,7 +70,7 @@ class BonusBall extends ElementWidget {
 
   onTouchUpdate(tuioTouch)
   {
-    
+
   }
   
   
@@ -110,6 +110,11 @@ class BonusBall extends ElementWidget {
         this.hasDuplicate = true;
       }
     }*/
+
+    console.log("TAG DETECTED "+ tuioTag.id);
+    this._bonusHandler.onBonusTouched(tuioTag.id);
+    this._domElem.remove();
+    this.deleteWidget();
   }
 
   /**
