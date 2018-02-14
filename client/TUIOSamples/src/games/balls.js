@@ -76,12 +76,16 @@ const config = require('../../config');
         '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "ballsmusic"> <source src="../../assets/sound/shootingstars.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         
         '</div>');
 
         $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
+        $('#ballsmusic')[0].play();
+        $('#ballsmusic').prop("volume", 0.3);
+        
         addBallContainers();
         addTimeBars();
         spawnBalls();
@@ -405,6 +409,7 @@ function triggerTime()
 
  function displayGameOver()
  {
+    $('#ballsmusic')[0].pause();
     $('#gameoversound')[0].play();
      
  }
