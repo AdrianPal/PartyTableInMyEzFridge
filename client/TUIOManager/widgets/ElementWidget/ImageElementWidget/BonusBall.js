@@ -62,10 +62,15 @@ class BonusBall extends ElementWidget {
    * @param {TUIOTouch} tuioTouch - A TUIOTouch instance.
    */
   onTouchCreation(tuioTouch) {
-    if (!this._isInStack) {
+  /*  if (!this._isInStack) {
       super.onTouchCreation(tuioTouch);
       
-    }
+    }*/
+  }
+
+  onTouchUpdate(tuioTouch)
+  {
+    
   }
   
   
@@ -95,7 +100,7 @@ class BonusBall extends ElementWidget {
    * @param {TUIOTag} tuioTag - A TUIOTag instance.
    */
   onTagUpdate(tuioTag) {
-    super.onTagUpdate(tuioTag);
+  /*  super.onTagUpdate(tuioTag);
 	this._isTouched = true;
     if (typeof (this._lastTagsValues[tuioTag.id]) !== 'undefined') {
       if (tuioTag.id === this.tagDuplicate && !this.hasDuplicate) {
@@ -104,7 +109,7 @@ class BonusBall extends ElementWidget {
         this._domElem.parent().append(clone.domElem);
         this.hasDuplicate = true;
       }
-    }
+    }*/
   }
 
   /**
@@ -114,12 +119,12 @@ class BonusBall extends ElementWidget {
    * @param {number/string} tuioTagId - TUIOTag's id to delete.
    */
   onTagDeletion(tuioTagId) {
-    super.onTagDeletion(tuioTagId);
+   /* super.onTagDeletion(tuioTagId);
     if (typeof (this._lastTagsValues[tuioTagId]) !== 'undefined') {
       if (tuioTagId === this.tagDuplicate) {
         this.hasDuplicate = false;
       }
-    }
+    }*/
   }
 
   destroy()
