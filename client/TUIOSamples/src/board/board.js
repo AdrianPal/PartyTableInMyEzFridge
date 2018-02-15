@@ -319,13 +319,13 @@ export default class Board {
         // ------------
 
         this.letsPlayView(rand);
-        // this.letsPlayView(2);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
         switch (id) {
             // Remove PICTIONARY
-            case 11:
+            case 1:
                 return "Pictionary";
 
             case 2:
@@ -407,7 +407,7 @@ export default class Board {
 
         switch (id) {
             // Remove PICTIONARY
-            case 11:
+            case 1:
                 return new Pictionary(this.gameId);
 
             case 2:
