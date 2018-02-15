@@ -62,10 +62,7 @@ class BonusBall extends ElementWidget {
    * @param {TUIOTouch} tuioTouch - A TUIOTouch instance.
    */
   onTouchCreation(tuioTouch) {
-  /*  if (!this._isInStack) {
-      super.onTouchCreation(tuioTouch);
-      
-    }*/
+  
   }
 
   onTouchUpdate(tuioTouch)
@@ -81,15 +78,15 @@ class BonusBall extends ElementWidget {
    * @param {TUIOTag} tuioTag - A TUIOTag instance.
    */
   onTagCreation(tuioTag) {
-    /*if (!this._isInStack) {
-      super.onTagCreation(tuioTag);
-	  this._isTouched = true;
-	  
-  }*/
-  console.log("TAG DETECTED "+ tuioTag.id);
-  this._bonusHandler.onBonusTouched(tuioTag.id);
-  this._domElem.remove();
-  this.deleteWidget();
+   
+    if(super.isTouched(tuioTag.x, tuioTag.y))
+    {
+      console.log("TAG DETECTED "+ tuioTag.id);
+      this._bonusHandler.onBonusTouched(tuioTag.id);
+      this._domElem.remove();
+      this.deleteWidget();
+    }
+  
   }
 
 
