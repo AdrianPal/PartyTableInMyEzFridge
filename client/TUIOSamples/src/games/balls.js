@@ -23,14 +23,14 @@ const config = require('../../config');
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 4000; //in milliseconds
+ let _gameTime = 5000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
  let _gameID = '';
  let _bonusHandler = {
      onBonusTouched: function(tag){
-         console.log("Bonus Touched w/ tag "+ tag);
+         //console.log("Bonus Touched w/ tag "+ tag);
          for (let index = 0; index < _players.length; index++) {
             $('#bonusgainsound')[0].play();
              
@@ -66,11 +66,9 @@ const config = require('../../config');
       //getting the REAL players
       $.get(config.server + '/api/user/' + gameId)
       .done(function (d) {
-        console.log("PLayers : ");
-        console.log(d);
+      
         players = d;
 
-        console.log("Launched balls");
         User.remove();
 
         $('#app').append('<div id="ballsView"> '+
@@ -78,12 +76,16 @@ const config = require('../../config');
         '<audio  id = "gameoversound"> <source src="../../assets/sound/gameover.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "bonusspawnsound"> <source src="../../assets/sound/bonusspawn.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         '<audio  id = "bonusgainsound"> <source src="../../assets/sound/bonusgain.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
+        '<audio  id = "ballsmusic"> <source src="../../assets/sound/shootingstars.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>'+
         
         '</div>');
 
-        //$('#ballsView').append('<button id="tt">TT</button>');
+        $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
+        $('#ballsmusic')[0].play();
+        $('#ballsmusic').prop("volume", 0.3);
+        
         addBallContainers();
         addTimeBars();
         spawnBalls();
@@ -94,16 +96,14 @@ const config = require('../../config');
       })
       .fail(function (e) {
           alert('Error: can\'t get players.');
-          console.log(e);
       });
 
 
     
 
    //test for adding balls count
-   $('#tt').on('click', function()
+   $('body').on('click','#tt', function()
     {
-        //console.log("hey hey");
         /*for (let index = 0; index < _containers.length; index++) 
         {
             const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', _players[Math.floor(Math.random() * (_players.length))].color);
@@ -112,7 +112,7 @@ const config = require('../../config');
 
         /*const mahball = new Ball(0, 0, 50, 50, 0, 1, '../../assets/ballt.png', '#FF6633', _players[2].name);
         _containers[0].addElementWidget(mahball);   */
-        _bonusHandler.onBonusTouched(_tags[0]);        
+        _bonusHandler.onBonusTouched(_players[0].tag);        
     })
 
     /*setTimeout(function()
@@ -272,8 +272,7 @@ const config = require('../../config');
 					//}
                   
                 }  , _ballsLifespan );
-                //socket.emit("balls",{stringO: 'Sendin dem balls'});
-                //console.log(socket);
+                
         }//if
     }, 100);     //setIntervall()   
  }//spawnBalls()
@@ -294,7 +293,6 @@ const config = require('../../config');
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
 			const tag = _players[index].tag;
-            console.log("THE TAG" + tag);
             const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
@@ -317,8 +315,7 @@ const config = require('../../config');
 					//}
                   
                 }  , _ballsLifespan );
-                //socket.emit("balls",{stringO: 'Sendin dem balls'});
-                //console.log(socket);
+               
         }//if
     }, _bonusFrequency);     //setIntervall()   
  }
@@ -340,7 +337,6 @@ const config = require('../../config');
         }
         x = Math.random() * ((width - BALLWIDTH)   - 0) + 0;
         y = Math.random() * ((height- BALLWIDTH) - 0) + 0;
-        //console.log("Generated "+ x + " and " + y);
         areCoordsRight = true;
         for (let index = 0; index < _containers.length; index++) 
         {
@@ -350,7 +346,6 @@ const config = require('../../config');
             }        
         }        
     }  
-    //console.log("Coords right:  "+ x + " and " + y);
     
 
      return {x:x, y:y};
@@ -370,7 +365,6 @@ const config = require('../../config');
 function triggerTime()
 {	  
     const partToRemove = $('#' + _players[0].name + 'bar').val()/(_gameTime/1000);
-    //console.log("Part to remove is " + partToRemove);
 	window.setInterval( function()
 	{ 
         const frameTime = 1000
@@ -386,7 +380,6 @@ function triggerTime()
 		
             for (let index = 0; index < _players.length; index++)
             {
-                //console.log("HHHHAIIIT" + ('#' + _players[index].name + 'bar').css('height'));
 
                 const sub = 100 * (frameTime/_gameTime)
                 $('#' + _players[index].name + 'bar').val($('#' + _players[index].name + 'bar').val() - partToRemove);
@@ -412,14 +405,13 @@ function triggerTime()
     );
         
     }
-    console.log(_players);
  }
 
  function displayGameOver()
  {
+    $('#ballsmusic')[0].pause();
     $('#gameoversound')[0].play();
      
-    //console.log("Game over");
  }
 
  function showWinner()
@@ -446,24 +438,15 @@ function triggerTime()
             _players[index].stack.showOutcome(false);
         }    
     }
-    console.log("In showWinner()");
-    console.log("_players = "+ _players);
-    console.log("winner = " +winner);
-    console.log("_players[winner] = ");
-    console.log(_players[winner]);
+  
 
     updateScores(winner);
-    //console.log("Winner is " + winner.name + " with " + winner.stack._ballsCount);
  }
 
  function updateScores(winner)
  {
     
-    console.log("In updateScores()");
-    console.log("_players = "+ _players);
-    console.log("winner = " +winner);
-    console.log("_players[winner] = ");
-    console.log(_players[winner]);   
+    
     $.ajax({
         url: config.server + '/api/user/points',
         type: 'PUT',
@@ -479,8 +462,7 @@ function triggerTime()
  {
      setTimeout(() => {
          $('#ballsView').remove();
-        console.log("Back to menu");
         new Home(_gameID);
-     }, 4000);     
+     }, 40000000);     
  }
  

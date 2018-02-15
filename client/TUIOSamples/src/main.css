@@ -182,7 +182,7 @@ audio
   font-size:1.3rem;
   color: white;
   z-index: 33;
-  margin-top: -300px;
+  margin-top: -490px;
   margin-left:-400px;
   transform: scale(0.5);
   transition-duration: 0.7s;  
@@ -199,4 +199,18 @@ audio
   width:200px;
   height:200px;
   margin-left: 20%;
+}
+
+.stats
+{
+  margin-left: 10%;
+}
+
+.malus
+{
+  position: absolute;  
+  margin-left: 130%;
+  font-size: 3rem;
+  display: none;
+  width:300px;
 }
