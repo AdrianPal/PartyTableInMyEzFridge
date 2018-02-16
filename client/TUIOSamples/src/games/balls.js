@@ -8,6 +8,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
 import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
 import User from "../user/user";
 import Home from '../home/home'
+import Anywhere from '../tools/anywhere';
 
 const config = require('../../config');
 
@@ -28,6 +29,7 @@ const config = require('../../config');
  let _bonusFrequency = 5000;
  let _winners = [];
  let _gameID = '';
+ let _endAnywhere;
  let _bonusHandler = {
      onBonusTouched: function(tag){
          //console.log("Bonus Touched w/ tag "+ tag);
@@ -129,11 +131,12 @@ const config = require('../../config');
      _players = [];
      _isGameOver = false;
      _ballsCount = 0;
-     _gameTime = 30000; //in milliseconds
+     _gameTime = 3000; //in milliseconds
      _ballsLifespan = 3500;
      _bonusFrequency = 5000;
      _winners = [];
      _gameID = '';
+     _endAnywhere = {};
  }
 
  function addBallContainers()
@@ -186,6 +189,7 @@ const config = require('../../config');
     //Just for the tests
     _containers.push(container);
     _players[index].stack.showImg(_players[index].img);
+    //$('#ballsView').append('<img src="'+ config.server + '/' +_players[index].img +'"  />')
 /*
     --------    TESTS   - -----
 
@@ -458,12 +462,21 @@ function triggerTime()
     });     
  }
 
+ function clickAnywhere()
+ {
+     console.log("Clicked the anywhere");
+     _endAnywhere.deleteWidget();
+    $('#ballsView').remove();
+    new Home(_gameID);
+
+ }
 
  function backToBoard()
  {
-     setTimeout(() => {
-         $('#ballsView').remove();
-        new Home(_gameID);
-     }, 40000000);     
+     /*setTimeout(() => {
+        
+     }, 40000000);     */
+     _endAnywhere = new Anywhere(this, clickAnywhere);
+
  }
  

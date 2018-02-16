@@ -234,7 +234,7 @@ class BallContainer extends TUIOWidget {
   showImg(path)
   {
     console.log(path);
-    this._domElem.append('<img src="'+path +'"/>');
+    //this._domElem.append('<img src="'+ config.server + '/' + path +'"/>');
   }  
 
   /**
