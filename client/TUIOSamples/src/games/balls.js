@@ -185,8 +185,7 @@ const config = require('../../config');
     _players[index].stack = container;
     //Just for the tests
     _containers.push(container);
-    
-
+    _players[index].stack.showImg(_players[index].img);
 /*
     --------    TESTS   - -----
 
@@ -400,11 +399,13 @@ function triggerTime()
             color: players[index].color,
             position:players[index].pos,
             tag: players[index].tangible,//to get later through API
-            score:0 //to get later through API
+            score:0, //to get later through API
+            img:players[index].avatarPath
         }
-    );
         
+    );        
     }
+    console.log(_players)
  }
 
  function displayGameOver()
