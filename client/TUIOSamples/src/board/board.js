@@ -332,7 +332,7 @@ export default class Board {
                 return "Labyrinth";
 
             case 3:
-                return "Balls";
+                return "Get the balls";
 
             default:
                 return "Twister";
