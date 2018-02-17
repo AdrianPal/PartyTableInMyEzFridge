@@ -49,7 +49,8 @@ class BallContainer extends TUIOWidget {
           .css('left', `${x}px`)
           .css('top', `${y}px`)
           .css('z-index', -1);
-    this.stackTitleTop = $('<div>').text(stackTitle)
+          //before, there was stackTitle
+    this.stackTitleTop = $('<div>').text('')
                         .css('margin-top', '-40px')
                         .css('text-align', 'center')
                         .css('width', `${size}`)
@@ -234,7 +235,7 @@ class BallContainer extends TUIOWidget {
   showImg(path)
   {
     console.log(path);
-    //this._domElem.append('<img src="'+ config.server + '/' + path +'"/>');
+    this._domElem.append('<img src="'+ path +'" class="container-avatar"/>');
   }  
 
   /**

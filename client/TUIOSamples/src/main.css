@@ -179,6 +179,16 @@ audio
    background-color: chocolate!important;
 }
 
+.container-avatar
+{
+  position: absolute;
+  width:90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-top: -150px;
+  margin-left: 75px;
+}
+
 
 
 .outcome
@@ -202,7 +212,7 @@ audio
 {
   width:200px;
   height:200px;
-  margin-left: 20%;
+  margin-left: -50%;
 }
 
 .stats

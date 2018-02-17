@@ -85,7 +85,7 @@ const config = require('../../config');
         $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
-        $('#ballsmusic')[0].play();
+        //$('#ballsmusic')[0].play();
         $('#ballsmusic').prop("volume", 0.3);
         
         addBallContainers();
@@ -188,7 +188,7 @@ const config = require('../../config');
     _players[index].stack = container;
     //Just for the tests
     _containers.push(container);
-    _players[index].stack.showImg(_players[index].img);
+    _players[index].stack.showImg(config.server + '/' +_players[index].img);
     //$('#ballsView').append('<img src="'+ config.server + '/' +_players[index].img +'"  />')
 /*
     --------    TESTS   - -----
