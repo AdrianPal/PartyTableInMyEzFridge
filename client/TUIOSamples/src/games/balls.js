@@ -18,6 +18,7 @@ const config = require('../../config');
 // import showBoardView from "../board";
  //var socket = SocketManager.get();
 
+ let PLAYSOUND = false;
  let _colors = [];
  let _tags = ['03', '6D', '6C', 'B3'];
  let _containers = [];
@@ -34,7 +35,7 @@ const config = require('../../config');
      onBonusTouched: function(tag){
          //console.log("Bonus Touched w/ tag "+ tag);
          for (let index = 0; index < _players.length; index++) {
-            $('#bonusgainsound')[0].play();
+            if(PLAYSOUND){$('#bonusgainsound')[0].play();}
              
              if(_players[index].tag == tag){                 
                 _players[index].stack.addBalls(3);
@@ -85,7 +86,7 @@ const config = require('../../config');
         $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
-        //$('#ballsmusic')[0].play();
+       if(PLAYSOUND){ $('#ballsmusic')[0].play();}
         $('#ballsmusic').prop("volume", 0.3);
         
         addBallContainers();
@@ -131,7 +132,7 @@ const config = require('../../config');
      _players = [];
      _isGameOver = false;
      _ballsCount = 0;
-     _gameTime = 3000; //in milliseconds
+     _gameTime = 30000; //in milliseconds
      _ballsLifespan = 3500;
      _bonusFrequency = 5000;
      _winners = [];
@@ -295,8 +296,8 @@ const config = require('../../config');
             const spawnY = coords.y;
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
-			const tag = _players[index].tag;
-            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
+            const tag = _players[index].tag;
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/bonusicon.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);
@@ -306,7 +307,10 @@ const config = require('../../config');
 			
             mahball.setTagMove(tag);
             mahball.addTo($('#ballsView').get(0));
-            $('#bonusspawnsound')[0].play();
+
+            if(PLAYSOUND)
+             {   $('#bonusspawnsound')[0].play();}
+
 			_ballsCount++;
 
                 setTimeout( function()
@@ -415,7 +419,7 @@ function triggerTime()
  function displayGameOver()
  {
     $('#ballsmusic')[0].pause();
-    $('#gameoversound')[0].play();
+    if(PLAYSOUND){$('#gameoversound')[0].play();}
      
  }
 
