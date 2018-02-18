@@ -31,7 +31,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 30;
+        return 1030;
         // return 1;
     }
     static get fingersNumber() {
@@ -133,13 +133,13 @@ export class Twister extends Game {
 
     playMusicSound() {
         let s = '';
-        
+
         if (this.currentPlayers === this.teamOne) {
             s = '1';
         } else {
             s = '2';
         }
-            
+
         $('#musicSound' + s).prop('volume', '0.1');
         $('#musicSound' + s).get(0).play();
     }
@@ -194,13 +194,13 @@ export class Twister extends Game {
 
     decreaseMusicVolume() {
         let s = '';
-        
+
         if (this.currentPlayers === this.teamOne) {
             s = '1';
         } else {
             s = '2';
         }
-            
+
         $('#musicSound' + s).animate({
             volume: 0
         }, 1750);
@@ -542,10 +542,21 @@ export class Twister extends Game {
         for (let i = 0; i < colors.length; i++) {
             const nbre = this.pastilles[colors[i]].toDo;
 
+            if (nbre === 0) {
+                continue;
+            }
+
             content += `
-                <tr class="` + colors[i] + `Instructions">
-                    <td><div class="pastille ` + colors[i] + `"></div></td>
-                    <td>&nbsp;<span class="nbreOfPastilleDone ` + ((nbre === 0) ? 'green' : '') + `">x <span class="nbre">` + nbre + `</span> <span class="check">` + ((nbre === 0) ? '<i class="fa fa-check"></i>' : '') + `</span></span></td>
+                <tr class="` + colors[i] + `Instructions instructionsTr">
+                    <td>
+            `;
+
+            for (let j = 0; j < nbre; j++) {
+                content += `<div class="pastille small ` + colors[i] + `"></div>`;
+            }
+
+            content += `
+                    </td>
                 </tr>`;
         }
 
@@ -619,10 +630,24 @@ export class Twister extends Game {
     }
 
     checkForTotal(color) {
-        if (this.pastilles[color].done >= this.pastilles[color].toDo) {
-            $('.' + color + 'Instructions .nbreOfPastilleDone').addClass('green');
-            $('.' + color + 'Instructions .nbreOfPastilleDone .check').html('<i class="fa fa-check"></i>');
+        const done = this.pastilles[color].done;
+        let i = 0;
 
+        $('.' + color + 'Instructions:eq(0) .pastille.small').each(function (index) {
+            if (i++ >= done) {
+                $(this).empty();
+
+                // Other side
+                $('.' + color + 'Instructions:eq(1) .pastille.small:eq('+ index +')').empty();
+            } else {
+                $(this).html('<i class="fa fa-check"></i>');
+
+                // Other side
+                $('.' + color + 'Instructions:eq(1) .pastille.small:eq('+ index +')').html('<i class="fa fa-check"></i>')
+            }
+        });
+
+        if (done >= this.pastilles[color].toDo) {
             let allDone = true;
             const colors = Twister.colors;
 
@@ -633,10 +658,6 @@ export class Twister extends Game {
 
             if (allDone)
                 this.updateTotal();
-        } else {
-            $('.' + color + 'Instructions .nbreOfPastilleDone').removeClass('green');
-            $('.' + color + 'Instructions .nbreOfPastilleDone .check').html('');
         }
-
     }
 }

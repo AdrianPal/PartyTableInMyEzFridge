@@ -318,9 +318,8 @@ export default class Board {
         localStorage.setItem('game', rand);
         // ------------
 
-        //this.letsPlayView(rand);
-        // this.letsPlayView(2);
-        this.letsPlayView(1);
+        // this.letsPlayView(rand);
+        this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
@@ -333,7 +332,7 @@ export default class Board {
                 return "Labyrinth";
 
             case 3:
-                return "Balls";
+                return "Get the balls";
 
             default:
                 return "Twister";

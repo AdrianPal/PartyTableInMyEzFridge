@@ -8,6 +8,7 @@ import ImageElementWidget from 'tuiomanager/widgets/ElementWidget/ImageElementWi
 import BonusBall from 'tuiomanager/widgets/ElementWidget/ImageElementWidget/BonusBall';
 import User from "../user/user";
 import Home from '../home/home'
+import Anywhere from '../tools/anywhere';
 
 const config = require('../../config');
 
@@ -17,6 +18,7 @@ const config = require('../../config');
 // import showBoardView from "../board";
  //var socket = SocketManager.get();
 
+ let PLAYSOUND = false;
  let _colors = [];
  let _tags = ['03', '6D', '6C', 'B3'];
  let _containers = [];
@@ -28,11 +30,12 @@ const config = require('../../config');
  let _bonusFrequency = 5000;
  let _winners = [];
  let _gameID = '';
+ let _endAnywhere;
  let _bonusHandler = {
      onBonusTouched: function(tag){
          //console.log("Bonus Touched w/ tag "+ tag);
          for (let index = 0; index < _players.length; index++) {
-            $('#bonusgainsound')[0].play();
+            if(PLAYSOUND){$('#bonusgainsound')[0].play();}
              
              if(_players[index].tag == tag){                 
                 _players[index].stack.addBalls(3);
@@ -83,7 +86,7 @@ const config = require('../../config');
         $('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
-        $('#ballsmusic')[0].play();
+       if(PLAYSOUND){ $('#ballsmusic')[0].play();}
         $('#ballsmusic').prop("volume", 0.3);
         
         addBallContainers();
@@ -134,6 +137,7 @@ const config = require('../../config');
      _bonusFrequency = 5000;
      _winners = [];
      _gameID = '';
+     _endAnywhere = {};
  }
 
  function addBallContainers()
@@ -185,8 +189,8 @@ const config = require('../../config');
     _players[index].stack = container;
     //Just for the tests
     _containers.push(container);
-    
-
+    _players[index].stack.showImg(config.server + '/' +_players[index].img);
+    //$('#ballsView').append('<img src="'+ config.server + '/' +_players[index].img +'"  />')
 /*
     --------    TESTS   - -----
 
@@ -292,8 +296,8 @@ const config = require('../../config');
             const spawnY = coords.y;
 			const index = Math.floor(Math.random() * (_players.length));
             const color = _players[index].color;
-			const tag = _players[index].tag;
-            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/star.png', color, _players[index].name, _bonusHandler);
+            const tag = _players[index].tag;
+            const mahball = new BonusBall(spawnX, spawnY, BALLWIDTH, BALLWIDTH, 0, 1, '../../assets/bonusicon.png', color, _players[index].name, _bonusHandler);
 			//const mahball = new ImageElementWidget(spawnX, spawnY, 50, 50, 0, 1, '../../assets/ballt.png');
 
             mahball.canRotate(false, false);
@@ -303,7 +307,10 @@ const config = require('../../config');
 			
             mahball.setTagMove(tag);
             mahball.addTo($('#ballsView').get(0));
-            $('#bonusspawnsound')[0].play();
+
+            if(PLAYSOUND)
+             {   $('#bonusspawnsound')[0].play();}
+
 			_ballsCount++;
 
                 setTimeout( function()
@@ -400,17 +407,19 @@ function triggerTime()
             color: players[index].color,
             position:players[index].pos,
             tag: players[index].tangible,//to get later through API
-            score:0 //to get later through API
+            score:0, //to get later through API
+            img:players[index].avatarPath
         }
-    );
         
+    );        
     }
+    console.log(_players)
  }
 
  function displayGameOver()
  {
     $('#ballsmusic')[0].pause();
-    $('#gameoversound')[0].play();
+    if(PLAYSOUND){$('#gameoversound')[0].play();}
      
  }
 
@@ -457,12 +466,21 @@ function triggerTime()
     });     
  }
 
+ function clickAnywhere()
+ {
+     console.log("Clicked the anywhere");
+     _endAnywhere.deleteWidget();
+    $('#ballsView').remove();
+    new Home(_gameID);
+
+ }
 
  function backToBoard()
  {
-     setTimeout(() => {
-         $('#ballsView').remove();
-        new Home(_gameID);
-     }, 40000000);     
+     /*setTimeout(() => {
+        
+     }, 40000000);     */
+     _endAnywhere = new Anywhere(this, clickAnywhere);
+
  }
  

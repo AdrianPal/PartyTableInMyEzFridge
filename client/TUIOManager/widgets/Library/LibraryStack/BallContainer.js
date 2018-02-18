@@ -49,7 +49,8 @@ class BallContainer extends TUIOWidget {
           .css('left', `${x}px`)
           .css('top', `${y}px`)
           .css('z-index', -1);
-    this.stackTitleTop = $('<div>').text(stackTitle)
+          //before, there was stackTitle
+    this.stackTitleTop = $('<div>').text('')
                         .css('margin-top', '-40px')
                         .css('text-align', 'center')
                         .css('width', `${size}`)
@@ -97,7 +98,7 @@ class BallContainer extends TUIOWidget {
     this._bonusCount = 0;
     this._ballsLost = 0;
     this._playerid = stackTitle;
-	this._gameTime = gameTime
+	  this._gameTime = gameTime;
 
 
     //Rotating the element
@@ -116,7 +117,7 @@ class BallContainer extends TUIOWidget {
 	this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
   $('#'+this._playerid+'malus').css('margin-left', '130%');
   $('#'+this._playerid+'malus').css('font-size', '3rem');
-  console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
+  //console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
   
   //$('#'+this._playerid+'malus').hide();
   
@@ -228,21 +229,14 @@ class BallContainer extends TUIOWidget {
         else
         {
           return false;
-        }
-
-        /*if((x+ballwidth < this.x && y+ballwidth < this.y) 
-          || (x+ballwidth < this.x && y> this.y+containerWidth)
-          || (x> this.x+ containerWidth && y+ballwidth < this.y)
-          || (x> this.x+ containerWidth && y> this.y+containerWidth))
-          {
-            return true;
-          }
-          else
-          {
-            return false;
-          }*/
+        }       
   }
-  
+
+  showImg(path)
+  {
+    console.log(path);
+    this._domElem.append('<img src="'+ path +'" class="container-avatar"/>');
+  }  
 
   /**
    * LibraryStack's domElem.
