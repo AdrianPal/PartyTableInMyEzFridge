@@ -50,7 +50,7 @@ export default class Board {
 
         this.createNewGame();
         // TODO: to remove
-        // this.launchRandomGame();
+        this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -318,14 +318,15 @@ export default class Board {
         localStorage.setItem('game', rand);
         // ------------
 
-        this.letsPlayView(rand);
+        //this.letsPlayView(rand);
         // this.letsPlayView(2);
+        this.letsPlayView(1);
     }
 
     getGameNameFromId(id) {
         switch (id) {
             // Remove PICTIONARY
-            case 11:
+            case 1:
                 return "Pictionary";
 
             case 2:
@@ -407,7 +408,7 @@ export default class Board {
 
         switch (id) {
             // Remove PICTIONARY
-            case 11:
+            case 1:
                 return new Pictionary(this.gameId);
 
             case 2:

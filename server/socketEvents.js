@@ -122,8 +122,8 @@ exports = module.exports = function (io) {
         });
 
         /****************************************** PICTIONARY **********************************************/
-        socket.on('isDrawing', (east, north, drag, color, drawSize) => {
-            socket.broadcast.emit('isDrawing', east, north, drag, color, drawSize);
+        socket.on('isDrawing', (strokes, color, drawSize) => {
+            socket.broadcast.emit('isDrawing', strokes, color, drawSize);
         });
 
         socket.on('wordInitialized', (word) => {
