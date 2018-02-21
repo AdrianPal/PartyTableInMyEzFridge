@@ -32,7 +32,7 @@ class BonusBall extends ElementWidget {
   constructor(x, y, width, height, initialRotation, initialScale, src, color, playerid, bonusHandler) {
     super(x, y, width, height, initialRotation, initialScale);
     this.src = src;
-    this._domElem = $('<img class="ball">');
+    this._domElem = $('<img class="ball bonusball">');
     this._domElem.attr('src', src);
     this._domElem.css('width', `${this.width}px`);
     this._domElem.css('height', `${this.height}px`);
@@ -40,10 +40,9 @@ class BonusBall extends ElementWidget {
     this._domElem.css('z-index', `${this.zIndex}`);
     this._domElem.css('left', `${x}px`);
     this._domElem.css('top', `${y}px`);
-    let randomRot  = Math.floor(Math.random() * ((360 - (-360))   - (-360)) + (-360));
-    this._domElem.css('transform', `rotate(${randomRot}deg)`);
+    let randomRot  = Math.floor(Math.random() * ((360 - 0)   - 0) + 0);
     this._domElem.css('transform-origin', `scale(${initialScale})`);
-    this._domElem.css('transform', 'scale(2)');
+    this._domElem.css('transform', 'scale(2) rotate('+ randomRot+'deg)');
     this.hasDuplicate = false;
 
     //console.log("In Ball, the color is  " + color);
