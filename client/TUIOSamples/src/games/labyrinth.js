@@ -135,9 +135,7 @@ function convertDir(dir) {
 
 
 function solveInstructions(array, user, target) {
-    console.log("resolve");
     let start = gid(target).kid(1).kid(1);
-    console.log("target");
     let end = gid(target).lastChild.previousSibling
         .lastChild.previousSibling;
 
@@ -268,12 +266,17 @@ function reset() {
 
 
 function resolveGame() {
+    console.log("resolve game ");
     socket.on("arrayToResolve", (array, user) => {
+        console.log(" game  resolve")
 
         arrayForResolving.push({
             array: array.array,
             user: user.user
         });
+        console.log("arrayForresolving",arrayForResolving)
+        console.log("userArray For resolving",usersArray)
+
         if (arrayForResolving.length === usersArray.length) {
             document.getElementById('generateMaze').classList.remove("blured");
             document.getElementById('progressBar').remove();
@@ -312,7 +315,9 @@ function initMobile() {
 
             $('#nextGame').click(function () {
                 socket.emit('maze reset');
-                $('#nextGame').remove();
+                $('#nextGame').empty();
+                $('#nextGame').append("Waiting for your friends");
+
             });
 
             $("#generateMazeMobile").append(user.maze);
@@ -327,7 +332,9 @@ function initMobile() {
             });
         });
 
+        $('#maze').remove();
         $('#app').append('' +
+            '<audio  id = "step"> <source src="../../assets/sound/step.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>' +
             '<audio  id = "boo"> <source src="../../assets/sound/boo.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>' +
             '<audio  id = "taDa"> <source src="../../assets/sound/taDa.mp3" type="audio/mpeg">Your browser does not support the audio element. </audio>' +
             '<div id="maze">' +
@@ -358,6 +365,7 @@ function initMobile() {
             ' to the <label class="color-red">end</label></p>';
 
         $('#send').on('click', function () {
+            console.log('resolve', array);
             socket.emit('arrayToResolve', {
                 array: array
             }, {
@@ -495,6 +503,7 @@ function initTable() {
 
     socket.on('isReady', (userId) => {
         usersArrayReady.push(userId);
+
         if (usersArrayReady.length === usersArray.length) {
 
             socket.emit('startLabyrinth');
@@ -507,7 +516,6 @@ function initTable() {
             make_maze();
 
             labyrinthSave = $('#generateMaze').html();
-            console.log("LABYRINTH SAVE", labyrinthSave);
 
             $('#start')[0].play();
 
@@ -589,8 +597,7 @@ function getPlayers() {
 
 function initGame() {
     let mobile = getUrlParameter('view');
-    if ((mobile === "mobile") && !launched) {
-        launched = true;
+    if ((mobile === "mobile")) {
         pos = getUrlParameter('pos');
         $.get(config.server + '/api/user/' + gameId + '/' + pos).done(
             res => {
@@ -600,7 +607,7 @@ function initGame() {
             }
         )
 
-    } else if (!launched) {
+    } else {
         getPlayers().done(res => {
             usersArray = res;
             console.log("users Array ", usersArray);
@@ -608,7 +615,6 @@ function initGame() {
             initTable();
             socket.emit('mobile launch labyrinth');
         });
-        launched = true;
     }
 }
 
@@ -616,6 +622,17 @@ export default function launchLabyrinth(gameIdParam) {
     $('#app').empty();
     $('#app').append('<link rel="stylesheet" href="/assets/css/labirynth.css">');
     $('#start').remove();
+
+    usersArray = [];
+    gameId = 0;
+    arrayForResolving = [];
+    pos = '';
+    currentUser = {};
+    resultArray = new Array();
+    arrayReset = 0;
+    labyrinthSave;
+    arraySaveDirectionForUsers = new Array();
+    isMobile = false;
 
     User.removeCurrentPlayer();
 

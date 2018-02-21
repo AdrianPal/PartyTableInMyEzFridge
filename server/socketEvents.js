@@ -99,11 +99,11 @@ exports = module.exports = function (io) {
         });
 
         socket.on('arrayToResolve', (array, user) => {
+            console.log('ARRAY TO RESOLVE')
             socket.to(tableId).emit('arrayToResolve', array, user);
         });
 
         socket.on('result', (result, data) => {
-            console.log(data);
             socket.to(users[data.user.pos]).emit('result', result, data);
         });
 
