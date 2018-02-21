@@ -16,7 +16,10 @@ var arrayForResolving = [];
 var pos = '';
 var currentUser = {};
 var resultArray = new Array();
-
+var arrayReset = 0;
+var labyrinthSave;
+var arraySaveDirectionForUsers = new Array();
+var isMobile = false;
 
 
 var launched = false;
@@ -131,10 +134,26 @@ function convertDir(dir) {
 }
 
 
-function solveInstructions(array, user) {
-    let start = gid('generateMaze').kid(1).kid(1);
-    let end = gid('generateMaze').lastChild.previousSibling
+function solveInstructions(array, user, target) {
+    console.log("resolve");
+    let start = gid(target).kid(1).kid(1);
+    console.log("target");
+    let end = gid(target).lastChild.previousSibling
         .lastChild.previousSibling;
+
+    let h = 5;
+    let w = 5;
+    let tbl = gid(target);
+    for (var i = 1; i <= h; i++) {
+        for (var j = 1; j <= w; j++) {
+            tbl.kid(i).kid(j).neighbors = [
+                tbl.kid(i + 1).kid(j),
+                tbl.kid(i).kid(j + 1),
+                tbl.kid(i).kid(j - 1),
+                tbl.kid(i - 1).kid(j)
+            ];
+        }
+    }
 
     let currentPos = start;
     let path = new Array();
@@ -142,7 +161,6 @@ function solveInstructions(array, user) {
 
     for (let i = 0; i < array.length; i++) {
         let dir = array[i];
-
         if (currentPos.className.match('end')) {
             break;
         } else if (currentPos.className.match(dir)) {
@@ -164,14 +182,24 @@ function solveInstructions(array, user) {
         setTimeout(paint(), 500 * i);
     }
 
-    resultArray.push({
-        path: path,
-        user: user
-    });
 
-    if (resultArray.length === usersArray.length) {
-        triggerWinners();
+    if(!isMobile) {
+
+        resultArray.push({
+            path: path,
+            user: user
+        });
+
+        if (resultArray.length === usersArray.length) {
+            let triggerResult = function () {
+                return function () {
+                    triggerWinners();
+                }
+            };
+            setTimeout(triggerResult(), path.length * 600);
+        }
     }
+
 }
 
 function isReady() {
@@ -184,8 +212,6 @@ function isReady() {
         $('#isReady').replaceWith("" +
             "<p class='waiting'>Waiting for players...</p>" +
             "<p class='waiting'>Stay at your place !</p>")
-
-
     })
 
 }
@@ -193,7 +219,6 @@ function isReady() {
 function triggerWinners() {
     let greater = 0;
     for (let e of resultArray) {
-        console.log('element', e);
         if (e.path.length > greater) {
             greater = e.path.length;
         }
@@ -201,11 +226,18 @@ function triggerWinners() {
 
     let winners = [];
 
+    // let labyrinth = $('#generateMaze').html();
+
+
     for (let winner of resultArray) {
+        //let maze = cleanMaze(winner, labyrinth);
+
         if (winner.path.length === greater) {
             winners.push(winner.user);
+
             socket.emit("result", "Victory", {
-                user: winner.user
+                user: winner.user,
+                maze: labyrinthSave
             });
 
             $.ajax({
@@ -220,16 +252,19 @@ function triggerWinners() {
 
         } else {
             socket.emit("result", "Defeat", {
-                user: winner.user
+                user: winner.user,
+                maze: labyrinthSave,
             });
         }
     }
 
-    setTimeout(function() {
-        new Home(gameId);
-    }, 20000);
 }
 
+function reset() {
+    if (arrayReset === usersArray.length) {
+        new Home(gameId)
+    }
+}
 
 
 function resolveGame() {
@@ -247,11 +282,11 @@ function resolveGame() {
             for (let i = 0; i < arrayForResolving.length; i++) {
                 var resolve = function () {
                     return function () {
-                        solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user);
-
+                        solveInstructions(arrayForResolving[i].array, arrayForResolving[i].user, "generateMaze");
                     }
                 };
                 setTimeout(resolve(), arrayForResolving[i].array.length * 600);
+
             }
         }
     });
@@ -265,12 +300,31 @@ function initMobile() {
 
         $('#isReadyDiv').remove();
 
-        socket.on('result', (result) => {
-            document.getElementById('maze').innerHTML = '<p class="' + result + '">' + result + '</p>';
+        socket.on('result', (result, user) => {
+
+            document.getElementById('maze').innerHTML = '' +
+                '<p class="' + result + '">' + result + '</p>' +
+                '<p  id="review" class="buttonNext">Review</p>' +
+                '<table id="generateMazeMobile"></table>' +
+                '<p id="nextGame" class="buttonNext">Next Game ></p>';
             let colorBackground = (result === 'Victory') ? 'darkgreen' : 'darkred';
-            (result === 'Victory') ? $('#taDa')[0].play(): $('#boo')[0].play();
+            (result === 'Victory') ? $('#taDa')[0].play() : $('#boo')[0].play();
+
+            $('#nextGame').click(function () {
+                socket.emit('maze reset');
+                $('#nextGame').remove();
+            });
+
+            $("#generateMazeMobile").append(user.maze);
+            solveInstructions(arraySaveDirectionForUsers, user.user, "generateMazeMobile");
 
             document.getElementById('maze').style.background = colorBackground;
+
+            $('#review').click(function () {
+                $("#generateMazeMobile").empty();
+                $("#generateMazeMobile").append(user.maze);
+                solveInstructions(arraySaveDirectionForUsers, user.user, "generateMazeMobile");
+            });
         });
 
         $('#app').append('' +
@@ -312,6 +366,7 @@ function initMobile() {
             for (let i = 0; i < array.length; i++) {
                 $('#array svg').last().remove();
             }
+            arraySaveDirectionForUsers = array;
             array = new Array();
             document.getElementById('maze').innerHTML = '<p class="waiting">Wait your result !</p>';
 
@@ -414,6 +469,7 @@ function initMobile() {
             for (let i = 0; i < array.length; i++) {
                 $('#array svg').last().remove();
             }
+            arraySaveDirectionForUsers = array;
             array = new Array();
             document.getElementById('maze').innerHTML = '<p class="waiting">Time Up !</p>';
         })
@@ -449,6 +505,9 @@ function initTable() {
             $('#startingInformation').remove();
 
             make_maze();
+
+            labyrinthSave = $('#generateMaze').html();
+            console.log("LABYRINTH SAVE", labyrinthSave);
 
             $('#start')[0].play();
 
@@ -499,7 +558,6 @@ function initTable() {
             progress(15, 15, $('#progressBar'));
 
 
-
             // $('#countdown').countdown(newDate, function (event) {
             //     $(this).html(event.strftime('%M:%S'));
             // }).on('finish.countdown', function (event) {
@@ -517,6 +575,10 @@ function initTable() {
     });
 
 
+    socket.on('maze reset', () => {
+        arrayReset += 1;
+        reset();
+    })
 
 
 }
@@ -527,14 +589,14 @@ function getPlayers() {
 
 function initGame() {
     let mobile = getUrlParameter('view');
-    if ((mobile==="mobile") && !launched) {
+    if ((mobile === "mobile") && !launched) {
         launched = true;
         pos = getUrlParameter('pos');
         $.get(config.server + '/api/user/' + gameId + '/' + pos).done(
             res => {
+                isMobile = true;
                 currentUser = res;
                 initMobile();
-                console.log(currentUser);
             }
         )
 

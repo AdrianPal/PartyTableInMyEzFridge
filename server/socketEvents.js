@@ -102,9 +102,9 @@ exports = module.exports = function (io) {
             socket.to(tableId).emit('arrayToResolve', array, user);
         });
 
-        socket.on('result', (result,user) => {
-            console.log("USER", user);
-            socket.to(users[user.user.pos]).emit('result', result);
+        socket.on('result', (result, data) => {
+            console.log(data);
+            socket.to(users[data.user.pos]).emit('result', result, data);
         });
 
         socket.on('isReady',() => {
@@ -119,6 +119,10 @@ exports = module.exports = function (io) {
         });
         socket.on('timeUp', () => {
            socket.broadcast.emit('timeUp');
+        });
+
+        socket.on('maze reset', () => {
+            socket.broadcast.emit('maze reset');
         });
 
         /****************************************** PICTIONARY **********************************************/
