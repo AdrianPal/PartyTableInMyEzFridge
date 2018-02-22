@@ -477,10 +477,9 @@ function triggerTime()
 
  function backToBoard()
  {
-     /*setTimeout(() => {
-        
-     }, 40000000);     */
-     _endAnywhere = new Anywhere(this, clickAnywhere);
+     setTimeout(() => {
+        _endAnywhere = new Anywhere(this, clickAnywhere);
+     }, 4000);    
 
  }
  
