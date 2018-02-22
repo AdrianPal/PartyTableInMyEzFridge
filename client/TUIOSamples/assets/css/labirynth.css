@@ -248,3 +248,11 @@
     margin-bottom: 1em;
 }
 
+.titleRule{
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#rules{
+    margin-top: -5em;
+}

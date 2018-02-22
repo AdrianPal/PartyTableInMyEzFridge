@@ -205,6 +205,7 @@ function solveInstructions(array, user, target) {
 function isReady() {
     $('#app').append('' +
         '<div id="contentReady">' +
+        '<p class="titleRule">Click and read this before playing</p>' +
         '<div id="rules">' +
         '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="60px" height="60px">' +
         '                    <g>' +
@@ -274,7 +275,7 @@ function isReady() {
             '          <img class="modal-image" src="../../assets/maze/labyrinth.PNG"/>' +
             '          <p>Then it will disappear</p>' +
             '          <img class="modal-image" src="../../assets/maze/blured.PNG"/>' +
-            '          <p>Give the right directions to get to the red square</p>' +
+            '          <p>You have to give all the steps to go to the <span class="color-red">red square</span> using these arrows</p>' +
             '          <img  class="modal-image" src="../../assets/maze/arrows.PNG"/>' +
             '        </div>' +
             '        <div class="modal-footer">' +
