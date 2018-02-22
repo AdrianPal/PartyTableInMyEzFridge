@@ -200,6 +200,7 @@ class BallContainer extends TUIOWidget {
 
   showOutcome(hasWon)
   {
+    $('.container-avatar').remove();
     $('#'+this._playerid+'help').remove();
     this._domElem.append('<p class="stats">Balls captured : '+ this._ballsCount+'</p><br/>');
     this._domElem.append('<p class="stats">Balls lost : '+ this._ballsLost+'</p>');

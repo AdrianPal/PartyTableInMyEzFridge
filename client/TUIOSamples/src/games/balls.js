@@ -132,7 +132,7 @@ const config = require('../../config');
      _players = [];
      _isGameOver = false;
      _ballsCount = 0;
-     _gameTime = 30000; //in milliseconds
+     _gameTime = 3000; //in milliseconds
      _ballsLifespan = 3500;
      _bonusFrequency = 5000;
      _winners = [];
@@ -477,7 +477,11 @@ function triggerTime()
 
  function backToBoard()
  {
+     
+
      setTimeout(() => {
+     $('#ballsView').append('<h1 id="touch1">Touch anywhere to go back to the menu</h1>');
+         
         _endAnywhere = new Anywhere(this, clickAnywhere);
      }, 4000);    
 
