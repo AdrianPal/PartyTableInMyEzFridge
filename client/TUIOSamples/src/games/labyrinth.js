@@ -16,10 +16,11 @@ var arrayForResolving = [];
 var pos = '';
 var currentUser = {};
 var resultArray = new Array();
-var arrayReset = 0;
+var arrayReset = new Array();
 var labyrinthSave;
 var arraySaveDirectionForUsers = new Array();
 var isMobile = false;
+var usersArrayReady = [];
 
 
 var launched = false;
@@ -181,7 +182,7 @@ function solveInstructions(array, user, target) {
     }
 
 
-    if(!isMobile) {
+    if (!isMobile) {
 
         resultArray.push({
             path: path,
@@ -200,18 +201,93 @@ function solveInstructions(array, user, target) {
 
 }
 
+
 function isReady() {
     $('#app').append('' +
+        '<div id="contentReady">' +
+        '<div id="rules">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="60px" height="60px">' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M131.187,19.652c-32.212,0-58.423,25.972-58.423,57.775l-2.124,299.552l31.867,0.228l2.125-299.663    c0-14.351,11.913-26.025,26.556-26.025h320.266V19.652H131.187z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M451.452,19.652c-33.386,0-60.548,27.161-60.548,60.548v336.199c0,24.304-19.779,44.083-44.083,44.083    s-44.083-19.779-44.083-44.083v-38.772c0-8.801-7.133-15.934-15.934-15.934H15.934C7.133,361.693,0,368.826,0,377.627v38.772    c0,41.879,34.071,75.95,75.95,75.95v-31.867c-24.309,0-44.083-19.779-44.083-44.083V393.56h239.004v22.838    c0,41.879,34.071,75.95,75.95,75.95c41.879,0,75.95-34.071,75.95-75.95V167.303h73.295c8.801,0,15.934-7.133,15.934-15.934v-71.17    C512,46.813,484.839,19.652,451.452,19.652z M480.133,135.436h-57.361V80.199c0-15.817,12.869-28.68,28.68-28.68    s28.68,12.864,28.68,28.68V135.436z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <rect x="72.763" y="460.481" width="270.335" height="31.867" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M236.88,108.349h-82.324c-8.801,0-15.934,7.133-15.934,15.934s7.133,15.934,15.934,15.934h82.324    c8.801,0,15.934-7.133,15.934-15.934S245.68,108.349,236.88,108.349z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M332.481,172.083H154.556c-8.801,0-15.934,7.133-15.934,15.934s7.133,15.934,15.934,15.934h177.925    c8.801,0,15.934-7.133,15.934-15.934S341.282,172.083,332.481,172.083z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M332.481,235.817H154.556c-8.801,0-15.934,7.133-15.934,15.934c0,8.801,7.133,15.934,15.934,15.934h177.925    c8.801,0,15.934-7.128,15.934-15.934C348.415,242.95,341.282,235.817,332.481,235.817z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                    <g>' +
+        '                        <g>' +
+        '                            <path d="M332.481,299.552H154.556c-8.801,0-15.934,7.133-15.934,15.934s7.133,15.934,15.934,15.934h177.925    c8.801,0,15.934-7.133,15.934-15.934S341.282,299.552,332.481,299.552z" fill="#006DF0"/>' +
+        '                        </g>' +
+        '                    </g>' +
+        '                </svg>' +
+        '</div>' +
         '<div id="isReadyDiv" class="btn btn-maze">' +
-        '  <i id="isReady" class="fa fa-play-circle"></i>' +
-        '</div');
+        '   <i id="isReady" class="fa fa-play-circle"></i>' +
+        '</div>' +
+        '</div>');
+
     $('#isReadyDiv').click(function () {
         socket.emit("isReady");
         $('#isReady').replaceWith("" +
-            "<p class='waiting'>Waiting for players...</p>" +
-            "<p class='waiting'>Stay at your place !</p>")
+            "<p class='waiting'>Waiting for players..." +
+            " <br/> Stay at your place !</p>")
     })
 
+    $('#rules').click(function () {
+        $('#app').append('' +
+            '<div class="modal fade" id="myModal" role="dialog">' +
+            '    <div class="modal-dialog">' +
+            '    ' +
+            '      <!-- Modal content-->' +
+            '      <div class="modal-content">' +
+            '        <div class="modal-header">' +
+            '          <button type="button" class="close" data-dismiss="modal">&times;</button>' +
+            '          <h4 class="modal-title">Rules</h4>' +
+            '        </div>' +
+            '        <div class="modal-body">' +
+            '          <h3>The goal is to go from the <span class="color-green">green square</span> to the <span class="color-red">red square</span>. <br/> The <span class="color-winner">winner</span> is the one closest to the red square</h3>' +
+            '       <br/>' +
+            '          <p>You have to remembered the maze which is on the table<br/> you have few times to do this</p>' +
+            '          <img class="modal-image" src="../../assets/maze/labyrinth.PNG"/>' +
+            '          <p>Then it will disappear</p>' +
+            '          <img class="modal-image" src="../../assets/maze/blured.PNG"/>' +
+            '          <p>Give the right directions to get to the red square</p>' +
+            '          <img  class="modal-image" src="../../assets/maze/arrows.PNG"/>' +
+            '        </div>' +
+            '        <div class="modal-footer">' +
+            '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+            '        </div>' +
+            '      </div>' +
+            '      ' +
+            '    </div>' +
+            '  </div>');
+
+        $("#myModal").modal();
+
+    })
 }
 
 function triggerWinners() {
@@ -259,25 +335,30 @@ function triggerWinners() {
 }
 
 function reset() {
-    if (arrayReset === usersArray.length) {
+    if (arrayReset.length === usersArray.length) {
+        socket.removeAllListeners("isReady");
+        socket.removeAllListeners("maze reset");
         new Home(gameId)
     }
 }
 
 
 function resolveGame() {
-    console.log("resolve game ");
     socket.on("arrayToResolve", (array, user) => {
-        console.log(" game  resolve")
+
+        for (let i = 0; i < arrayForResolving.length; i++) {
+            if (user.user._id === arrayForResolving[i].user._id) {
+                arrayForResolving.splice(i, 1);
+            }
+        }
 
         arrayForResolving.push({
             array: array.array,
             user: user.user
         });
-        console.log("arrayForresolving",arrayForResolving)
-        console.log("userArray For resolving",usersArray)
 
         if (arrayForResolving.length === usersArray.length) {
+
             document.getElementById('generateMaze').classList.remove("blured");
             document.getElementById('progressBar').remove();
 
@@ -301,7 +382,7 @@ function initMobile() {
 
     socket.on('startLabyrinth', () => {
 
-        $('#isReadyDiv').remove();
+        $('#contentReady').remove();
 
         socket.on('result', (result, user) => {
 
@@ -314,9 +395,11 @@ function initMobile() {
             (result === 'Victory') ? $('#taDa')[0].play() : $('#boo')[0].play();
 
             $('#nextGame').click(function () {
-                socket.emit('maze reset');
+                socket.emit('maze reset', user.user._id);
                 $('#nextGame').empty();
                 $('#nextGame').append("Waiting for your friends");
+                $('#nextGame').css("width", '10em');
+                $('#nextGame').css("border", 'none');
 
             });
 
@@ -499,9 +582,15 @@ function initTable() {
         '</div>');
 
 
-    var usersArrayReady = [];
+    usersArrayReady = [];
 
     socket.on('isReady', (userId) => {
+
+        for (let i = 0; i < usersArrayReady.length; i++) {
+            if (userId === usersArrayReady[i]) {
+                usersArrayReady.splice(i, 1);
+            }
+        }
         usersArrayReady.push(userId);
 
         if (usersArrayReady.length === usersArray.length) {
@@ -564,27 +653,18 @@ function initTable() {
             };
 
             progress(15, 15, $('#progressBar'));
-
-
-            // $('#countdown').countdown(newDate, function (event) {
-            //     $(this).html(event.strftime('%M:%S'));
-            // }).on('finish.countdown', function (event) {
-            //     $('#titleDisappear').html('<h3>You have</h3>');
-            //     $('#countdown').countdown(newDateTimer, function (event) {
-            //         $(this).html(event.strftime('%M:%S'));
-            //     }).on('finish.countdown', function (event) {
-            //         socket.emit('timeUp');
-            //     });
-            //     var genMaze = document.getElementById("generateMaze");
-            //     genMaze.className += " blured";
-            //
-            // });
         }
     });
 
 
-    socket.on('maze reset', () => {
-        arrayReset += 1;
+    socket.on('maze reset', (userId) => {
+
+        for (let i = 0; i < arrayReset.length; i++) {
+            if (userId === arrayReset[i]) {
+                arrayReset.splice(i, 1);
+            }
+        }
+        arrayReset.push(userId);
         reset();
     })
 
@@ -623,16 +703,19 @@ export default function launchLabyrinth(gameIdParam) {
     $('#app').append('<link rel="stylesheet" href="/assets/css/labirynth.css">');
     $('#start').remove();
 
+    socket = SocketManager.get();
     usersArray = [];
     gameId = 0;
-    arrayForResolving = [];
+    arrayForResolving = new Array();
     pos = '';
     currentUser = {};
     resultArray = new Array();
-    arrayReset = 0;
+    arrayReset = new Array();
     labyrinthSave;
     arraySaveDirectionForUsers = new Array();
     isMobile = false;
+    usersArrayReady = [];
+
 
     User.removeCurrentPlayer();
 

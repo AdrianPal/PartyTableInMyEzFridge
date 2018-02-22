@@ -5,7 +5,7 @@ exports = module.exports = function (io) {
     let users = [];
     let tableId = null;
 
-    let pictionaryDrawer  = null;
+    let pictionaryDrawer = null;
 
     let currentSocketMobileDisplay = null;
 
@@ -31,13 +31,13 @@ exports = module.exports = function (io) {
         });
 
         socket.on('update mobile game new id', (data) => {
-            socket.broadcast.emit('mobile update new game id', { gameId: data.gameId });
+            socket.broadcast.emit('mobile update new game id', {gameId: data.gameId});
         });
 
         socket.on(prefixMobile + ' twister rules', (data) => {
             let emit = prefixMobile + ' game twister rules';
 
-            for(let pos in users) {
+            for (let pos in users) {
                 socket.to(users[pos]).emit(emit, null);
             }
 
@@ -48,9 +48,9 @@ exports = module.exports = function (io) {
 
             console.log('----');
             console.log('MOBILE UNUSE');
-            
-            for(let pos in users) {
-                console.log('emitting: '+ pos);
+
+            for (let pos in users) {
+                console.log('emitting: ' + pos);
                 socket.to(users[pos]).emit('mobile unuse', null);
             }
             console.log('----');
@@ -71,7 +71,7 @@ exports = module.exports = function (io) {
                 socket.emit(currentSocketMobileDisplay);
             }
 
-            socket.broadcast.emit('hide QRCode', { pos: data.pos });
+            socket.broadcast.emit('hide QRCode', {pos: data.pos});
             console.log('EMITTING HIDE QRCODE');
         });
 
@@ -91,38 +91,39 @@ exports = module.exports = function (io) {
         });
 
 
-
-
         /****************************************** MAZE **********************************************/
         socket.on('mazeConnection', () => {
-            socket.to(tableId).emit('mazeConnection',JSON.parse(JSON.stringify(users)));
+            socket.to(tableId).emit('mazeConnection', JSON.parse(JSON.stringify(users)));
         });
 
         socket.on('arrayToResolve', (array, user) => {
-            console.log('ARRAY TO RESOLVE')
-            socket.to(tableId).emit('arrayToResolve', array, user);
+            console.log(array, user);
+            if (array.length !== 0) {
+                console.log('EMIT');
+                socket.to(tableId).emit('arrayToResolve', array, user);
+            }
         });
 
         socket.on('result', (result, data) => {
             socket.to(users[data.user.pos]).emit('result', result, data);
         });
 
-        socket.on('isReady',() => {
-           socket.to(tableId).emit('isReady',socket.id);
+        socket.on('isReady', () => {
+            socket.to(tableId).emit('isReady', socket.id);
         });
 
-        socket.on('startLabyrinth',() => {
+        socket.on('startLabyrinth', () => {
             socket.broadcast.emit('startLabyrinth');
         });
-        socket.on('mobile launch labyrinth',() => {
+        socket.on('mobile launch labyrinth', () => {
             socket.broadcast.emit('mobile launch labyrinth');
         });
         socket.on('timeUp', () => {
-           socket.broadcast.emit('timeUp');
+            socket.broadcast.emit('timeUp');
         });
 
-        socket.on('maze reset', () => {
-            socket.broadcast.emit('maze reset');
+        socket.on('maze reset', (userId) => {
+            socket.to(tableId).emit('maze reset',userId);
         });
 
         /****************************************** PICTIONARY **********************************************/
@@ -140,18 +141,18 @@ exports = module.exports = function (io) {
         })
 
 
-        socket.on('mobile enter pictionary game',() => {
+        socket.on('mobile enter pictionary game', () => {
             var usersSize = Object.keys(users).length;
             var randomPlayer = Math.floor(Math.random() * Math.floor(usersSize));
 
 
             const possibleWord = ['CAT', 'DOG', 'PLATE', 'SPOON', 'KNIFE', 'FORK', 'COW', 'CUCUMBER', 'STAIRS', 'PLANET', 'EMPIRE STATE BUILDING', 'BRIDGE', 'GREEN'];
-            const randomWord  = Math.floor(Math.random() * (possibleWord.length) + 0);
-    
+            const randomWord = Math.floor(Math.random() * (possibleWord.length) + 0);
+
 
             var userIndex = 0;
-            for(let userPos in users) {
-                if (userIndex == randomPlayer){
+            for (let userPos in users) {
+                if (userIndex == randomPlayer) {
                     pictionaryDrawer = users[userPos];
                     socket.to(users[userPos]).emit('mobile game pictionary', true, possibleWord[randomWord]);
                 } else {
@@ -175,7 +176,7 @@ exports = module.exports = function (io) {
         });
 
         socket.on('responseProposal', (user, response) => {
-            socket.to(user._id).emit('responseProposal',response);
+            socket.to(user._id).emit('responseProposal', response);
         });
 
         socket.on('decline', () => {
@@ -183,8 +184,8 @@ exports = module.exports = function (io) {
         })
 
         socket.on('endGame', (winner) => {
-            for(let userPos in users) {
-                if(users[userPos] == pictionaryDrawer){
+            for (let userPos in users) {
+                if (users[userPos] == pictionaryDrawer) {
                     socket.to(tableId).emit('pictionaryEnd', userPos, winner, gameId);
                 }
             }
