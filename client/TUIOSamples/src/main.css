@@ -147,7 +147,38 @@ h1
 .ballsCount
 {
   text-align: center;
+  /*font-size: 0.6rem;*/
 }
+
+.help
+{
+  font-size: 1.9rem;
+  max-width: 70%;
+  text-align: center;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  
+}
+
+#touch1
+{
+  position: absolute;
+  z-index: 27;
+  margin-left: 30%;
+  margin-top: 20%;
+  animation-name: rotator;
+  animation-duration: 15s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotator
+{
+  from{transform: rotate(0deg) }
+  to{transform: rotate(360deg)}
+}
+
 
 .ball
 {
@@ -192,7 +223,7 @@ audio
   height: 90px;
   border-radius: 50%;
   margin-top: -150px;
-  margin-left: 75px;
+  margin-left: -110px;
 }
 
 
