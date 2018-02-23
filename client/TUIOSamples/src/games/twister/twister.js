@@ -40,7 +40,7 @@ export class Twister extends Game {
     }
 
     static get defaultVolume() {
-        return '0.1';
+        return '0.2';
     }
 
     constructor(_gameId) {
@@ -628,7 +628,7 @@ export class Twister extends Game {
             that.getInstructions(true); // Do not create table
 
             that.getTotal();
-        }, 800);
+        }, 1500);
     }
 
     pastilleTouched(tuioTouchId, color) {

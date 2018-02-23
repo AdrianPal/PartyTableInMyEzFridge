@@ -38,9 +38,6 @@ export default class EndView extends MobileHandler {
                     if (that.pos === that.users[i].pos) {
                         that.currentUser = that.users[i];
                     }
-
-                    // REMOVE
-                    that.users[i].points = that.getRandomInt(0, 100);
                 }
 
                 that.users.sort(function (a, b) {
@@ -88,7 +85,7 @@ export default class EndView extends MobileHandler {
                                 </div>
                             </div>`);
                     }
-                }, 1000);
+                }, 500);
             }
         });
     }
