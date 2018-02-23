@@ -1,6 +1,8 @@
 import MobileHandler from '../../../mobile/mobile.handler'
 import SocketManager from '../../../../socket.manager'
 import { toASCII } from 'punycode';
+import Home from "../../../home/home";
+
 
 
 export default class PictionaryMobile extends MobileHandler {
@@ -100,6 +102,7 @@ export default class PictionaryMobile extends MobileHandler {
                     });
 
                 }
+            
             }
         });
     }
