@@ -230,19 +230,19 @@ export default class User {
         switch (user.pos) {
             case 'top':
                 top = $u.offset().top + ($u.width() - 70) / 2 - 30;
-                left = $u.offset().left - 70 - padding / 3 - 30;
+                left = $u.offset().left - 70 - padding / 3 - 80;
                 classForQR += 'upsideDown';
                 break;
 
             case 'left':
-                top = $u.offset().top + $u.width() + padding / 2 + 20;
-                left = $u.offset().left + ($u.width() - 70) / 2 - 70;
+                top = $u.offset().top + $u.width() + padding / 2 + 45;
+                left = $u.offset().left + ($u.width() - 70) / 2 - 95;
                 classForQR += 'turn-left';
                 break;
 
             case 'right':
-                top = $u.offset().top - padding + 5;
-                left = $u.offset().left + ($u.width() - 70) / 2 + 40;
+                top = $u.offset().top - padding + 5 - 25;
+                left = $u.offset().left + ($u.width() - 70) / 2 + 15;
                 classForQR += 'turn-right';
                 break;
 

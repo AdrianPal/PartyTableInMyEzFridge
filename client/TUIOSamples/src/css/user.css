@@ -230,7 +230,7 @@
 .scorePointsDisplay {
     position: absolute;
     height: 30px;
-    width: 100px;
+    width: 150px;
     font-size: 25px;
     display: flex;
     justify-content: flex-start;
