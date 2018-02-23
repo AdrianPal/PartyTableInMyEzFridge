@@ -112,6 +112,7 @@ export default class User {
         setTimeout(function () {
             that.addQrCodeLink(e);
             that.addTangibleDisplay(e);
+            that.addScoreCounter(e);
         }, 500);
     }
 
@@ -127,9 +128,9 @@ export default class User {
     addQrCodeLink(user) {
         if ($('#qrCodeHelper_' + user.pos).length !== 0) { // Already exists
             if ($('#qrCodeHelper_' + user.pos).hasClass('active')) {
-                $('#qrcode_'+ user.pos).show();
+                $('#qrcode_' + user.pos).show();
             }
-            
+
             return;
         }
 
@@ -209,6 +210,50 @@ export default class User {
 
         $('#usersView').append(`
             <div class="tangibleDisplay ` + classForQR + `" id="tangibleDisplay_` + user.pos + `" style="border-color: ` + user.color + `; color: ` + user.color + `; top: ` + top + `px; left: ` + left + `px;">` + user.tangible + `</div>
+        `);
+    }
+
+    addScoreCounter(user) {
+        let id = 'scorePointsDisplay_' + user.pos;
+
+        if ($('#' + id).length !== 0) // Already exists
+            return;
+
+        let $u = $('#' + user.pos + 'User');
+
+        let top;
+        let left;
+        let classForQR = '';
+
+        const padding = 100;
+
+        switch (user.pos) {
+            case 'top':
+                top = $u.offset().top + ($u.width() - 70) / 2 - 30;
+                left = $u.offset().left - 70 - padding / 3 - 80;
+                classForQR += 'upsideDown';
+                break;
+
+            case 'left':
+                top = $u.offset().top + $u.width() + padding / 2 + 45;
+                left = $u.offset().left + ($u.width() - 70) / 2 - 95;
+                classForQR += 'turn-left';
+                break;
+
+            case 'right':
+                top = $u.offset().top - padding + 5 - 25;
+                left = $u.offset().left + ($u.width() - 70) / 2 + 15;
+                classForQR += 'turn-right';
+                break;
+
+            default:
+                top = $u.offset().top + ($u.width() - 70) + 25;
+                left = $u.offset().left + $u.width() + padding / 3;
+                break;
+        }
+
+        $('#usersView').append(`
+            <div class="scorePointsDisplay ` + classForQR + `" id="` + id + `" style="border-color: ` + user.color + `; color: ` + user.color + `; top: ` + top + `px; left: ` + left + `px;">` + user.points + ` points</div>
         `);
     }
 

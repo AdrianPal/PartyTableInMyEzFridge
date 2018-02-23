@@ -4,6 +4,7 @@ import PictionaryMobile from "../games/pictionary/mobile/pictionary.mobile";
 import MobileUnused from "./mobile.unused";
 import TwisterRules from "./rules/twister/twister.rules";
 import launchLabyrinth from "../games/labyrinth";
+import EndView from "../mobile/end/endview.mobile";
 
 const config = require('../../config');
 
@@ -43,6 +44,10 @@ exports = module.exports = function (io, gameId, pos) {
 
     SocketManager.get().on(prefix + ' launch labyrinth', (data) => {
         launchLabyrinth(gameId);
+    });
+
+    SocketManager.get().on(prefix + ' game ended', (data) => {
+        new EndView(gameId, pos);
     });
 
 

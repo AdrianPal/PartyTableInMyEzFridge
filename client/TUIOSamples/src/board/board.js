@@ -50,7 +50,7 @@ export default class Board {
 
         this.createNewGame();
         // TODO: to remove
-        this.launchRandomGame();
+        // this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -200,9 +200,10 @@ export default class Board {
             url: Board.currentFolder + '/curtain.view.html',
             success: function (text) {
                 $('body').prepend(text).find('#curtainView').hide().fadeIn(350);
+                $('#app').html('');
                 $('#' + playerWon.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
 
-                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' point(s)!</div>');
+                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' points!</div>');
 
                 setTimeout(function () {
                     $('#winnerIs').css('visibility', 'visible');
@@ -254,7 +255,14 @@ export default class Board {
                     newGamePlayersTop.addTo($('body').get(0));
 
                     $('#checkBoxCurtain').prop('checked', false);
+
+                    SocketManager.get().emit('game ended');
                 }, 4000);
+
+                setTimeout(function() {
+                    // Toggle the table?
+                    $('.curtain__panel').hide();
+                }, 5000);
             }
         });
     }
@@ -308,7 +316,7 @@ export default class Board {
         console.log('----xxx');
 
         if (!Number.isInteger(parseInt(localStorage.getItem('game')))) {
-            rand = 1;
+            rand = 2;
         } else {
             rand = parseInt(localStorage.getItem('game')) % numberOfGames + 1;
         }
@@ -318,8 +326,8 @@ export default class Board {
         localStorage.setItem('game', rand);
         // ------------
 
-        // this.letsPlayView(rand);
-        this.letsPlayView(1);
+        this.letsPlayView(rand);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {

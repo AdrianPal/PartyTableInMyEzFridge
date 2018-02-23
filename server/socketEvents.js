@@ -44,6 +44,14 @@ exports = module.exports = function (io) {
             currentSocketMobileDisplay = emit;
         });
 
+        socket.on('game ended', (data) => {
+            console.log('----: game ended');
+            for(let pos in users) {
+                console.log('emitting: '+ pos);
+                socket.to(users[pos]).emit(prefixMobile + ' game ended', null);
+            }
+        });
+
         socket.on(prefixMobile + ' unuse', (data) => {
 
             console.log('----');

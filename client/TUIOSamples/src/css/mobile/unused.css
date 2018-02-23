@@ -17,3 +17,27 @@
     text-align: justify;
     min-height: 75px;
 }
+
+.smallTitle {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.smallTitle .tangibleContainer {
+    display: flex;
+    align-items: center;
+}
+
+.smallTitle .tangibleContainer .tangible {
+    width: 40px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid;
+    font-weight: bold;
+    border-radius: 3px;
+    margin-right: 10px;
+}

@@ -98,7 +98,6 @@
     height: 100px;
     margin: 0 2% 2% 0;
     border-radius: 100%;
-
     z-index: 99 !important;
 }
 
@@ -127,7 +126,8 @@
     color: green;
 }
 
-.total, .currentTeam {
+.total,
+.currentTeam {
     padding: 10px;
     background: grey;
     width: calc(100% + 30px);
@@ -200,18 +200,15 @@
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 100%;
-    
     display: none;
     justify-content: center;
     align-items: center;
-
     -webkit-animation: rotating 8s linear infinite;
     -moz-animation: rotating 8s linear infinite;
     -ms-animation: rotating 8s linear infinite;
     -o-animation: rotating 8s linear infinite;
     animation: rotating 8s linear infinite;
 }
-
 
 .player .name {
     padding: 10px;
@@ -254,13 +251,10 @@
     top: 0;
     left: 0;
     background: #6b6b6b;
-
     display: flex;
     justify-content: space-around;
     align-items: center;
-
     font-size: 60px;
-
     z-index: 999;
     flex-direction: column;
 }
@@ -282,7 +276,7 @@
 #turnView .playersContainer .player {
     width: 250px;
     height: 250px;
-    margin-right: 50px;    
+    margin-right: 50px;
 }
 
 #turnView .playersContainer .player:last-child {
@@ -297,7 +291,7 @@
     font-size: 16px;
 }
 
-.countDown > div {
+.countDown>div {
     overflow: hidden;
     background: #ff3e3e;
     text-align: right;
@@ -320,13 +314,23 @@
     margin: 3px 3px;
     justify-content: center;
     align-items: center;
-    color: white;
-    font-size: 25px;
+    color: rgba(255,255,255, 0.9);
+    font-size: 35px;
+}
+
+.pastille.small.yellow {
+    color: rgba(255,255,255, 0.95);
+}
+
+.pastille.small.pastilleSmallChecked {
+    background-image: url(/assets/games/twister/cross.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .instructionsTr td {
     padding: 30px 0;
-    
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
