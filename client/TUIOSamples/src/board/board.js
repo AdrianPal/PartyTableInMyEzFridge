@@ -200,6 +200,7 @@ export default class Board {
             url: Board.currentFolder + '/curtain.view.html',
             success: function (text) {
                 $('body').prepend(text).find('#curtainView').hide().fadeIn(350);
+                $('#app').html('');
                 $('#' + playerWon.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
 
                 $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' points!</div>');
