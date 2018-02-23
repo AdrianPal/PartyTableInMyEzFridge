@@ -310,7 +310,7 @@ export default class Board {
         console.log('----xxx');
 
         if (!Number.isInteger(parseInt(localStorage.getItem('game')))) {
-            rand = 1;
+            rand = 2;
         } else {
             rand = parseInt(localStorage.getItem('game')) % numberOfGames + 1;
         }
@@ -320,8 +320,8 @@ export default class Board {
         localStorage.setItem('game', rand);
         // ------------
 
-        // this.letsPlayView(rand);
-        this.letsPlayView(4);
+        this.letsPlayView(rand);
+        // this.letsPlayView(4);
     }
 
     getGameNameFromId(id) {
