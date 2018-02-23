@@ -1,28 +1,149 @@
 <link rel="stylesheet" href="/src/css/rules/twister.rules.css">
 
-<div id="twisterRulesView">
-    <p>
-        You will play this game in two teams, which will be randomly generated.
-    </p>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body">
 
-    <p>
-        The goal of Twister is to realize as many color combinations as you can. On the right, you'll see instructions of what you
-        have to do, for example :
-    </p>
+      <div class="stepper">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a class="persistant-disabled" href="#stepper-step-1" data-toggle="tab" aria-controls="stepper-step-1" role="tab" title="Step 1">
+              <span class="round-tab">1</span>
+            </a>
+          </li>
+          <li role="presentation" class="disabled">
+            <a class="persistant-disabled" href="#stepper-step-2" data-toggle="tab" aria-controls="stepper-step-2" role="tab" title="Step 2">
+              <span class="round-tab">2</span>
+            </a>
+          </li>
+          <li role="presentation" class="disabled">
+            <a class="persistant-disabled" href="#stepper-step-3" data-toggle="tab" aria-controls="stepper-step-3" role="tab" title="Step 3">
+              <span class="round-tab">3</span>
+            </a>
+          </li>
+          <li role="presentation" class="disabled">
+            <a class="persistant-disabled" href="#stepper-step-4" data-toggle="tab" aria-controls="stepper-step-4" role="tab" title="Complete">
+              <span class="round-tab">4</span>
+            </a>
+          </li>
+          <li role="presentation" class="disabled">
+            <a class="persistant-disabled" href="#stepper-step-5" data-toggle="tab" aria-controls="stepper-step-5" role="tab" title="Complete">
+              <span class="round-tab">5</span>
+            </a>
+          </li>
+        </ul>
 
-    <ul class="instructions">
-        <li>Collect 3 red pellets ;</li>
-        <li>Collect 6 yellow pellets ;</li>
-        <li>Collect 0 green pellets ;</li>
-        <li>Collect 4 blue pellets.</li>
-    </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade in active" role="tabpanel" id="stepper-step-1">
+            <h3>1. Game</h3>
+            <p>
+              This is the main view of the Game.
+            </p>
 
-    <div class="alert alert-info">
-        <strong>Tips: </strong> You can use your tangible on a pellet if you can't use your finder ;-)
+            <p>
+              <img src="/assets/games/twister/game.png" class="responsiveImg" />
+            </p>
+
+            <br>
+
+            <ul class="list-inline pull-right marginTopSmall">
+              <li>
+                <a class="btn btn-primary next-step">Next</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-pane fade" role="tabpanel" id="stepper-step-2">
+            <h3>2. Touch</h3>
+            <p>
+              You have to touch as many colored pellet as in instructions.
+            </p>
+
+            <p>
+              <img src="/assets/games/twister/touch.png" class="responsiveImg" />
+            </p>
+
+            <br>
+
+            <ul class="list-inline pull-right marginTopSmall">
+              <li>
+                <a class="btn btn-default prev-step">Back</a>
+              </li>
+              <li>
+                <a class="btn btn-primary next-step">Next</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-pane fade" role="tabpanel" id="stepper-step-3">
+            <h3>3. See instructions</h3>
+            <p>
+              You can see how many pellet you still have to touch.
+            </p>
+
+            <p>
+              <img src="/assets/games/twister/instructions.png" class="responsiveImg" />
+            </p>
+
+            <br>
+
+            <ul class="list-inline pull-right marginTopSmall">
+              <li>
+                <a class="btn btn-default prev-step">Back</a>
+              </li>
+              <li>
+                <a class="btn btn-primary next-step">Next</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-pane fade" role="tabpanel" id="stepper-step-4">
+            <h3>4. Complete instructions</h3>
+            
+            <p>
+              Once you have touched all the pellets, another instructions will appear.
+            </p>
+
+            <p>
+              <img src="/assets/games/twister/win.png" class="responsiveImg" />
+            </p>
+
+            <br>
+
+            <ul class="list-inline pull-right marginTopSmall">
+              <li>
+                <a class="btn btn-default prev-step">Back</a>
+              </li>
+              <li>
+                <a class="btn btn-primary next-step">Next</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-pane fade" role="tabpanel" id="stepper-step-5">
+            <h3>5. Fast!</h3>
+            
+            <p>
+              You have 30 seconds to complete as many combinations as possible!
+            </p>
+
+            <p>
+              <img src="/assets/games/twister/chrono.png" class="responsiveImg chrono" />
+            </p>
+
+            <br>
+
+            <ul class="list-inline pull-right marginTopSmall">
+              <li>
+                <a class="btn btn-success restart">Restart</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-
-    <p>
-        The team that has been able to realize the maximum of combinations in a given time wins! :-)
-    </p>
+  </div>
 </div>
 <!-- Twister rules -->

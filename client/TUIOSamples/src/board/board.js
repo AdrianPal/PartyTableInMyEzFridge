@@ -50,7 +50,7 @@ export default class Board {
 
         this.createNewGame();
         // TODO: to remove
-        this.launchRandomGame();
+        // this.launchRandomGame();
     }
 
     unuseMobile() {
@@ -202,7 +202,7 @@ export default class Board {
                 $('body').prepend(text).find('#curtainView').hide().fadeIn(350);
                 $('#' + playerWon.pos + 'User').addClass('playerWon').appendTo("#winnerIs");
 
-                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' point(s)!</div>');
+                $('#winnerIs .leftPanel').append('<div style="font-size: 50px;">with ' + playerWon.points + ' points!</div>');
 
                 setTimeout(function () {
                     $('#winnerIs').css('visibility', 'visible');
@@ -254,6 +254,8 @@ export default class Board {
                     newGamePlayersTop.addTo($('body').get(0));
 
                     $('#checkBoxCurtain').prop('checked', false);
+
+                    SocketManager.get().emit('game ended');
                 }, 4000);
             }
         });

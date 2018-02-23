@@ -31,7 +31,7 @@ export class Twister extends Game {
         return Math.floor((Math.random() * max) + min);
     }
     static get gameDuration() {
-        return 1030;
+        return 35;
         // return 1;
     }
     static get fingersNumber() {
@@ -55,6 +55,8 @@ export class Twister extends Game {
 
         this.teamOne = [];
         this.teamTwo = [];
+
+        this.combinations = [];
 
         this.currentPlayers = null;
 
@@ -453,10 +455,28 @@ export class Twister extends Game {
 
         let nbrePastilles = 0;
 
-        let maxPastilles = Twister.colors.length * Twister.colors.length;
+        if (this.combinations[this.totalWin] !== undefined &&
+            this.combinations[this.totalWin] !== null &&
+            this.combinations[this.totalWin].total !== 0) {
+            this.pastilles = this.combinations[this.totalWin];
+
+            for (let i = 0; i < colors.length; i++) {
+                this.pastilles[colors[i]].done = 0;
+            }
+
+            return;
+        }
+
+        let maxPastilles = 0;
+
+        console.log('---- NEW GAME:');
+        console.log(this.currentPlayers);
+        console.log('----;');
 
         if (this.currentPlayers !== null)
             maxPastilles = Twister.fingersNumber * this.currentPlayers.length;
+
+        let sum = 0;
 
         for (let i = 0; i < colors.length; i++) {
             // console.log('--- rand:');
@@ -475,12 +495,18 @@ export class Twister extends Game {
                 p = nbrePastilles = maxPastilles;
             }
 
+            sum += p;
+
             this.pastilles[colors[i]] = {
                 toDo: p,
                 // toDo: Twister.randBetween(0, 2),
                 done: 0
             };
         }
+
+        this.pastilles['total'] = sum;
+
+        this.combinations[this.totalWin] = this.pastilles;
     }
 
     getTangiblesOfCurrentTeam() {
@@ -638,14 +664,17 @@ export class Twister extends Game {
                 $(this).empty();
 
                 // Other side
-                $('.' + color + 'Instructions:eq(1) .pastille.small:eq('+ index +')').empty();
+                $('.' + color + 'Instructions:eq(1) .pastille.small:eq(' + index + ')').empty();
             } else {
-                $(this).html('<i class="fa fa-check"></i>');
+                $(this).html('<i class="fa fa-times"></i>');
 
                 // Other side
-                $('.' + color + 'Instructions:eq(1) .pastille.small:eq('+ index +')').html('<i class="fa fa-check"></i>')
+                $('.' + color + 'Instructions:eq(1) .pastille.small:eq(' + index + ')').html('<i class="fa fa-times"></i>')
             }
         });
+
+        console.log('--- check for total:');
+        console.log(this.pastilles);
 
         if (done >= this.pastilles[color].toDo) {
             let allDone = true;
