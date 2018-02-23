@@ -460,9 +460,16 @@ export class Twister extends Game {
             this.combinations[this.totalWin].total !== 0) {
             this.pastilles = this.combinations[this.totalWin];
 
+            
+            console.log('NEW GAME----');
+            console.log(this.patilles);
+
             for (let i = 0; i < colors.length; i++) {
                 this.pastilles[colors[i]].done = 0;
             }
+
+            console.log(this.patilles);
+            console.log('----');
 
             return;
         }
@@ -681,7 +688,7 @@ export class Twister extends Game {
             const colors = Twister.colors;
 
             for (let i = 0; i < colors.length && allDone; i++) {
-                if (this.pastilles[colors[i]].toDo > this.pastilles[colors[i]].done)
+                if (this.pastilles[colors[i]].toDo !== 0 && this.pastilles[colors[i]].toDo > this.pastilles[colors[i]].done)
                     allDone = false;
             }
 
