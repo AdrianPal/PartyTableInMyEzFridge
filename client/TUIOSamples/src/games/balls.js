@@ -18,14 +18,14 @@ const config = require('../../config');
 // import showBoardView from "../board";
  //var socket = SocketManager.get();
 
- let PLAYSOUND = false;
+ let PLAYSOUND = true;
  let _colors = [];
  let _tags = ['03', '6D', '6C', 'B3'];
  let _containers = [];
  let _players = [];
  let _isGameOver = false;
  let _ballsCount = 0;
- let _gameTime = 5000; //in milliseconds
+ let _gameTime = 40000; //in milliseconds
  let _ballsLifespan = 3500;
  let _bonusFrequency = 5000;
  let _winners = [];
@@ -83,7 +83,7 @@ const config = require('../../config');
         
         '</div>');
 
-        $('#ballsView').append('<button id="tt">TT</button>');
+        //$('#ballsView').append('<button id="tt">TT</button>');
         getPlayers(players);
     
        if(PLAYSOUND){ $('#ballsmusic')[0].play();}
@@ -132,7 +132,7 @@ const config = require('../../config');
      _players = [];
      _isGameOver = false;
      _ballsCount = 0;
-     _gameTime = 3000; //in milliseconds
+     _gameTime = 30000; //in milliseconds
      _ballsLifespan = 3500;
      _bonusFrequency = 5000;
      _winners = [];
@@ -374,6 +374,8 @@ function triggerTime()
     const partToRemove = $('#' + _players[0].name + 'bar').val()/(_gameTime/1000);
 	window.setInterval( function()
 	{ 
+        //_players[0].stack.addBall();
+
         const frameTime = 1000
 		if(_gameTime>0)
 		{
