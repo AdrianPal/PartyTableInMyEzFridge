@@ -75,9 +75,9 @@ export default class Board {
 
             //Switching colors to distinguish the deifferent tiles
             if (i % 2 != 0)
-                $('.boardTile').last().css('background-color', '#F44336');
+                $('.boardTile').last().css('background-color', '#eeeeee');
             else
-                $('.boardTile').last().css('background-color', '#F48FB1');
+                $('.boardTile').last().css('background-color', '#9e9e9e');
         }
 
         //Adding the arrival tile
@@ -334,7 +334,7 @@ export default class Board {
                 return "Labyrinth";
 
             case 3:
-                return "Balls";
+                return "Get the balls";
 
             default:
                 return "Twister";

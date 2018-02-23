@@ -36,15 +36,15 @@ exports = module.exports = function (io, gameId, pos) {
 
     SocketManager.get().on(prefix + ' game pictionary', (isChoosenMobile, word) => {
         new PictionaryMobile(gameId, pos, isChoosenMobile, word);
-    })
+    });
 
     SocketManager.get().on(prefix + ' game twister rules', (data) => {
         new TwisterRules(gameId, pos);
-    })
+    });
 
     SocketManager.get().on(prefix + ' launch labyrinth', (data) => {
         launchLabyrinth(gameId);
-    })
+    });
 
     SocketManager.get().on(prefix + ' game ended', (data) => {
         new EndView(gameId, pos);

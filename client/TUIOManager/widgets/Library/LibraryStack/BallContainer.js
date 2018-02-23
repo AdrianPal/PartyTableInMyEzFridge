@@ -49,7 +49,8 @@ class BallContainer extends TUIOWidget {
           .css('left', `${x}px`)
           .css('top', `${y}px`)
           .css('z-index', -1);
-    this.stackTitleTop = $('<div>').text(stackTitle)
+          //before, there was stackTitle
+    this.stackTitleTop = $('<div>').text('')
                         .css('margin-top', '-40px')
                         .css('text-align', 'center')
                         .css('width', `${size}`)
@@ -97,7 +98,7 @@ class BallContainer extends TUIOWidget {
     this._bonusCount = 0;
     this._ballsLost = 0;
     this._playerid = stackTitle;
-	this._gameTime = gameTime
+	  this._gameTime = gameTime;
 
 
     //Rotating the element
@@ -113,10 +114,13 @@ class BallContainer extends TUIOWidget {
 
   this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
 	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
-	this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
+
+  this._domElem.append('<p id="'+ this._playerid+'help" class="help">Drag the balls of your color here !</p>');
+
+  this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
   $('#'+this._playerid+'malus').css('margin-left', '130%');
   $('#'+this._playerid+'malus').css('font-size', '3rem');
-  console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
+  //console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
   
   //$('#'+this._playerid+'malus').hide();
   
@@ -143,17 +147,24 @@ class BallContainer extends TUIOWidget {
     
   }
 
+  setBallsCaptured()
+  {
+    $('#' + this._playerid).text(this._ballsCount);    
+  }
+
   addBall()
   {
     $('#picksound')[0].play();
     this._ballsCount++;
-    $('#' + this._playerid).text(this._ballsCount);
+    //$('#' + this._playerid).text(this._ballsCount);
+    setBallsCaptured();
   }
 
   addBalls(amount)
   {
       this._ballsCount+= amount;
-      $('#' + this._playerid).text(this._ballsCount);   
+      //$('#' + this._playerid).text(this._ballsCount); 
+      setBallsCaptured();  
       if(amount>1)
       {
         this._bonusCount++;
@@ -182,13 +193,15 @@ class BallContainer extends TUIOWidget {
         }, 1500)
     }
     
-
-    $('#' + this._playerid).text(this._ballsCount);
+    setBallsCaptured();
+   // $('#' + this._playerid).text(this._ballsCount);
     
   }
 
   showOutcome(hasWon)
   {
+    $('.container-avatar').remove();
+    $('#'+this._playerid+'help').remove();
     this._domElem.append('<p class="stats">Balls captured : '+ this._ballsCount+'</p><br/>');
     this._domElem.append('<p class="stats">Balls lost : '+ this._ballsLost+'</p>');
     this._domElem.append('<p class="stats">Bonuses captured : '+ this._bonusCount+'</p>');
@@ -228,21 +241,14 @@ class BallContainer extends TUIOWidget {
         else
         {
           return false;
-        }
-
-        /*if((x+ballwidth < this.x && y+ballwidth < this.y) 
-          || (x+ballwidth < this.x && y> this.y+containerWidth)
-          || (x> this.x+ containerWidth && y+ballwidth < this.y)
-          || (x> this.x+ containerWidth && y> this.y+containerWidth))
-          {
-            return true;
-          }
-          else
-          {
-            return false;
-          }*/
+        }       
   }
-  
+
+  showImg(path)
+  {
+    console.log(path);
+    this._domElem.append('<img src="'+ path +'" class="container-avatar"/>');
+  }  
 
   /**
    * LibraryStack's domElem.

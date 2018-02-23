@@ -13,7 +13,7 @@
 }
 
 #maze .blured {
-    filter: blur(35px) !important;
+    filter: blur(40px) !important;
 }
 
 #maze .hide {
@@ -21,25 +21,25 @@
 }
 
 #maze td {
-    width: 10em;
-    height: 6em;
-    border: 5px solid
+    width: 8em;
+    height: 8em;
+    border: 10px solid saddlebrown;
 }
 
 #maze td.s {
-    border-bottom: 2px dashed;
+    border-bottom: 2px dashed gainsboro;
 }
 
 #maze td.n {
-    border-top: 2px dashed;
+    border-top: 2px dashed gainsboro;
 }
 
 #maze td.w {
-    border-left: 2px dashed;
+    border-left: 2px dashed gainsboro;
 }
 
 #maze td.e {
-    border-right: 2px dashed;
+    border-right: 2px dashed gainsboro;
 }
 
 #maze .start {
@@ -53,6 +53,13 @@
 #startingInformation svg {
     font-size: 5em;
     color: rgb(0,109,240);
+}
+
+#generateMazeMobile td{
+    width: 4em;
+    height: 4em;
+    border: 4px solid black;
+    background-color: rgba(255, 255, 255, 0.51);
 }
 
 /***** BUTTON *****/
@@ -85,6 +92,20 @@
     flex-direction: column;
     flex: 1;
     border: 2px solid;
+}
+
+.buttonNext{
+    border: 1px solid white;
+    color: white;
+    border-radius: 50px;
+    width: 5em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 1em;
+
 }
 
 #maze #send{
@@ -120,12 +141,21 @@
     border-radius: 7.5em;
     width: 15em;
     height: 15em;
-    background-color: darkgreen;
+    background-color: rgb(0,109,240);
     color: white;
     flex: 1;
     font-size: 1em;
 
 }
+
+#contentReady{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 80%;
+}
+
 
 #app{
     display: flex;
@@ -176,6 +206,9 @@
 .color-red{
     color: darkred;
 }
+.color-winner{
+    color: darkgoldenrod;
+}
 .infos{
    color: darkgrey;
     font-size: 120%;
@@ -196,7 +229,30 @@
     padding: 0 10px;
     line-height: 22px; /* same as #progressBar height if we want text middle aligned */
     width: 0;
-    background-color: rgb(0, 109, 240) ;
+    background-color: #ff3e3e ;
     box-sizing: border-box;
 }
 
+
+/*********** MODAL **************/
+
+.modal-body{
+    overflow-y: auto;
+    max-height: 55rem;
+    text-align: center;
+}
+
+.modal-image{
+    width: 15em;
+    height: 15em;
+    margin-bottom: 1em;
+}
+
+.titleRule{
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#rules{
+    margin-top: -5em;
+}

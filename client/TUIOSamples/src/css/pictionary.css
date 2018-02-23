@@ -83,10 +83,7 @@
 
 #drawingZone {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    display: none;
 }
 
 
@@ -97,7 +94,7 @@
     background-color: #00C853;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     font-weight: bold;
     font-size: 3em;
     color: white;
@@ -135,7 +132,7 @@
 
 #countdown {
     display: none;
-    width: 50%;
+    width: 100%;
     padding-left: 1em;
     padding-right: 1em;
     margin-bottom: 2em;
@@ -164,3 +161,141 @@
     font-weight: bold;
  
 }
+
+#pictionaryCanvasTop {
+    transform: rotate(180deg);
+    position: absolute;
+    top: 0;
+    left: 40%;
+    border: 1px solid black;
+    margin-top: 180px;
+}
+
+#pictionaryCanvasBottom {
+    border: 1px solid black;
+    position: absolute;
+    bottom: 0;
+    left: 40%;
+    margin-bottom: 180px;
+}
+
+#pictionaryCanvasLeft {
+    transform: rotate(90deg);
+    border: 1px solid black;
+    position: absolute;
+    left: 0;
+    top: 43%;
+    margin-left: 180px;
+}
+
+#pictionaryCanvasRight {
+    transform: rotate(-90deg);
+    border: 1px solid black;
+    position: absolute;
+    right: 0;
+    top: 43%;
+    margin-right: 180px;
+}
+
+
+#tableCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 20%;
+    width: 20%;
+}
+
+#prop {
+    display: none;
+    height: 80%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#proPic {
+    border: 8px solid black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 170px;
+    width: 170px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#propWord {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+
+#winnerDrawer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#winnerFinder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30%;
+}
+
+.picture {
+    border: 8px solid black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 170px;
+    width: 170px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 2%;
+}
+
+.clickTop {
+    transform: rotate(180deg);
+    position: absolute;
+    top: 0;
+    left: 40%;
+}
+
+.clickLeft {
+    transform: rotate(90deg);
+
+    position: absolute;
+    left: 0;
+    top: 50%;
+}
+
+.clickBot {
+    position: absolute;
+    bottom: 0;
+    left: 40%;
+}
+
+.clickRight {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 0;
+    top: 50%;
+}
+
+#lost {
+    display: flex;
+    flex-direction: column;
+}
+

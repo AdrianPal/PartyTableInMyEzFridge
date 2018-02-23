@@ -1,24 +1,20 @@
 import MobileHandler from '../../../mobile/mobile.handler'
 import SocketManager from '../../../../socket.manager'
+import { toASCII } from 'punycode';
+import Home from "../../../home/home";
+
 
 
 export default class PictionaryMobile extends MobileHandler {
 
-    /**
-     * TODO: finir progress bar
-     * changer l'arrivée dans un nouveau pictionnary (faire tourner le titre)
-     * finaliser le mobile css
-     * tester avec 4 mobiles
-     * calibrer si possible le mobile canvas
-     * Non orienter le plus possible
-     */
+    
 
     static get currentFolder() {
         return '/src/games/pictionary/mobile';
     }
 
     static get initialCountDownValue() {
-        return 90;
+        return 180;
     }
 
     constructor(gameId, pos, isChoosenMobile, word)  {
@@ -26,6 +22,19 @@ export default class PictionaryMobile extends MobileHandler {
 
         this.app = $('#app');
         this.context = null;
+        this.canvas = null;
+        this.opts = {
+            line: {
+                color: '#000',
+                size: 1,
+                cap: 'round',
+                join: 'round',
+                miterLimit: 10
+            }
+        };
+
+        this.sketching = false;
+        this.strokes = [];
 
         var that = this;
         $.ajax({
@@ -33,36 +42,48 @@ export default class PictionaryMobile extends MobileHandler {
             url: PictionaryMobile.currentFolder + '/pictionary.mobile.view.html',
             success: function (picView) {
                 if (isChoosenMobile) {
-                    that.updateTitle('Pictionary - You are the drawer');
+                    $('#page-content').css('height','100%');
+                    $('#page-content').css('padding', '0');
+                    that.updateTitle('Pictionary<div class="small">You are the drawer</div>');
                     that.updateContent(picView);
                     that.initChosenMobile(word);
                     that.initRules(isChoosenMobile);
-                    that.canvas = document.getElementById('pictionaryCanvas');
-                    that.canvas.height = document.body.clientHeight * 0.40;
-                    that.canvas.width = document.body.clientWidth * 0.90;
+                    that.initPalette();
 
 
-                    that.width = that.canvas.height;
-                    that.height = that.canvas.width;
+                    let el = document.getElementById('canvasWrapper');
 
-                    that.context = document.getElementById('pictionaryCanvas').getContext('2d');
-                    that.pointsEast = new Array();
-                    that.pointsNorth = new Array();
-                    that.pointsDrag = new Array();
+                    that.opts.aspectRatio = 1;
+                    that.opts.width = el.clientWidth;
+                    that.opts.height = that.opts.width * that.opts.aspectRatio;
 
+                    that.canvas = document.createElement('canvas');
 
-                    that.isPainting = false;
+                    that.canvas.setAttribute('width', that.opts.width);
+                    that.canvas.setAttribute('height', that.opts.height);
+                    that.canvas.style.width = that.opts.width + 'px';
+                    that.canvas.style.height = that.opts.height + 'px';
 
-                    that.isPaletteOpened = false;
-                    that.drawSize = 5;
-                    that.color = '#000000';
-                    that.startEventType = 'touchstart';
-                    that.moveEventType = 'touchmove';
-                    that.endEventType = 'touchend';
+                    el.appendChild(that.canvas);
+                    that.context = that.canvas.getContext('2d');
+
+                    that.canvas.addEventListener('touchstart', function(e) {
+                        that.startLine(e);
+                    });
+
+                    that.canvas.addEventListener('touchmove', function(e) {
+                        that.drawLine(e);
+                    });
+
+                    that.canvas.addEventListener('touchend', function(e) {
+                        that.endLine(e);
+                    });
+            
                 } else {
-                    that.updateTitle('Pictionary - You are a finder !');
+                    that.updateTitle('Pictionary<div class="small">You are a finder !</div>');
                     that.updateContent(picView);
                     that.initRules(isChoosenMobile);
+                    $('#toolbarFinder').css('display', 'flex');
                     $('#wordWrapper').hide();
                     $('#startPic').hide();
                     SocketManager.get().on('startPic', function () {
@@ -81,20 +102,26 @@ export default class PictionaryMobile extends MobileHandler {
                     });
 
                 }
+            
             }
         });
     }
 
 
-    initChosenMobile(word) {
+    initChosenMobile(word){
         const that = this;
         $('#word').html(word);
-        $('#startPic').on('click', function () {
+
+        $('#startPic').on('click', function() {
             $('#pictionaryMobileContainer').show().css('display', 'flex');;
             SocketManager.get().emit('startPic');
-            that.initCanvasEvent();
-            that.initSocketPurposals();
+
+            $('#wordPainting').html(word);
             $('#startPic').hide();
+            that.initSocketPurposals();
+            $('#page-title').hide();
+            $('#wordWrapper').hide();
+
             $('#countdown').show();
             $('#current-progress').html(PictionaryMobile.initialCountDownValue);
             var countdownFunction = setInterval(function () {
@@ -113,23 +140,11 @@ export default class PictionaryMobile extends MobileHandler {
                 } else {
                     SocketManager.get().emit('decreaseCountdown', countdownValue - 1);
                 }
-            }, 1000);
-
-        });
-    }
-
-    initRules(isChoosenMobile){
-        let rules = "";
-        if(isChoosenMobile) {
-            rules = "Try to guess the word below by drawing it in the box below !";
-        } else {
-            rules = "Find the word drawn on the table and send your response with the field below !";
-        }
-        $('#rules-collapse-content').html(rules);
+            }, 1000);        });
     }
 
     initSocketPurposals() {
-        SocketManager.get().on('proposal', function (response, user)  {
+        SocketManager.get().on('proposal', function (response, user)  {
             $('#proposalPerson').html(user.name);
             $('#proposal').html(response);
             $('#modalProposal').modal();
@@ -138,44 +153,38 @@ export default class PictionaryMobile extends MobileHandler {
                 SocketManager.get().emit('endGame', user);
             });
 
-            $('#refuseProposal').on('click',function() {
+            $('#refuseProposal').on('click',function() {
                 SocketManager.get().emit('decline');
             })
         })
     }
 
-
-    initCanvasEvent() {
+    initPalette() {
         const that = this;
-        $("#pictionaryCanvas").bind(that.startEventType, function (e) {
-            that.isPainting = true;
-            that.addPoint((e.pageX - this.offsetLeft) / that.width, (e.pageY - this.offsetTop) / that.height);
-            that.refreshCanvas();
-            SocketManager.get().emit('isDrawing', that.pointsEast, that.pointsNorth, that.pointsDrag, that.color, that.drawSize);
-        });
-
-        $("#pictionaryCanvas").bind(that.moveEventType, function (e) {
-            if (that.isPainting)  {
-                that.addPoint((e.pageX - this.offsetLeft) / that.width, (e.pageY - this.offsetTop) / that.height, true);
-                that.refreshCanvas();
-                SocketManager.get().emit('isDrawing', that.pointsEast, that.pointsNorth, that.pointsDrag);
+        var content = document.getElementById('palette-tool');
+        $('#paletteTrigger').popover({
+            title: 'Palette',
+            placement: 'top',
+            html: true,
+            content: content
+        })
+        $('#linkPaletteTrigger').on('click',function() {
+            if($('#linkPaletteTrigger').hasClass("opened")){
+                $('#linkPaletteTrigger').removeClass("opened");
+                $('#paletteTrigger').popover('hide');
+            } else {
+                $('#linkPaletteTrigger').addClass("opened");
+                $('#paletteTrigger').popover('show');
             }
-        });
 
-        $("#pictionaryCanvas").bind(that.endEventType, function (e) {
-            that.isPainting = false;
-            that.pointsEast = new Array();
-            that.pointsNorth = new Array();
-            that.pointsDrag = new Array();
         });
-
 
         $('input[name="size"]').change(function () {
-            that.drawSize = $(this).val();
+            that.opts.line.size = $(this).val();
         });
 
         $("#colorpicker").spectrum({
-            color: that.color,
+            color: that.opts.line.color,
             showPaletteOnly: true,
             togglePaletteOnly: true,
             togglePaletteMoreText: 'more',
@@ -192,57 +201,137 @@ export default class PictionaryMobile extends MobileHandler {
             ]
         });
 
-        $("#colorpicker").change(function ()  {
-            that.color = $(this).val();
-        })
-
-        $('#openPalette').bind('click', function () {
-            that.isPaletteOpened = !that.isPaletteOpened;
-            if (that.isPaletteOpened)  {
-                $('#palette-tool').css('display', 'inline-block');
-                $('#chev').removeClass('fa-caret-right').addClass('fa-caret-left')
-            } else {
-                $('#palette-tool').css('display', 'none');
-                $('#chev').removeClass('fa-caret-left').addClass('fa-caret-right')
-            }
+        $("#colorpicker").change(function ()  {
+            that.opts.line.color = $(this).val();
         });
 
         $('#clear').bind('click', function () {
-            that.clear();
-            SocketManager().get().emit('clearCanvas');
+            that.resetCanvas();
+        });
+
+    }
+
+    initRules(isChoosenMobile){
+        let rules = "";
+        if(isChoosenMobile) {
+            $('#rulesTrigger').attr('data-content','<div>Try to guess the word below by drawing it in the box below !</div>')           
+        } else {
+            $('#rulesTriggerFinder').attr('data-content','<div>Find the word drawn on the table and send your response with the field below !</div>')           
+        }
+    }
+
+    getPointRelativeToCanvas (point) {
+        return {
+            x: point.x / this.canvas.width,
+            y: point.y / this.canvas.height
+        };
+    }
+
+    getCursorRelativeToCanvas (e) {
+        var cur = {};
+
+        cur.x = e.touches[0].pageX //- canvas.offsetLeft;
+        cur.y = e.touches[0].pageY //- canvas.offsetTop;
+                    
+        return this.getPointRelativeToCanvas(cur);
+    }
+
+    getLineSizeRelativeToCanvas (size) {
+        return size / this.canvas.width;
+    }
+
+
+    redraw () {
+        this.clearCanvas();
+        SocketManager.get().emit('isDrawing', this.strokes, 'black', 5);
+        for (var i = 0; i < this.strokes.length; i++) {
+            this.drawStroke(this.strokes[i]);
+        }
+    }
+
+
+    startLine (e) {
+        e.preventDefault();
+
+        this.sketching = true;
+        this.undos = [];        
+        var cursor = this.getCursorRelativeToCanvas(e);
+        this.strokes.push({
+            points: [cursor],
+            color: this.opts.line.color,
+            size: this.getLineSizeRelativeToCanvas(this.opts.line.size),
+            cap: this.opts.line.cap,
+            join: this.opts.line.join,
+            miterLimit: this.opts.line.miterLimit
         });
     }
 
 
-    addPoint(east, north, drag) {
-        this.pointsEast.push(east);
-        this.pointsNorth.push(north);
-        this.pointsDrag.push(drag);
+    clearCanvas () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    refreshCanvas() {
-        this.context.strokeStyle = this.color;
-        this.context.lineJoin = "round";
-        this.context.lineWidth = this.drawSize;
+    resetCanvas() {
+        this.strokes = [];
+        this.redraw();
+        SocketManager.get().emit('clearCanvas');
+    }
 
-        for (var i = 0; i < this.pointsEast.length; i++) {
-            this.context.beginPath();
-            if (this.pointsDrag[i] && i) {
-                this.context.moveTo(this.pointsEast[i - 1] * this.width, this.pointsNorth[i - 1] * this.height);
-            } else {
-                this.context.moveTo((this.pointsEast[i] * this.width) - 1, this.pointsNorth[i] * this.height);
-            }
-            this.context.lineTo(this.pointsEast[i] * this.width, this.pointsNorth[i] * this.height);
-            this.context.closePath();
-            this.context.stroke();
+    drawLine (e) {
+        if (!this.sketching) {
+            return;
         }
+
+        e.preventDefault();
+
+        var cursor = this.getCursorRelativeToCanvas(e);
+        this.strokes[this.strokes.length - 1].points.push({
+            x: cursor.x,
+            y: cursor.y
+        });
+
+        this.redraw();
     }
 
-    changeSize(radio) {
-        drawSize = radio.value;
+    endLine (e) {
+        if (!this.sketching) {
+            return;
+        }
+
+        e.preventDefault();
+
+        this.sketching = false;
     }
 
-    clear() {
-        this.context.clearRect(0, 0, canvas.width, canvas.height);
+    normalizePoint (point) {
+        return {
+            x: point.x * this.canvas.width,
+            y: point.y * this.canvas.height
+        };
+    }
+
+
+    normalizeLineSize (size) {
+        return size * this.canvas.width;
+    }
+
+    drawStroke (stroke) {
+        this.context.beginPath();
+        for (var j = 0; j < stroke.points.length - 1; j++) {
+            var start = this.normalizePoint(stroke.points[j]);
+            var end = this.normalizePoint(stroke.points[j + 1]);
+
+            this.context.moveTo(start.x, start.y);
+            this.context.lineTo(end.x, end.y);
+        }
+        this.context.closePath();
+
+        this.context.strokeStyle = stroke.color;
+        this.context.lineWidth = this.normalizeLineSize(stroke.size);
+        this.context.lineJoin = stroke.join;
+        this.context.lineCap = stroke.cap;
+        this.context.miterLimit = stroke.miterLimit;
+
+        this.context.stroke();
     }
 }
