@@ -236,7 +236,7 @@ export default class Pictionary {
         SocketManager.get().removeAllListeners('decline');
         SocketManager.get().removeAllListeners('pictionaryEnd');
         SocketManager.get().removeAllListeners('isDrawing');
-        
+
 
 
 
@@ -244,8 +244,8 @@ export default class Pictionary {
     }
     goHome(widget) {
         widget.deleteWidget();
-
         new Home(this.gameId);
+
     }
 
     clearCanvas () {

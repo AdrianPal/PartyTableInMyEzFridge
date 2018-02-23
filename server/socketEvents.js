@@ -189,6 +189,7 @@ exports = module.exports = function (io) {
                     socket.to(tableId).emit('pictionaryEnd', userPos, winner, gameId);
                 }
             }
+
         });
 
         //------------------------------------BALLS--------------------------

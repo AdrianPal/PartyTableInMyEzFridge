@@ -102,7 +102,6 @@ export default class PictionaryMobile extends MobileHandler {
                     });
 
                 }
-            
             }
         });
     }
@@ -151,6 +150,8 @@ export default class PictionaryMobile extends MobileHandler {
 
             $('#validateProposal').on('click', function () {
                 SocketManager.get().emit('endGame', user);
+                $('#page-content').css('height','80%');
+                $('#page-title').css('display','block');
             });
 
             $('#refuseProposal').on('click',function() {
