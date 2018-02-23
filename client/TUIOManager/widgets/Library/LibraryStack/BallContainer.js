@@ -149,7 +149,8 @@ class BallContainer extends TUIOWidget {
 
   setBallsCaptured()
   {
-    $('#' + this._playerid).text(this._ballsCount);    
+    $('#' + this._playerid).text(this._ballsCount);  
+    console.log($('#' + this._playerid).text());  
   }
 
   addBall()
@@ -157,14 +158,14 @@ class BallContainer extends TUIOWidget {
     $('#picksound')[0].play();
     this._ballsCount++;
     //$('#' + this._playerid).text(this._ballsCount);
-    setBallsCaptured();
+    this.setBallsCaptured();
   }
 
   addBalls(amount)
   {
       this._ballsCount+= amount;
       //$('#' + this._playerid).text(this._ballsCount); 
-      setBallsCaptured();  
+      this.setBallsCaptured();  
       if(amount>1)
       {
         this._bonusCount++;
@@ -193,7 +194,7 @@ class BallContainer extends TUIOWidget {
         }, 1500)
     }
     
-    setBallsCaptured();
+    this.setBallsCaptured();
    // $('#' + this._playerid).text(this._ballsCount);
     
   }
