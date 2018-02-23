@@ -258,6 +258,11 @@ export default class Board {
 
                     SocketManager.get().emit('game ended');
                 }, 4000);
+
+                setTimeout(function() {
+                    // Toggle the table?
+                    $('.curtain__panel').hide();
+                }, 5000);
             }
         });
     }
