@@ -92,7 +92,6 @@ class BallContainer extends TUIOWidget {
     this._currentAngle = 0;
     this.showTag = '';
     this.scale = 1;
-    // this.allTheStacks.push(this);
 
     this._ballsCount = 5;
     this._bonusCount = 0;
@@ -109,62 +108,42 @@ class BallContainer extends TUIOWidget {
            '-o-transform' : 'rotate('+rotation+'deg)',  
               'transform' : 'rotate('+rotation+'deg)'
     
-        });
-		
+        });		
 
-  this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
-	//this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'time">'+ this._gameTime/1000 +'</h3>');
-
-  this._domElem.append('<p id="'+ this._playerid+'help" class="help">Drag the balls of your color here !</p>');
-
-  this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
-  $('#'+this._playerid+'malus').css('margin-left', '130%');
-  $('#'+this._playerid+'malus').css('font-size', '3rem');
-  //console.log("VA NIKER T MORH "+ '#'+this._playerid+'malus' );
+    this._domElem.append('<h3 class="ballsCount" id="'+this._playerid +'">'+ this._ballsCount +'</h3>');
+    this._domElem.append('<p id="'+ this._playerid+'help" class="help">Drag the balls of your color here !</p>');
+    this._domElem.append('<p id="'+ this._playerid+'malus" class="malus">Malus</p>');
   
-  //$('#'+this._playerid+'malus').hide();
-  
-  /*this._domElem.append('<div class="timeBar" id="'+ this._playerid + 'bar"></div>');
-  $('#' + this._playerid + 'bar').css('width', this._domElem.width());
-  $('#' + this._playerid + 'bar').css('margin-left', this._domElem.width()/2 + 30);
-  
-	*/
-	
+    $('#'+this._playerid+'malus').css('margin-left', '130%');
+    $('#'+this._playerid+'malus').css('font-size', '3rem');
+    
   }
   
   
+  //Update the time bar
   updateTime(time)
   {
-    //this._gameTime = time;
     this._gameTime -= time;
-   // $('#'+this._playerid + 'time').text(this._gameTime/1000);
     const sub = time/this._gameTime;
     const widthToDelete = $('#' + this._playerid + 'bar').width() * sub;
     const newWidth = $('#' + this._playerid + 'bar').width() - widthToDelete;
-    //$('#' + this._playerid + 'bar').width(newWidth);
-
-    //$('#' + this._playerid + 'bar').css('transform', 'scaleY('+sub +')');
-    
   }
 
   setBallsCaptured()
   {
     $('#' + this._playerid).text(this._ballsCount);  
-    console.log($('#' + this._playerid).text());  
   }
 
   addBall()
   {
     $('#picksound')[0].play();
     this._ballsCount++;
-    //$('#' + this._playerid).text(this._ballsCount);
     this.setBallsCaptured();
   }
 
   addBalls(amount)
   {
       this._ballsCount+= amount;
-      //$('#' + this._playerid).text(this._ballsCount); 
       this.setBallsCaptured();  
       if(amount>1)
       {
@@ -188,25 +167,21 @@ class BallContainer extends TUIOWidget {
 
       let self = this;
       setTimeout(function(){
-        console.log("SUpposed to hide");
         $('#'+self._playerid+'malus').hide();
-            
         }, 1500)
     }
-    
     this.setBallsCaptured();
-   // $('#' + this._playerid).text(this._ballsCount);
-    
   }
 
+  //Shows winner/loser
   showOutcome(hasWon)
   {
     $('.container-avatar').remove();
     $('#'+this._playerid+'help').remove();
+
     this._domElem.append('<p class="stats">Balls captured : '+ this._ballsCount+'</p><br/>');
     this._domElem.append('<p class="stats">Balls lost : '+ this._ballsLost+'</p>');
     this._domElem.append('<p class="stats">Bonuses captured : '+ this._bonusCount+'</p>');
-    
 	  this._domElem.append('<img  id="'+this._playerid +'end"/>');
     
       if(hasWon)
@@ -223,31 +198,28 @@ class BallContainer extends TUIOWidget {
         $('#' + this._playerid + 'end').attr("src", "/assets/lose.png");
         
         $('#' + this._playerid + 'end').addClass("outcome haslost");        
-      }
-
-     
+      }     
   }
 
+  //check the spawn coordinates
   areCoordsRight(x, y, ballwidth, containerWidth) 
   {
-      if(x+ballwidth < this.x || x> this.x+ containerWidth) 
-       
-        {
-          return true;          
-        }
-        else if(y+ballwidth < this.y || y> this.y+containerWidth)
-        {
-          return false;
-        }
-        else
-        {
-          return false;
-        }       
+      if(x+ballwidth < this.x || x> this.x+ containerWidth)        
+      {
+        return true;          
+      }
+      else if(y+ballwidth < this.y || y> this.y+containerWidth)
+      {
+        return false;
+      }
+      else
+      {
+        return false;
+      }       
   }
 
   showImg(path)
   {
-    console.log(path);
     this._domElem.append('<img src="'+ path +'" class="container-avatar"/>');
   }  
 
@@ -267,7 +239,6 @@ class BallContainer extends TUIOWidget {
    * @param {number} y - Point's ordinate to test.
    */
   isTouched(x, y) {
-    //this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
     const nx = this._domElem[0].getBoundingClientRect().left;
     const ny = this._domElem[0].getBoundingClientRect().top;
     const width = this._domElem.width();
@@ -275,10 +246,7 @@ class BallContainer extends TUIOWidget {
     const ox = (nx + (width / 2));
     const oy = (ny + (height / 2));
     const p = new Point(x, y);
-   // p.rotate((360 - this._currentAngle), ox, oy);
-    //this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
     return (p.x >= nx && p.x <= nx + width && p.y >= ny && p.y <= ny + height) && !this.isDisabled;
-    // return (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) && !this.isDisabled;
   }
 
   /**
@@ -303,8 +271,6 @@ class BallContainer extends TUIOWidget {
       }
 
       this.touchedTimestamp = Date.now();
-      //this.touchedInitX = tuioTouch.x;
-      //this.touchedInitY = tuioTouch.y;
     }
   }
 
@@ -391,28 +357,7 @@ class BallContainer extends TUIOWidget {
             newscale = this._lastTouchesValues.scale * 0.985; // new scale is 1.5 times the old scale
             this._lastTouchesValues.scale = newscale; //  We save the scale
           }
-          //this.scale = newscale;
           this._lastTouchesValues.pinchDistance = c;
-        //}
-
-        // Rotation d'une image
-        //if (this.canRotateTactile) {
-          /*if (!this.lastAngle) {
-            this.lastAngle = touch1.angleWith(touch2);
-          } else {
-            if (this.lastAngle < touch1.angleWith(touch2)) {
-              this._currentAngle += touch1.angleWith(touch2) - this.lastAngle;
-            } else {
-              this._currentAngle -= this.lastAngle - touch1.angleWith(touch2);
-            }
-            this._currentAngle = this._currentAngle % 360;
-            this.lastAngle = touch1.angleWith(touch2);
-          }*/
-        //}
-        //this._domElem.css('transform', `rotate(360deg) scale(${this.scale})`);
-        //this._domElem.css('transform', `rotate(${this._currentAngle}deg) scale(${this.scale})`);
-        // this._x = this._domElem.position().left;
-        // this._y = this._domElem.position().top;
       }
     }
   }
