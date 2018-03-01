@@ -13,7 +13,7 @@ Rémy Kaloustian
 2) Installer MongoDB express (si ce n'est déjà fait)
 3) Dans client/TUIOManager, lancer npm link
 4) Dans client/TUIOSamples, lancer npm link tuiomanager
-5)Dans client/TUIOManager, client/TUIOSamples et client/TUIOClient, lancer npm install
+5) Dans client/TUIOManager, client/TUIOSamples et client/TUIOClient, lancer npm install
 6) Dans server/scripts, lancer sur deux consoles différentes
 sh start_db.sh
 sh start_server.sh
