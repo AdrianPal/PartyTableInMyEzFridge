@@ -14,9 +14,9 @@ Rémy Kaloustian
 3) Dans client/TUIOManager, client/TUIOSamples et client/TUIOClient, lancer npm install
 4) Dans client/TUIOManager, lancer npm link
 5) Dans client/TUIOSamples, lancer npm link tuiomanager
-6) Dans server/scripts, lancer sur deux consoles différentes
-sh start_db.sh
-sh start_server.sh
+6) Dans server/scripts, lancer sur deux consoles différentes    
+sh start_db.sh   
+sh start_server.sh   
 7) Dans client/TUIOSamples, ouvrir config.js et le modifier de la sorte : 
 
 ```
