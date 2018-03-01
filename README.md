@@ -11,9 +11,9 @@ Rémy Kaloustian
 ## Instructions pour installer
 1) cloner ce repo
 2) Installer MongoDB express (si ce n'est déjà fait)
-3) Dans client/TUIOManager, lancer npm link
-4) Dans client/TUIOSamples, lancer npm link tuiomanager
-5) Dans client/TUIOManager, client/TUIOSamples et client/TUIOClient, lancer npm install
+3) Dans client/TUIOManager, client/TUIOSamples et client/TUIOClient, lancer npm install
+4) Dans client/TUIOManager, lancer npm link
+5) Dans client/TUIOSamples, lancer npm link tuiomanager
 6) Dans server/scripts, lancer sur deux consoles différentes
 sh start_db.sh
 sh start_server.sh
